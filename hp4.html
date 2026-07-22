@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trắc nghiệm HP4 - Azota</title>
+    <title>Trắc nghiệm HP4 - Tự chấm ngay</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
         * {
@@ -62,6 +62,10 @@
             width: 20px;
             text-align: center;
         }
+        .stats .score {
+            font-weight: 700;
+            color: #1a5fb0;
+        }
         .question-item {
             background: #ffffff;
             border: 1px solid #e2e9f2;
@@ -77,12 +81,13 @@
         }
         .question-header {
             display: flex;
-            align-items: baseline;
+            align-items: center;
             gap: 10px;
             font-weight: 600;
             font-size: 17px;
             color: #0b2b4a;
             margin-bottom: 12px;
+            flex-wrap: wrap;
         }
         .question-header .qnum {
             background: #eef4fc;
@@ -91,6 +96,21 @@
             border-radius: 30px;
             font-size: 14px;
             font-weight: 700;
+        }
+        .question-header .result-badge {
+            font-size: 14px;
+            font-weight: 700;
+            padding: 2px 14px;
+            border-radius: 30px;
+            margin-left: 8px;
+        }
+        .result-badge.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+        .result-badge.wrong {
+            background: #f8dddd;
+            color: #721c24;
         }
         .question-text {
             font-size: 16px;
@@ -136,10 +156,6 @@
         }
         .option .answer-text {
             flex: 1;
-        }
-        .option.selected {
-            background: #ddeeff;
-            border-color: #2a7de1;
         }
         .option.correct {
             background: #d4edda;
@@ -208,23 +224,14 @@
             background: #e6eff9;
             border-color: #2a7de1;
         }
-        .btn:disabled {
-            opacity: 0.5;
-            transform: none !important;
-            box-shadow: none !important;
-            cursor: not-allowed;
-        }
 
         .result-box {
             background: #eef4fc;
             border-radius: 16px;
             padding: 18px 24px;
             margin-top: 24px;
-            display: none;
-            border-left: 6px solid #1a5fb0;
-        }
-        .result-box.show {
             display: block;
+            border-left: 6px solid #1a5fb0;
         }
         .result-box .score {
             font-size: 22px;
@@ -253,14 +260,14 @@
         <i class="fas fa-graduation-cap"></i>
         Trắc nghiệm HP4
         <span style="font-size:14px; font-weight:400; margin-left:auto; color:#5b7b9c;">
-            <i class="fas fa-clock"></i> 45 phút
+            <i class="fas fa-check-circle"></i> Tự chấm ngay
         </span>
     </h1>
 
     <div class="stats">
         <span><i class="fas fa-list-ul"></i> <span id="totalQ">0</span> câu</span>
         <span><i class="fas fa-check-circle"></i> Đã làm: <span id="answeredCount">0</span></span>
-        <span><i class="fas fa-flag"></i> Bài: HP4</span>
+        <span><i class="fas fa-star"></i> Điểm: <span id="liveScore" class="score">0</span></span>
     </div>
 
     <div id="questionsContainer"></div>
@@ -269,9 +276,8 @@
         <div>
             <button class="btn btn-outline" id="resetBtn"><i class="fas fa-undo-alt"></i> Làm lại</button>
         </div>
-        <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <button class="btn btn-primary" id="submitBtn"><i class="fas fa-paper-plane"></i> Nộp bài</button>
-            <button class="btn btn-success" id="showAnswerBtn" disabled><i class="fas fa-eye"></i> Xem đáp án</button>
+        <div>
+            <button class="btn btn-primary" id="showAnswerBtn"><i class="fas fa-eye"></i> Xem đáp án đúng</button>
         </div>
     </div>
 
@@ -283,149 +289,39 @@
 
 <script>
     // ------------------------------------------------------------
-    // Dữ liệu câu hỏi (trích từ tài liệu HP4)
-    // Mỗi câu: { question, options: [a,b,c,d], answer: index (0-3) }
+    // Dữ liệu câu hỏi HP4 (chuyển sang dạng options)
     // ------------------------------------------------------------
     const questionsData = [
         // Phần Súng AK
-        {
-            question: 'Súng tiểu liên AK có cỡ nòng là bao nhiêu mm?',
-            options: ['7,62mm', '6,72mm', '76,2mm', '72,6mm'],
-            answer: 0
-        },
-        {
-            question: 'Khi bắn súng tiểu liên AK (góc bắn tốt nhất), thì bay xa nhất của đầu đạn là bao nhiêu mét?',
-            options: ['3.000 mét', '1.500 mét', '3.600 mét', '800 mét'],
-            answer: 0
-        },
-        {
-            question: 'Tầm bắn hiệu quả: Hỏa lực tập trung bắn mục tiêu mặt đất của súng tiểu liên AK đến cự ly bao nhiêu mét?',
-            options: ['500 mét', '1.500 mét', '3.000 mét', '800 mét'],
-            answer: 0
-        },
-        {
-            question: 'Yếu tố nào sau đây làm ảnh hưởng đến đường đạn bay trong không khí là một đường cong?',
-            options: ['Do động tác người bắn', 'Do trọng lượng của súng', 'Do cấu tạo của súng và đạn', 'Lực cản của không khí'],
-            answer: 3
-        },
-        {
-            question: 'Là đường ngắm cơ bản được đóng vào điểm ngắm đã xác định trên mục tiêu với điều kiện mặt súng thẳng bằng. Được xác định là:',
-            options: ['Đường ngắm sai', 'Điểm ngắm đúng', 'Đường ngắm đúng', 'Đường ngắm cơ bản'],
-            answer: 2
-        },
-        {
-            question: 'Khi bắn, mặt súng bị nghiêng thì:',
-            options: ['Mặt súng nghiêng về bên nào, đạn lệch về bên đó và lên cao.', 'Mặt súng nghiêng về bên nào, đạn lệch theo chiều ngược lại và thấp xuống.', 'Mặt súng nghiêng về bên nào, đạn lệch về bên đó và thấp xuống.', 'Mặt súng nghiêng về bên nào, đạn lệch theo chiều ngược lại và lên cao.'],
-            answer: 0
-        },
-        {
-            question: 'Tầm bay xa nhất của đầu đạn súng tiểu liên AK đạt 3.000 mét khi đó góc bắn là bao nhiêu độ?',
-            options: ['70⁰ – 90⁰', '32⁰ – 35⁰', '40⁰ – 45⁰', '10⁰ – 15⁰'],
-            answer: 1
-        },
-        {
-            question: 'Là đường thẳng từ mắt người ngắm qua chính giữa mép trên khe ngắm (tâm lỗ ngắm) đến điểm chính giữa mép trên đầu ngắm. Được xác định là:',
-            options: ['Khái niệm đường ngắm cơ bản.', 'Khái niệm đường ngắm đúng.', 'Khái niệm điểm ngắm đúng.', 'Khái niệm điểm bắn đúng.'],
-            answer: 0
-        },
-        {
-            question: 'Trọng lượng của súng tiểu liên AK khi không có đạn và khi đã lắp đủ đạn là bao nhiêu kg?',
-            options: ['3,8kg và 4,3kg.', '3,8kg và 4,8kg.', '3,5kg và 4,3kg.', '4,3kg và 5,8kg.'],
-            answer: 0
-        },
-        {
-            question: 'Nếu đầu ngắm thấp hơn mép trên khe ngắm, thì điểm chạm của đạn sẽ:',
-            options: ['Cao hơn so với điểm định bắn trúng.', 'Thấp hơn so với điểm định bắn trúng.', 'Thấp hơn và lệch sang phải so với điểm định bắn trúng.', 'Thấp hơn và lệch sang trái so với điểm định bắn trúng.'],
-            answer: 0
-        },
-        {
-            question: 'Tầm bắn thẳng của súng tiểu liên AK, khi mục tiêu người nằm cao 0,5 mét là bao nhiêu mét?',
-            options: ['330 mét.', '350 mét.', '710 mét.', '735 mét.'],
-            answer: 0
-        },
-        {
-            question: 'Khi ngắm chụm kết quả đánh giá giỏi là:',
-            options: ['3 điểm ngắm được chấm, lọt vào lỗ có đường kính 10 mm.', '3 điểm ngắm được chấm, lọt vào lỗ có đường kính 5 mm.', '3 điểm ngắm được chấm, lọt vào lỗ có đường kính 2 mm.', '3 điểm ngắm được chấm, lọt vào lỗ có đường kính 7 mm.'],
-            answer: 0
-        },
-        {
-            question: 'Nếu đầu ngắm cao hơn mép trên khe ngắm, thì điểm chạm của đạn sẽ:',
-            options: ['Thấp hơn so với điểm định bắn trúng.', 'Cao hơn so với điểm định bắn trúng.', 'Thấp hơn và lệch sang phải so với điểm định bắn trúng.', 'Thấp hơn và lệch sang trái so với điểm định bắn trúng.'],
-            answer: 0
-        },
-        {
-            question: 'Tốc độ đầu của đầu đạn súng tiểu liên AKM là bao nhiêu mét/giây?',
-            options: ['710 mét/giây.', '715 mét/giây.', '735 mét/giây.', '815 mét/giây.'],
-            answer: 0
-        },
-        {
-            question: 'Đường đạn trong không khí là một đường cong không cân đối, góc phóng nhỏ hơn góc rơi, đoạn lên căng và dài hơn đoạn xuống, đỉnh đường đạn gần điểm rơi hơn điểm phóng. Được xác định là:',
-            options: ['Đặc điểm đường đạn.', 'Các nguyên nhân gây ra góc nấy.', 'Khái niệm đường ngắm cơ bản.', 'Khái niệm đường ngắm đúng.'],
-            answer: 0
-        },
-        {
-            question: 'Yếu tố nào sau đây làm ảnh hưởng đến đường đạn trong không khí?',
-            options: ['Do động tác người bắn.', 'Do trọng lực của đầu đạn.', 'Do trọng lượng của súng.', 'Do cấu tạo của súng và đạn.'],
-            answer: 1
-        },
-        {
-            question: 'Tầm bắn hiệu quả: Hỏa lực tập trung bắn máy bay quân nhảy dù của súng tiểu liên AK đến cự ly bao nhiêu mét?',
-            options: ['500 mét.', '700 mét.', '800 mét.', '1.000 mét.'],
-            answer: 0
-        },
-        {
-            question: 'Nếu đầu ngắm cao hơn mép trên khe ngắm và lệch trái, so với điểm bắn trúng thì:',
-            options: ['Thấp hơn và lệch sang phải', 'Thấp hơn và lệch sang trái', 'Cao hơn và lệch sang trái', 'Cao hơn và lệch sang phải'],
-            answer: 2
-        },
+        { question: 'Súng tiểu liên AK có cỡ nòng là bao nhiêu mm?', options: ['7,62mm', '6,72mm', '76,2mm', '72,6mm'], answer: 0 },
+        { question: 'Khi bắn súng tiểu liên AK (góc bắn tốt nhất), thì bay xa nhất của đầu đạn là bao nhiêu mét?', options: ['3.000 mét', '1.500 mét', '3.600 mét', '800 mét'], answer: 0 },
+        { question: 'Tầm bắn hiệu quả: Hỏa lực tập trung bắn mục tiêu mặt đất của súng tiểu liên AK đến cự ly bao nhiêu mét?', options: ['500 mét', '1.500 mét', '3.000 mét', '800 mét'], answer: 0 },
+        { question: 'Yếu tố nào sau đây làm ảnh hưởng đến đường đạn bay trong không khí là một đường cong?', options: ['Do động tác người bắn', 'Do trọng lượng của súng', 'Do cấu tạo của súng và đạn', 'Lực cản của không khí'], answer: 3 },
+        { question: 'Là đường ngắm cơ bản được đóng vào điểm ngắm đã xác định trên mục tiêu với điều kiện mặt súng thẳng bằng. Được xác định là:', options: ['Đường ngắm sai', 'Điểm ngắm đúng', 'Đường ngắm đúng', 'Đường ngắm cơ bản'], answer: 2 },
+        { question: 'Khi bắn, mặt súng bị nghiêng thì:', options: ['Mặt súng nghiêng về bên nào, đạn lệch về bên đó và lên cao.', 'Mặt súng nghiêng về bên nào, đạn lệch theo chiều ngược lại và thấp xuống.', 'Mặt súng nghiêng về bên nào, đạn lệch về bên đó và thấp xuống.', 'Mặt súng nghiêng về bên nào, đạn lệch theo chiều ngược lại và lên cao.'], answer: 0 },
+        { question: 'Tầm bay xa nhất của đầu đạn súng tiểu liên AK đạt 3.000 mét khi đó góc bắn là bao nhiêu độ?', options: ['70⁰ – 90⁰', '32⁰ – 35⁰', '40⁰ – 45⁰', '10⁰ – 15⁰'], answer: 1 },
+        { question: 'Là đường thẳng từ mắt người ngắm qua chính giữa mép trên khe ngắm (tâm lỗ ngắm) đến điểm chính giữa mép trên đầu ngắm. Được xác định là:', options: ['Khái niệm đường ngắm cơ bản.', 'Khái niệm đường ngắm đúng.', 'Khái niệm điểm ngắm đúng.', 'Khái niệm điểm bắn đúng.'], answer: 0 },
+        { question: 'Trọng lượng của súng tiểu liên AK khi không có đạn và khi đã lắp đủ đạn là bao nhiêu kg?', options: ['3,8kg và 4,3kg.', '3,8kg và 4,8kg.', '3,5kg và 4,3kg.', '4,3kg và 5,8kg.'], answer: 0 },
+        { question: 'Nếu đầu ngắm thấp hơn mép trên khe ngắm, thì điểm chạm của đạn sẽ:', options: ['Cao hơn so với điểm định bắn trúng.', 'Thấp hơn so với điểm định bắn trúng.', 'Thấp hơn và lệch sang phải so với điểm định bắn trúng.', 'Thấp hơn và lệch sang trái so với điểm định bắn trúng.'], answer: 0 },
+        { question: 'Tầm bắn thẳng của súng tiểu liên AK, khi mục tiêu người nằm cao 0,5 mét là bao nhiêu mét?', options: ['330 mét.', '350 mét.', '710 mét.', '735 mét.'], answer: 0 },
+        { question: 'Khi ngắm chụm kết quả đánh giá giỏi là:', options: ['3 điểm ngắm được chấm, lọt vào lỗ có đường kính 10 mm.', '3 điểm ngắm được chấm, lọt vào lỗ có đường kính 5 mm.', '3 điểm ngắm được chấm, lọt vào lỗ có đường kính 2 mm.', '3 điểm ngắm được chấm, lọt vào lỗ có đường kính 7 mm.'], answer: 0 },
+        { question: 'Nếu đầu ngắm cao hơn mép trên khe ngắm, thì điểm chạm của đạn sẽ:', options: ['Thấp hơn so với điểm định bắn trúng.', 'Cao hơn so với điểm định bắn trúng.', 'Thấp hơn và lệch sang phải so với điểm định bắn trúng.', 'Thấp hơn và lệch sang trái so với điểm định bắn trúng.'], answer: 0 },
+        { question: 'Tốc độ đầu của đầu đạn súng tiểu liên AKM là bao nhiêu mét/giây?', options: ['710 mét/giây.', '715 mét/giây.', '735 mét/giây.', '815 mét/giây.'], answer: 0 },
+        { question: 'Đường đạn trong không khí là một đường cong không cân đối, góc phóng nhỏ hơn góc rơi, đoạn lên căng và dài hơn đoạn xuống, đỉnh đường đạn gần điểm rơi hơn điểm phóng. Được xác định là:', options: ['Đặc điểm đường đạn.', 'Các nguyên nhân gây ra góc nấy.', 'Khái niệm đường ngắm cơ bản.', 'Khái niệm đường ngắm đúng.'], answer: 0 },
+        { question: 'Yếu tố nào sau đây làm ảnh hưởng đến đường đạn trong không khí?', options: ['Do động tác người bắn.', 'Do trọng lực của đầu đạn.', 'Do trọng lượng của súng.', 'Do cấu tạo của súng và đạn.'], answer: 1 },
+        { question: 'Tầm bắn hiệu quả: Hỏa lực tập trung bắn máy bay quân nhảy dù của súng tiểu liên AK đến cự ly bao nhiêu mét?', options: ['500 mét.', '700 mét.', '800 mét.', '1.000 mét.'], answer: 0 },
+        { question: 'Nếu đầu ngắm cao hơn mép trên khe ngắm và lệch trái, so với điểm bắn trúng thì:', options: ['Thấp hơn và lệch sang phải', 'Thấp hơn và lệch sang trái', 'Cao hơn và lệch sang trái', 'Cao hơn và lệch sang phải'], answer: 2 },
         // Phần Lựu đạn
-        {
-            question: 'Chuyển động nổ của lựu đạn F1 được tính từ:',
-            options: ['Khi rút chốt an toàn và lựu đạn rời khỏi tay.', 'Khi lựu đạn bay đến mục tiêu.', 'Khi lấy lựu đạn ra khỏi túi đựng lựu đạn.', 'Khi lựu đạn đã rút chốt an toàn.'],
-            answer: 0
-        },
-        {
-            question: 'Khi ném, để lựu đạn bay được xa nhất thì thời cơ buông lựu đạn tốt nhất là:',
-            options: ['Cánh tay hợp với mặt phẳng ngang một góc 45°', 'Cánh tay hợp với mặt phẳng ngang một góc 35°', 'Cánh tay hợp với mặt phẳng ngang một góc 25°', 'Cánh tay hợp với mặt phẳng ngang một góc 15°'],
-            answer: 0
-        },
-        {
-            question: 'Trong kỹ thuật sử dụng lựu đạn thuật ngữ nào sau đây là đúng:',
-            options: ['Ném lựu đạn.', 'Ném lựu đạn.', 'Ném lựu đạn.', 'Ném lựu đạn.'],
-            answer: 0
-        },
+        { question: 'Chuyển động nổ của lựu đạn F1 được tính từ:', options: ['Khi rút chốt an toàn và lựu đạn rời khỏi tay.', 'Khi lựu đạn bay đến mục tiêu.', 'Khi lấy lựu đạn ra khỏi túi đựng lựu đạn.', 'Khi lựu đạn đã rút chốt an toàn.'], answer: 0 },
+        { question: 'Khi ném, để lựu đạn bay được xa nhất thì thời cơ buông lựu đạn tốt nhất là:', options: ['Cánh tay hợp với mặt phẳng ngang một góc 45°', 'Cánh tay hợp với mặt phẳng ngang một góc 35°', 'Cánh tay hợp với mặt phẳng ngang một góc 25°', 'Cánh tay hợp với mặt phẳng ngang một góc 15°'], answer: 0 },
         // Phần Tiến công
-        {
-            question: 'Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như ụ súng, lô cốt. Được xác định là một trong những:',
-            options: ['Cách đánh.', 'Nhiệm vụ.', 'Yêu cầu chiến thuật.', 'Hành động của chiến sĩ khi thực hành đánh chiếm mục tiêu.'],
-            answer: 1
-        },
-        {
-            question: 'Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như xe tăng, xe bọc thép địch. Được xác định là một trong những:',
-            options: ['Cách đánh.', 'Nhiệm vụ.', 'Yêu cầu chiến thuật.', 'Hành động của chiến sĩ khi thực hành đánh chiếm mục tiêu.'],
-            answer: 1
-        },
-        {
-            question: 'Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như tên địch, tốp địch ngoài công sự. Được xác định là một trong những:',
-            options: ['Cách đánh.', 'Nhiệm vụ.', 'Yêu cầu chiến thuật.', 'Hành động của chiến sĩ khi thực hành đánh chiếm mục tiêu.'],
-            answer: 1
-        },
+        { question: 'Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như ụ súng, lô cốt. Được xác định là một trong những:', options: ['Cách đánh.', 'Nhiệm vụ.', 'Yêu cầu chiến thuật.', 'Hành động của chiến sĩ khi thực hành đánh chiếm mục tiêu.'], answer: 1 },
+        { question: 'Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như xe tăng, xe bọc thép địch. Được xác định là một trong những:', options: ['Cách đánh.', 'Nhiệm vụ.', 'Yêu cầu chiến thuật.', 'Hành động của chiến sĩ khi thực hành đánh chiếm mục tiêu.'], answer: 1 },
+        { question: 'Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như tên địch, tốp địch ngoài công sự. Được xác định là một trong những:', options: ['Cách đánh.', 'Nhiệm vụ.', 'Yêu cầu chiến thuật.', 'Hành động của chiến sĩ khi thực hành đánh chiếm mục tiêu.'], answer: 1 },
         // Phần Phòng ngự
-        {
-            question: 'Trong chiến đấu phòng ngự, trong trường hợp nào thì chiến sĩ bắn truy kích tiêu diệt địch?',
-            options: ['Khi địch đột nhập.', 'Khi hóa lực địch bắn phá chuẩn bị.', 'Khi địch tiến công.', 'Khi địch rút chạy.'],
-            answer: 3
-        },
-        {
-            question: 'Trong chiến đấu phòng ngự, khi địch thực hành xung phong vào trước trận địa của chiến sĩ, cùng lúc có nhiều mục tiêu xuất hiện trong tầm bắn hiệu quả của súng tiểu liên AK, chiến sĩ sẽ chọn mục tiêu nào để nổ súng tiêu diệt trước là hợp lý nhất?',
-            options: ['Tổ mang vô tuyến điện (cự ly 400m).', 'Xe tăng, xe bọc thép (cự ly 400m).', 'Tốp bộ binh 3-5 tên (cự ly 400m).', 'Cụm súng cối (cự ly 800m).'],
-            answer: 2
-        },
-        {
-            question: 'Trong chiến đấu phòng ngự, khi địch thực hành xung phong, cùng lúc có nhiều mục tiêu xuất hiện trong tầm bắn hiệu quả của súng B41, chiến sĩ sẽ chọn mục tiêu nào để nổ súng tiêu diệt trước?',
-            options: ['Xe tăng, xe bọc thép (cự ly 330m).', 'Tốp bộ binh 10-15 (cự ly 350m).', 'Tổ mang vô tuyến điện (cự ly 350m).', 'Cụm súng cối (cự ly 800m).'],
-            answer: 0
-        }
+        { question: 'Trong chiến đấu phòng ngự, trong trường hợp nào thì chiến sĩ bắn truy kích tiêu diệt địch?', options: ['Khi địch đột nhập.', 'Khi hóa lực địch bắn phá chuẩn bị.', 'Khi địch tiến công.', 'Khi địch rút chạy.'], answer: 3 },
+        { question: 'Trong chiến đấu phòng ngự, khi địch thực hành xung phong vào trước trận địa của chiến sĩ, cùng lúc có nhiều mục tiêu xuất hiện trong tầm bắn hiệu quả của súng tiểu liên AK, chiến sĩ sẽ chọn mục tiêu nào để nổ súng tiêu diệt trước là hợp lý nhất?', options: ['Tổ mang vô tuyến điện (cự ly 400m).', 'Xe tăng, xe bọc thép (cự ly 400m).', 'Tốp bộ binh 3-5 tên (cự ly 400m).', 'Cụm súng cối (cự ly 800m).'], answer: 2 },
+        { question: 'Trong chiến đấu phòng ngự, khi địch thực hành xung phong, cùng lúc có nhiều mục tiêu xuất hiện trong tầm bắn hiệu quả của súng B41, chiến sĩ sẽ chọn mục tiêu nào để nổ súng tiêu diệt trước?', options: ['Xe tăng, xe bọc thép (cự ly 330m).', 'Tốp bộ binh 10-15 (cự ly 350m).', 'Tổ mang vô tuyến điện (cự ly 350m).', 'Cụm súng cối (cự ly 800m).'], answer: 0 }
     ];
 
     // ============================================================
@@ -434,12 +330,13 @@
     const app = {
         data: questionsData,
         userAnswers: new Array(questionsData.length).fill(null),
-        isSubmitted: false,
+        isCorrect: new Array(questionsData.length).fill(null),
 
         init() {
             this.renderQuestions();
             this.updateStats();
             this.bindEvents();
+            this.updateScoreDisplay();
         },
 
         renderQuestions() {
@@ -461,6 +358,7 @@
                 div.innerHTML = `
                     <div class="question-header">
                         <span class="qnum">Câu ${idx+1}</span>
+                        <span class="result-badge" id="badge-${idx}" style="display:none;"></span>
                     </div>
                     <div class="question-text">${q.question}</div>
                     <div class="options">${optionsHtml}</div>
@@ -470,108 +368,89 @@
         },
 
         updateStats() {
-            document.getElementById('totalQ').textContent = this.data.length;
+            const total = this.data.length;
+            document.getElementById('totalQ').textContent = total;
             const answered = this.userAnswers.filter(a => a !== null).length;
             document.getElementById('answeredCount').textContent = answered;
         },
 
+        updateScoreDisplay() {
+            const total = this.data.length;
+            const correct = this.isCorrect.filter(v => v === true).length;
+            document.getElementById('liveScore').textContent = correct;
+            document.getElementById('scoreDisplay').textContent = `Điểm: ${correct} / ${total}`;
+            const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
+            document.getElementById('resultDetail').textContent = `Bạn đã trả lời đúng ${correct}/${total} câu (${percent}%).`;
+        },
+
         bindEvents() {
+            // Lắng nghe thay đổi radio
             document.querySelectorAll('input[type="radio"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    if (this.isSubmitted) return;
                     const label = e.target.closest('.option');
                     const qIdx = parseInt(label.dataset.q);
                     const optIdx = parseInt(label.dataset.opt);
+                    // Xóa trạng thái cũ của các option trong câu
                     document.querySelectorAll(`.option[data-q="${qIdx}"]`).forEach(opt => {
-                        opt.classList.remove('selected');
+                        opt.classList.remove('correct', 'wrong');
                     });
-                    label.classList.add('selected');
+                    // Kiểm tra đáp án
+                    const correctAns = this.data[qIdx].answer;
+                    const isCorrect = (optIdx === correctAns);
                     this.userAnswers[qIdx] = optIdx;
+                    this.isCorrect[qIdx] = isCorrect;
+
+                    // Hiển thị badge
+                    const badge = document.getElementById(`badge-${qIdx}`);
+                    badge.style.display = 'inline-block';
+                    if (isCorrect) {
+                        badge.textContent = 'Đúng';
+                        badge.className = 'result-badge correct';
+                        label.classList.add('correct');
+                    } else {
+                        badge.textContent = 'Sai';
+                        badge.className = 'result-badge wrong';
+                        label.classList.add('wrong');
+                        // Tô đáp án đúng
+                        document.querySelectorAll(`.option[data-q="${qIdx}"]`).forEach(opt => {
+                            if (parseInt(opt.dataset.opt) === correctAns) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
+
                     this.updateStats();
+                    this.updateScoreDisplay();
                 });
             });
 
+            // Làm lại
             document.getElementById('resetBtn').addEventListener('click', () => {
-                if (this.isSubmitted) {
-                    if (!confirm('Bạn đã nộp bài. Làm lại sẽ xóa kết quả. Tiếp tục?')) return;
-                }
                 this.resetExam();
             });
 
-            document.getElementById('submitBtn').addEventListener('click', () => {
-                if (this.isSubmitted) {
-                    alert('Bạn đã nộp bài rồi! Hãy nhấn "Làm lại" để làm mới.');
-                    return;
-                }
-                const unanswered = this.userAnswers.some(a => a === null);
-                if (unanswered) {
-                    if (!confirm('Bạn chưa trả lời hết câu hỏi. Vẫn muốn nộp bài?')) return;
-                }
-                this.submitExam();
-            });
-
+            // Xem đáp án đúng
             document.getElementById('showAnswerBtn').addEventListener('click', () => {
-                if (!this.isSubmitted) {
-                    alert('Bạn cần nộp bài trước khi xem đáp án.');
-                    return;
-                }
                 this.revealAnswers();
             });
         },
 
         resetExam() {
-            this.isSubmitted = false;
             this.userAnswers.fill(null);
+            this.isCorrect.fill(null);
             document.querySelectorAll('.option').forEach(opt => {
-                opt.classList.remove('selected', 'correct', 'wrong', 'disabled');
+                opt.classList.remove('correct', 'wrong');
                 const radio = opt.querySelector('input[type="radio"]');
                 if (radio) radio.checked = false;
             });
-            document.getElementById('resultBox').classList.remove('show');
-            document.getElementById('showAnswerBtn').disabled = true;
-            document.getElementById('submitBtn').disabled = false;
-            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-paper-plane"></i> Nộp bài';
+            document.querySelectorAll('.result-badge').forEach(b => {
+                b.style.display = 'none';
+                b.className = 'result-badge';
+                b.textContent = '';
+            });
             this.updateStats();
+            this.updateScoreDisplay();
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        },
-
-        submitExam() {
-            this.isSubmitted = true;
-            let correct = 0;
-            this.data.forEach((q, idx) => {
-                const chosen = this.userAnswers[idx];
-                if (chosen !== null && chosen === q.answer) correct++;
-            });
-            const total = this.data.length;
-            document.getElementById('scoreDisplay').textContent = `Điểm: ${correct} / ${total}`;
-            const percent = Math.round((correct / total) * 100);
-            document.getElementById('resultDetail').textContent = `Bạn đã trả lời đúng ${correct}/${total} câu (${percent}%).`;
-
-            const box = document.getElementById('resultBox');
-            box.classList.add('show');
-
-            document.querySelectorAll('.option').forEach(opt => {
-                const qIdx = parseInt(opt.dataset.q);
-                const optIdx = parseInt(opt.dataset.opt);
-                const radio = opt.querySelector('input[type="radio"]');
-                radio.disabled = true;
-                opt.classList.add('disabled');
-
-                const correctAns = this.data[qIdx].answer;
-                if (optIdx === correctAns) {
-                    opt.classList.add('correct');
-                } else if (optIdx === this.userAnswers[qIdx] && this.userAnswers[qIdx] !== correctAns) {
-                    opt.classList.add('wrong');
-                }
-                if (optIdx === this.userAnswers[qIdx] && this.userAnswers[qIdx] === correctAns) {
-                    opt.classList.add('correct');
-                }
-            });
-
-            document.getElementById('showAnswerBtn').disabled = false;
-            document.getElementById('submitBtn').disabled = true;
-            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-check-circle"></i> Đã nộp';
-            this.updateStats();
         },
 
         revealAnswers() {
@@ -583,7 +462,7 @@
                     opt.classList.add('correct');
                 }
             });
-            alert('Đã hiển thị đáp án đúng (màu xanh).');
+            alert('Đã hiển thị đáp án đúng (màu xanh) cho tất cả câu hỏi.');
         }
     };
 
