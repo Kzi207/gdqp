@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ôn tập QP2 - Trắc nghiệm như Azota</title>
+    <!-- Font Awesome (icon) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            padding: 24px 16px;
+        }
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
+            padding: 28px 24px 36px;
+            transition: 0.2s;
+        }
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0b2b4a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #e6edf4;
+            padding-bottom: 18px;
+            margin-bottom: 24px;
+        }
+        h1 i {
+            color: #2a7de1;
+        }
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 28px;
+            background: #f8fafd;
+            padding: 14px 22px;
+            border-radius: 60px;
+            margin-bottom: 28px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #1e3a5f;
+        }
+        .stats span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .stats i {
+            color: #2a7de1;
+            width: 20px;
+            text-align: center;
+        }
+        .question-item {
+            background: #ffffff;
+            border: 1px solid #e2e9f2;
+            border-radius: 16px;
+            padding: 20px 22px 18px;
+            margin-bottom: 18px;
+            transition: 0.15s;
+            box-shadow: 0 2px 6px rgba(0, 20, 40, 0.02);
+        }
+        .question-item:hover {
+            border-color: #b8d0e8;
+            background: #fafcff;
+        }
+        .question-header {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 17px;
+            color: #0b2b4a;
+            margin-bottom: 12px;
+        }
+        .question-header .qnum {
+            background: #eef4fc;
+            color: #1a5fb0;
+            padding: 2px 12px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        .question-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #1c2f44;
+            margin-bottom: 14px;
+            padding-left: 4px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-left: 6px;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 8px 16px 8px 12px;
+            border-radius: 40px;
+            background: #f6f9fe;
+            border: 1px solid transparent;
+            transition: 0.1s;
+            cursor: pointer;
+            font-size: 15px;
+            color: #1d344b;
+        }
+        .option:hover {
+            background: #eaf1fc;
+            border-color: #b8d0e8;
+        }
+        .option input[type="radio"] {
+            accent-color: #1a5fb0;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .option .letter {
+            font-weight: 700;
+            color: #1a5fb0;
+            min-width: 22px;
+        }
+        .option .answer-text {
+            flex: 1;
+        }
+        /* trạng thái khi đã chọn */
+        .option.selected {
+            background: #ddeeff;
+            border-color: #2a7de1;
+        }
+        /* khi xem kết quả */
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+        .option.wrong {
+            background: #f8dddd;
+            border-color: #dc3545;
+        }
+        .option.disabled {
+            opacity: 0.85;
+            cursor: default;
+        }
+        .option.disabled:hover {
+            background: #f6f9fe;
+            border-color: transparent;
+        }
+        .option.correct:hover,
+        .option.wrong:hover {
+            border-color: currentColor;
+        }
+
+        .action-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 32px;
+            gap: 16px;
+            border-top: 1px solid #e2e9f2;
+            padding-top: 28px;
+        }
+        .btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.15s;
+            background: #eef3f9;
+            color: #1e3a5f;
+        }
+        .btn-primary {
+            background: #1a5fb0;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #0f4a8f;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(26, 95, 176, 0.25);
+        }
+        .btn-success {
+            background: #1e7e34;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #146128;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(30, 126, 52, 0.25);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #b8cfe5;
+        }
+        .btn-outline:hover {
+            background: #e6eff9;
+            border-color: #2a7de1;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            transform: none !important;
+            box-shadow: none !important;
+            cursor: not-allowed;
+        }
+
+        .result-box {
+            background: #eef4fc;
+            border-radius: 16px;
+            padding: 18px 24px;
+            margin-top: 24px;
+            display: none;
+            border-left: 6px solid #1a5fb0;
+        }
+        .result-box.show {
+            display: block;
+        }
+        .result-box .score {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0b2b4a;
+        }
+        .result-box .detail {
+            margin-top: 8px;
+            font-size: 15px;
+            color: #1d3b5c;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .container {
+                padding: 18px 12px 28px;
+            }
+            .question-item {
+                padding: 16px 14px;
+            }
+            .stats {
+                font-size: 13px;
+                padding: 10px 16px;
+                gap: 8px 16px;
+            }
+            .btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            .action-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .action-bar .btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <h1>
+        <i class="fas fa-graduation-cap"></i>
+        Trắc nghiệm QP2
+        <span style="font-size:14px; font-weight:400; margin-left:auto; color:#5b7b9c;">
+            <i class="fas fa-clock"></i> 45 phút
+        </span>
+    </h1>
+
+    <div class="stats">
+        <span><i class="fas fa-list-ul"></i> <span id="totalQ">0</span> câu hỏi</span>
+        <span><i class="fas fa-check-circle"></i> Đã làm: <span id="answeredCount">0</span></span>
+        <span><i class="fas fa-flag"></i> Bài: <span id="currentLesson">8+9</span></span>
+    </div>
+
+    <div id="questionsContainer"></div>
+
+    <div class="action-bar">
+        <div>
+            <button class="btn btn-outline" id="resetBtn"><i class="fas fa-undo-alt"></i> Làm lại</button>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+            <button class="btn btn-primary" id="submitBtn"><i class="fas fa-paper-plane"></i> Nộp bài</button>
+            <button class="btn btn-success" id="showAnswerBtn" disabled><i class="fas fa-eye"></i> Xem đáp án</button>
+        </div>
+    </div>
+
+    <div class="result-box" id="resultBox">
+        <div class="score" id="scoreDisplay">Điểm: 0 / 0</div>
+        <div class="detail" id="resultDetail"></div>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // Dữ liệu câu hỏi (trích từ tài liệu PDF, đáp án mặc định = A)
+    // Có thể mở rộng thêm câu hỏi từ các bài khác
+    // ============================================================
+    const questions = [
+        // Bài 8: Diễn biến hòa bình (câu 1-32)
+        { id: 1, q: 'Chiến lược "Diễn biến hòa bình" được tiến hành bằng:', 
+          a: 'Biện pháp phi quân sự do chủ nghĩa đế quốc và các thế lực phản động tiến hành.', 
+          b: 'Biện pháp quân sự do chủ nghĩa đế quốc và các thế lực phản động tiến hành.', 
+          c: 'Biện pháp kinh tế do chủ nghĩa đế quốc và các thế lực phản động tiến hành.', 
+          d: 'Biện pháp vũ trang do chủ nghĩa đế quốc và các thế lực phản động tiến hành.', 
+          ans: 0 },
+        { id: 2, q: 'Ngày 11 tháng 7 năm 1995, Mỹ tuyên bố nội dung gì với Việt Nam?', 
+          a: 'Xóa bỏ cấm vận kinh tế với Việt Nam.', 
+          b: 'Xóa bỏ cấm vận quân sự với Việt Nam.', 
+          c: 'Bình thường hóa quan hệ ngoại giao với Việt Nam.', 
+          d: 'Phương án a và c đúng.', 
+          ans: 3 },
+        { id: 3, q: 'Năm 1957, Tổng thống Mĩ nào đã tuyên bố: Mĩ sẽ giành thắng lợi bằng hòa bình?', 
+          a: 'Kenneth', b: 'Aixenhae', c: 'Truman', d: 'G. Pho', ans: 1 },
+        { id: 4, q: 'Nguyên nhân nào dẫn đến sự sụp đổ của Liên Xô và các nước xã hội chủ nghĩa Đông Âu?', 
+          a: 'Quan niệm và vận dụng không đúng về chủ nghĩa Mác – Lênin.', 
+          b: 'Những sai lầm, khuyết điểm của Đảng Cộng sản.', 
+          c: 'Chống phá của chủ nghĩa đế quốc và các thế lực thù dịch sử dụng chiến lược “Diễn biến hòa bình”.', 
+          d: 'Các phương án a, b và c đúng.', 
+          ans: 3 },
+        { id: 5, q: 'Bạo loạn lật đổ là hành động chống phá bằng bạo lực có tổ chức do:', 
+          a: 'Lực lượng phản động, li khai, đối lập trong nước hoặc cấu kết với nước ngoài tiến hành.', 
+          b: 'Lực lượng phản động đối lập trong nước hoặc cấu kết với tội phạm tiến hành.', 
+          c: 'Lực lượng quân sự tiến hành để lật đổ chính quyền ở địa phương hay trung ương.', 
+          d: 'Lực lượng gián điệp tiến hành để lật đổ chính quyền ở địa phương hay trung ương.', 
+          ans: 0 },
+        { id: 6, q: 'Mục tiêu nhất quán của chủ nghĩa đế quốc và các thế lực thù địch sử dụng chiến lược “Diễn biến hòa bình” đối với Việt Nam là:', 
+          a: 'Xóa bỏ vai trò lãnh đạo của Đảng.', 
+          b: 'Xóa bỏ chế độ xã hội chủ nghĩa.', 
+          c: 'Lái nước ta đi theo con đường tư bản và lệ thuộc vào chủ nghĩa đế quốc.', 
+          d: 'Phương án a, b, c đúng.', 
+          ans: 3 },
+        { id: 7, q: 'Trong thủ đoạn chống phá về kinh tế, chủ nghĩa đế quốc muốn chuyển hóa nền kinh tế Việt Nam dần theo:', 
+          a: 'Kinh tế thị trường tư bản chủ nghĩa, khích lệ kinh tế tư nhân phát triển.', 
+          b: 'Từng bước làm mất vai trò chủ đạo của kinh tế nhà nước.', 
+          c: 'Kinh tế thị trường định hướng xã hội chủ nghĩa.', 
+          d: 'Phương án a và b đúng.', 
+          ans: 3 },
+        { id: 8, q: 'Mục đích chống phá về tư tưởng trong chiến lược “Diễn biến hòa bình” là:', 
+          a: 'Xóa bỏ vai trò lãnh đạo của Đảng Cộng sản Việt Nam.', 
+          b: 'Xóa bỏ chủ nghĩa Mác Lênin, tư tưởng Hồ Chí Minh.', 
+          c: 'Xóa bỏ sự quản lý và điều hành của nhà nước.', 
+          d: 'Phương án a và b đúng.', 
+          ans: 3 },
+        { id: 9, q: 'Mục đích chống phá trên lĩnh vực đối ngoại trong chiến lược “Diễn biến hòa bình” là:', 
+          a: 'Chia rẽ tình đoàn kết giữa Việt Nam với các nước xã hội chủ nghĩa.', 
+          b: 'Chia rẽ tình đoàn kết hữu nghị giữa Việt Nam với Lào, Campuchia.', 
+          c: 'Lợi dụng chính sách để đầu tư vốn tạo sức ép về chính trị.', 
+          d: 'Phương án a và b đúng.', 
+          ans: 3 },
+        { id: 10, q: 'Mục đích chống phá về lĩnh vực dân tộc, tôn giáo, chủ nghĩa đế quốc dùng thủ đoạn gì?', 
+          a: 'Lợi dụng những khó khăn ở vùng đồng bào dân tộc ít người.', 
+          b: 'Lợi dụng trình độ dân trí của một bộ phận đồng bào còn thấp.', 
+          c: 'Lợi dụng những khuyết điểm về chủ trương chính sách dân tộc của Đảng ta.', 
+          d: 'Các phương án a, b và c đúng.', 
+          ans: 3 },
+        { id: 11, q: 'Bạo loạn lật đổ thường xảy ra ở những nơi nào?', 
+          a: 'Trung tâm kinh tế, chính trị, văn hóa lớn của Trung ương và địa phương. Nơi nhạy cảm về chính trị.', 
+          b: 'Những nơi có khu công nghiệp, khu chế xuất, sân bay, bến cảng.', 
+          c: 'Những địa điểm, công trình văn hóa quốc phòng an ninh quan trọng.', 
+          d: 'Các phương án a, b và c đúng.', 
+          ans: 3 },
+        { id: 12, q: 'Nguyên tắc xử lí bạo loạn lật đổ là:', 
+          a: 'Nhanh gọn, kiên quyết, linh hoạt, đúng đối tượng.', 
+          b: 'Sử dụng lực lượng và phương thức đấu tranh phù hợp, không để lan rộng kéo dài.', 
+          c: 'Sử dụng lực lượng quân sự để trấn áp.', 
+          d: 'Phương án a và b đúng.', 
+          ans: 3 },
+        { id: 13, q: 'Giải pháp phòng chống chiến lược “Diễn biến hòa bình” là:', 
+          a: 'Xây dựng cơ sở chính trị xã hội vững mạnh về mọi mặt.', 
+          b: 'Bảo vệ sự nghiệp đổi mới và lợi ích quốc gia dân tộc.', 
+          c: 'Chủ động khôn khéo xử lý tình huống khi bạo loạn xảy ra.', 
+          d: 'Tranh thủ sự ủng hộ của nhân dân trong nước và quốc tế.', 
+          ans: 0 },
+        { id: 14, q: 'Chọn câu sai. Diễn biến hòa bình là chiến lược cơ bản nhằm:', 
+          a: 'Lật đổ chế độ chính trị của các nước tiến bộ, trước hết là các nước xã hội chủ nghĩa từ bên trong.', 
+          b: 'Lật đổ chế độ kinh tế xã hội của các nước tiến bộ từ bên trong.', 
+          c: 'Lật đổ chế độ chính trị của các nước tư bản từ bên trong.', 
+          d: 'Phương án b và c.', 
+          ans: 2 },
+        { id: 15, q: 'Ai là người khởi xướng chiến lược “Diễn biến hòa bình” của chủ nghĩa đế quốc?', 
+          a: 'Kennan.', b: 'Mác San', c: 'Truman', d: 'Aixenhano.', ans: 0 },
+        { id: 16, q: '“Việc bình thường hóa quan hệ của chúng ta với Việt Nam không phải là kết thúc nỗ lực của chúng ta. Chúng ta tiếp tục phấn đấu cho đến khi chúng ta có được những câu trả lời mà chúng ta có thể”. Tổng thống Mĩ nào đã tuyên bố?', 
+          a: 'Tổng thống BillClinton.', b: 'Tổng thống G. Bush', c: 'Tổng thống Obama.', d: 'Tổng thống Giônxon.', ans: 0 },
+        { id: 17, q: '“Ngăn chặn phi vũ trang” trong chiến lược diễn biến hòa bình là của ai?', 
+          a: 'Kennan.', b: 'Mác San', c: 'Truman', d: 'Aixenhano.', ans: 0 },
+        { id: 18, q: 'Khi tiến hành bạo loạn lật đổ, các thế lực thù địch thường kích động các phần tử quá khích, làm mất ổn định … an toàn xã hội ở một khu vực hẹp trong một thời gian ngắn.', 
+          a: 'An ninh chính trị.', b: 'Kinh tế', c: 'Trật tự.', d: 'Văn hóa.', ans: 0 },
+        { id: 19, q: 'Trong thủ đoạn chống phá về chính trị, các thế lực thù địch lợi dụng những:', 
+          a: 'Sơ hở trong đường lối của Đảng.', 
+          b: 'Sơ hở về chính sách của nhà nước ta.', 
+          c: 'Trình độ dân trí để lật đổ Việt Nam.', 
+          d: 'Phương án a và b.', 
+          ans: 3 },
+        { id: 20, q: 'Đẩy lùi tệ quan liêu, tham nhũng, tiêu cực trong xã hội, giữ vững định hướng xã hội chủ nghĩa trên các lĩnh vực, chống nguy cơ tụt hậu về kinh tế. Được xác định là:', 
+          a: 'Giải pháp phòng chống chiến lược “Diễn biến hòa bình”.', 
+          b: 'Nhiệm vụ phòng chống chiến lược “Diễn biến hòa bình”.', 
+          c: 'Phương châm phòng chống chiến lược “Diễn biến hòa bình”.', 
+          d: 'Quan điểm phòng chống chiến lược “Diễn biến hòa bình”.', 
+          ans: 0 },
+        // Bài 9: Vũ khí công nghệ cao (câu 1-10)
+        { id: 21, q: 'Vũ khí được nghiên cứu, thiết kế, chế tạo dựa trên thành tựu của cuộc cách mạng khoa học công nghệ hiện đại … Được xác định là:', 
+          a: 'Vũ khí công nghệ cao.', 
+          b: 'Khái niệm vũ khí công nghệ cao.', 
+          c: 'Đặc điểm vũ khí công nghệ cao.', 
+          d: 'Tính chất của vũ khí công nghệ cao.', 
+          ans: 1 },
+        { id: 22, q: 'Đặc điểm của vũ khí công nghệ cao đó là:', 
+          a: 'Hiệu suất của vũ khí, phương tiện tăng nhiều lần so với vũ khí thông thường.', 
+          b: 'Hàm lượng tri thức, kĩ năng tự động hóa cao.', 
+          c: 'Có tính cạnh tranh cao và được nâng cấp liên tục.', 
+          d: 'Tất cả các phương án trên đúng.', 
+          ans: 3 },
+        { id: 23, q: 'Một trong những đặc điểm của vũ khí công nghệ cao là:', 
+          a: 'Khả năng tự động hóa cao.', 
+          b: 'Tầm bắn rất xa.', 
+          c: 'Hiệu suất của vũ khí, phương tiện tăng nhiều lần so với vũ khí thông thường.', 
+          d: 'Uy lực sát thương lớn.', 
+          ans: 0 },
+        { id: 24, q: 'Đặc điểm nổi bật nhất của vũ khí công nghệ cao đó là:', 
+          a: 'Khả năng tự động hóa rất cao.', 
+          b: 'Độ chính xác cao với tầm bắn rất xa.', 
+          c: 'Uy lực sát thương lớn.', 
+          d: 'Tất cả các phương án trên đúng.', 
+          ans: 3 },
+        { id: 25, q: 'Độ chính xác cao cùng với uy lực sát thương lớn. Được hiểu là:', 
+          a: 'Đặc điểm nổi bật nhất của vũ khí công nghệ cao.', 
+          b: 'Đặc điểm của vũ khí công nghệ cao.', 
+          c: 'Khái niệm vũ khí công nghệ cao.', 
+          d: 'Thủ đoạn đánh phá của vũ khí công nghệ cao.', 
+          ans: 0 },
+        { id: 26, q: 'Độ chính xác cao, uy lực sát thương lớn, tầm hoạt động xa. Được hiểu là:', 
+          a: 'Đặc điểm của vũ khí công nghệ cao.', 
+          b: 'Đặc điểm nổi bật nhất của vũ khí công nghệ cao.', 
+          c: 'Điểm mạnh của vũ khí công nghệ cao.', 
+          d: 'Khái niệm vũ khí công nghệ cao.', 
+          ans: 1 },
+        { id: 27, q: 'Một số loại vũ khí thông minh có khả năng nhận biết địa hình, đặc điểm của mục tiêu, tự động tìm diệt. Được hiểu là:', 
+          a: 'Điểm mạnh của vũ khí công nghệ cao.', 
+          b: 'Đặc điểm nổi bật nhất của vũ khí công nghệ cao.', 
+          c: 'Đặc điểm của vũ khí công nghệ cao.', 
+          d: 'Khái niệm vũ khí công nghệ cao.', 
+          ans: 0 },
+        { id: 28, q: 'Dựa hoàn toàn vào phương tiện kỹ thuật, dễ bị đối phương đánh lừa. Được hiểu là:', 
+          a: 'Điểm yếu của vũ khí công nghệ cao.', 
+          b: 'Đặc điểm nổi bật nhất của vũ khí công nghệ cao.', 
+          c: 'Đặc điểm của vũ khí công nghệ cao.', 
+          d: 'Khái niệm vũ khí công nghệ cao.', 
+          ans: 0 },
+        { id: 29, q: 'Điểm yếu của vũ khí công nghệ cao là:', 
+          a: 'Dễ bị tác động bởi địa hình, thời tiết khí hậu dẫn đến hiệu quả thực tế khác với lí thuyết.', 
+          b: 'Thời gian trinh sát xử lí số liệu để có phương án đánh phức tạp nếu mục tiêu thay đổi.', 
+          c: 'Một số tên lửa bay thấp dễ bị bắn hạ bằng vũ khí thông thường.', 
+          d: 'Tất cả các phương án trên đúng.', 
+          ans: 3 },
+        { id: 30, q: 'Tổ hợp tên lửa S.300 là vũ khí:', 
+          a: 'Thông thường.', 
+          b: 'Vũ khí công nghệ cao.', 
+          c: 'Vũ khí hủy diệt lớn.', 
+          d: 'Tất cả các phương án trên đúng.', 
+          ans: 1 },
+        // Thêm vài câu từ bài 10 (Dân quân tự vệ) để đa dạng
+        { id: 31, q: 'Lực lượng vũ trang quân chúng không thoát li sản xuất công tác là:', 
+          a: 'Bộ đội chủ lực.', b: 'Dân quân tự vệ.', c: 'Bộ đội địa phương.', d: 'Dự bị động viên.', ans: 1 },
+        { id: 32, q: 'Lực lượng vũ trang quân chúng tổ chức ở các cơ quan nhà nước, đơn vị hành chính sự nghiệp, tổ chức kinh tế, tổ chức chính trị, xã hội là:', 
+          a: 'Bộ đội địa phương.', b: 'Dân quân.', c: 'Tự vệ.', d: 'Bộ đội chủ lực.', ans: 2 },
+    ];
+
+    // ============================================================
+    // Ứng dụng
+    // ============================================================
+    const app = {
+        data: questions,
+        userAnswers: new Array(questions.length).fill(null), // lưu index đã chọn
+        isSubmitted: false,
+
+        init() {
+            this.renderQuestions();
+            this.updateStats();
+            this.bindEvents();
+        },
+
+        renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            this.data.forEach((q, idx) => {
+                const div = document.createElement('div');
+                div.className = 'question-item';
+                div.dataset.index = idx;
+
+                const optionsHtml = ['a', 'b', 'c', 'd'].map((letter, optIdx) => {
+                    const text = q[letter];
+                    if (!text) return '';
+                    return `
+                        <label class="option" data-q="${idx}" data-opt="${optIdx}">
+                            <input type="radio" name="q${idx}" value="${optIdx}" />
+                            <span class="letter">${letter.toUpperCase()}.</span>
+                            <span class="answer-text">${text}</span>
+                        </label>
+                    `;
+                }).join('');
+
+                div.innerHTML = `
+                    <div class="question-header">
+                        <span class="qnum">Câu ${idx+1}</span>
+                        <span style="font-weight:400; color:#5b7b9c; font-size:14px;">${q.id}</span>
+                    </div>
+                    <div class="question-text">${q.q}</div>
+                    <div class="options">${optionsHtml}</div>
+                `;
+                container.appendChild(div);
+            });
+        },
+
+        updateStats() {
+            document.getElementById('totalQ').textContent = this.data.length;
+            const answered = this.userAnswers.filter(a => a !== null).length;
+            document.getElementById('answeredCount').textContent = answered;
+        },
+
+        bindEvents() {
+            // Lắng nghe sự thay đổi radio
+            document.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    if (this.isSubmitted) return;
+                    const label = e.target.closest('.option');
+                    const qIdx = parseInt(label.dataset.q);
+                    const optIdx = parseInt(label.dataset.opt);
+                    // bỏ chọn các option khác trong cùng câu
+                    document.querySelectorAll(`.option[data-q="${qIdx}"]`).forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    label.classList.add('selected');
+                    this.userAnswers[qIdx] = optIdx;
+                    this.updateStats();
+                });
+            });
+
+            // Reset
+            document.getElementById('resetBtn').addEventListener('click', () => {
+                if (this.isSubmitted) {
+                    if (!confirm('Bạn đã nộp bài. Làm lại sẽ xóa kết quả. Tiếp tục?')) return;
+                }
+                this.resetExam();
+            });
+
+            // Nộp bài
+            document.getElementById('submitBtn').addEventListener('click', () => {
+                if (this.isSubmitted) {
+                    alert('Bạn đã nộp bài rồi! Hãy nhấn "Làm lại" để làm mới.');
+                    return;
+                }
+                const unanswered = this.userAnswers.some(a => a === null);
+                if (unanswered) {
+                    if (!confirm('Bạn chưa trả lời hết câu hỏi. Vẫn muốn nộp bài?')) return;
+                }
+                this.submitExam();
+            });
+
+            // Xem đáp án
+            document.getElementById('showAnswerBtn').addEventListener('click', () => {
+                if (!this.isSubmitted) {
+                    alert('Bạn cần nộp bài trước khi xem đáp án.');
+                    return;
+                }
+                this.revealAnswers();
+            });
+        },
+
+        resetExam() {
+            this.isSubmitted = false;
+            this.userAnswers.fill(null);
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'wrong', 'disabled');
+                const radio = opt.querySelector('input[type="radio"]');
+                if (radio) radio.checked = false;
+            });
+            document.getElementById('resultBox').classList.remove('show');
+            document.getElementById('showAnswerBtn').disabled = true;
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-paper-plane"></i> Nộp bài';
+            this.updateStats();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+
+        submitExam() {
+            this.isSubmitted = true;
+            // Tính điểm
+            let correct = 0;
+            this.data.forEach((q, idx) => {
+                const chosen = this.userAnswers[idx];
+                if (chosen !== null && chosen === q.ans) correct++;
+            });
+            const total = this.data.length;
+            document.getElementById('scoreDisplay').textContent = `Điểm: ${correct} / ${total}`;
+            const percent = Math.round((correct / total) * 100);
+            document.getElementById('resultDetail').textContent = `Bạn đã trả lời đúng ${correct}/${total} câu (${percent}%).`;
+
+            // Hiển thị kết quả
+            const box = document.getElementById('resultBox');
+            box.classList.add('show');
+
+            // Vô hiệu hóa các radio và đánh dấu đúng/sai
+            document.querySelectorAll('.option').forEach(opt => {
+                const qIdx = parseInt(opt.dataset.q);
+                const optIdx = parseInt(opt.dataset.opt);
+                const radio = opt.querySelector('input[type="radio"]');
+                radio.disabled = true;
+                opt.classList.add('disabled');
+
+                const correctAns = this.data[qIdx].ans;
+                if (optIdx === correctAns) {
+                    opt.classList.add('correct');
+                } else if (optIdx === this.userAnswers[qIdx] && this.userAnswers[qIdx] !== correctAns) {
+                    opt.classList.add('wrong');
+                }
+                // nếu chọn đúng thì đã có class correct
+                if (optIdx === this.userAnswers[qIdx] && this.userAnswers[qIdx] === correctAns) {
+                    opt.classList.add('correct');
+                }
+            });
+
+            document.getElementById('showAnswerBtn').disabled = false;
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-check-circle"></i> Đã nộp';
+            this.updateStats();
+        },
+
+        revealAnswers() {
+            // Hiển thị đáp án đúng cho tất cả (nếu chưa hiển thị)
+            document.querySelectorAll('.option').forEach(opt => {
+                const qIdx = parseInt(opt.dataset.q);
+                const optIdx = parseInt(opt.dataset.opt);
+                const correctAns = this.data[qIdx].ans;
+                if (optIdx === correctAns) {
+                    opt.classList.add('correct');
+                }
+                // Nếu đã có wrong thì giữ nguyên
+            });
+            alert('Đã hiển thị đáp án đúng (màu xanh).');
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => app.init());
+</script>
+</body>
+</html>
