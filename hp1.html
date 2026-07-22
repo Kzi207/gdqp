@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trắc nghiệm QP1 - Tự chấm ngay</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
         * {
             margin: 0;
@@ -289,22 +289,10 @@
 
 <script>
     // ============================================================
-    // Dữ liệu câu hỏi (từ QP1 và bổ sung câu 13 từ ảnh)
+    // Dữ liệu câu hỏi QP1 (đầy đủ theo file PDF)
     // ============================================================
     const questions = [
-        // Câu 13 từ ảnh
-        {
-            id: 13,
-            q: 'Theo quan điểm của C.Mác - Ph.Ăngghen: con người, kinh tế, chính trị, văn hóa, xã hội, vũ khí trang bị, khoa học quân sự, được xác định là:',
-            options: [
-                'Bản chất giai cấp của quân đội',
-                'Sức mạnh chiến đấu của quân đội',
-                'Nguyên tắc xây dựng quân đội',
-                'Nguồn gốc ra đời của quân đội'
-            ],
-            answer: 1  // B
-        },
-        // Các câu khác từ QP1
+        // Trang 1
         {
             id: 1,
             q: 'Thực trạng của lực lượng vũ trang nhân dân trong giai đoạn hiện nay là một trong những:',
@@ -392,6 +380,640 @@
                 'Gọn, mạnh, cơ động.'
             ],
             answer: 3
+        },
+        // Trang 2
+        {
+            id: 9,
+            q: 'Xây dựng đội ngũ cán bộ lực lượng vũ trang nhân dân có:',
+            options: [
+                'Trình độ khoa học cao.',
+                'Phẩm chất, năng lực tốt.',
+                'Trình độ chuyên môn giỏi.',
+                'Thể lực tốt.'
+            ],
+            answer: 1
+        },
+        {
+            id: 10,
+            q: 'Tổ chức các đơn vị lực lượng vũ trang phù hợp với:',
+            options: [
+                'Tình hình thế giới, khu vực và thế trận cả nước.',
+                'Tình hình cụ thể khu vực và thế trận cả nước.',
+                'Tình hình trong nước, khu vực và thế trận cả nước.',
+                'Tình hình cụ thể ở từng địa phương, khu vực và thế trận cả nước.'
+            ],
+            answer: 3
+        },
+        {
+            id: 11,
+            q: 'Chiến lược bảo vệ tổ quốc xác định: “tập trung xây dựng Lực lượng quân đội, công an có bản lĩnh chính trị vững vàng, lòng trung thành tuyệt đối với Đảng, Tổ quốc và nhân dân.” hội nghị lần thứ mấy, khóa bao nhiêu của BCH TƯ Đảng xác định?',
+            options: [
+                'Hội nghị lần thứ 7, khóa VIII.',
+                'Hội nghị lần thứ 8, khóa IX.',
+                'Hội nghị lần thứ 9, khóa X.',
+                'Hội nghị lần thứ 10, khóa XI.'
+            ],
+            answer: 1
+        },
+        {
+            id: 12,
+            q: 'Quân đội nhân dân Việt Nam gồm có mấy Quân khu, Quân đoàn?',
+            options: [
+                '05 Quân khu, 02 Quân đoàn.',
+                '06 Quân khu, 03 Quân đoàn.',
+                '07 Quân khu, 04 Quân đoàn.',
+                '08 Quân khu, 05 Quân đoàn.'
+            ],
+            answer: 2
+        },
+        {
+            id: 13,
+            q: 'Vì sao sự lãnh đạo của Đảng CS đối với lực lượng vũ trang là nguyên tắc quan trọng nhất?',
+            options: [
+                'Quyết định đến sự trưởng thành của quân đội nhân dân.',
+                'Quyết định đến mục tiêu, phương hướng chiến đấu.',
+                'Quyết định sức mạnh, sự tồn tại, phát triển, chiến đấu, chiến thắng của LLVT.',
+                'Quyết định đến cơ chế hoạt động của công an nhân dân.'
+            ],
+            answer: 2
+        },
+        {
+            id: 14,
+            q: 'Quân đội nhân dân Việt Nam hiện nay có mấy Quân chủng, Bình chủng?',
+            options: [
+                '05 Quân chủng, 02 Bình chủng.',
+                '02 Quân chủng, 05 Bình chủng.',
+                '03 Quân chủng, 06 Bình chủng.',
+                '06 Quân chủng, 03 Bình chủng.'
+            ],
+            answer: 1
+        },
+        {
+            id: 15,
+            q: 'Giữ vững và tăng cường sự lãnh đạo của Đảng Cộng sản Việt Nam đối với lực lượng vũ trang nhân dân Việt Nam. Được xác định là:',
+            options: [
+                'Biện pháp xây dựng lực lượng vũ trang nhân dân.',
+                'Nội dung, nhiệm vụ xây dựng lực lượng vũ trang nhân dân.',
+                'Quan điểm, nguyên tắc xây dựng lực lượng vũ trang nhân dân.',
+                'Phương hướng xây dựng lực lượng vũ trang nhân dân.'
+            ],
+            answer: 2
+        },
+        {
+            id: 16,
+            q: 'Đứng trước diễn biến của tình hình, có khả năng phân tích và kết luận chính xác đúng, sai từ đó có thái độ đúng đắn với sự việc đó. Được xác định là:',
+            options: [
+                'Tinh nhuệ về kĩ thuật của lực lượng vũ trang nhân dân.',
+                'Tinh nhuệ về chính trị của lực lượng vũ trang nhân dân.',
+                'Tinh nhuệ về chiến thuật của lực lượng vũ trang nhân dân.',
+                'Tất cả các phương án trên đúng.'
+            ],
+            answer: 1
+        },
+        {
+            id: 17,
+            q: 'Xây dựng quân đội nhân dân, công an nhân dân chính quy là:',
+            options: [
+                'Thực hiện thống nhất về mọi mặt (tổ chức biên chế, trang bị…)',
+                'Thực hiện thống nhất về chính trị, quân sự, hậu cần.',
+                'Thực hiện thống nhất về nhận thức chính trị, tư tưởng.',
+                'Thực hiện thống nhất về chính trị, mục tiêu chiến đấu.'
+            ],
+            answer: 0
+        },
+        // Trang 3
+        {
+            id: 18,
+            q: 'Một trong những nội dung xây dựng quân đội cách mạng là:',
+            options: [
+                'Xây dựng lòng tự hào, tự tôn dân tộc.',
+                'Xây dựng truyền thống đánh giá các giữ nước.',
+                'Xây dựng truyền thống quân đội của dân, đo dân, vì dân.',
+                'Xây dựng bản chất giai cấp công nhân cho quân đội.'
+            ],
+            answer: 3
+        },
+        {
+            id: 19,
+            q: 'Một trong những đặc điểm liên quan đến việc xây dựng lực lượng vũ trang nhân dân Việt Nam hiện nay?',
+            options: [
+                'Xây dựng LLVTND trong điều kiện quốc tế đã thay đổi có nhiều diễn biến phức tạp.',
+                'Xây dựng quân đội trong điều kiện quốc tế đã thay đổi có nhiều diễn biến phức tạp.',
+                'Xây dựng công an trong điều kiện quốc tế đã thay đổi có nhiều diễn biến phức tạp.',
+                'Xây dựng dân quân tự vệ trong điều kiện quốc tế đã thay đổi có nhiều diễn biến phức tạp.'
+            ],
+            answer: 0
+        },
+        {
+            id: 20,
+            q: 'Lực lượng vũ trang nhân dân Việt Nam bao gồm:',
+            options: [
+                'Quân đội nhân dân, công an nhân dân, dân quân tự vệ.',
+                'Quân đội nhân dân, dự bị động viên, dân quân tự vệ.',
+                'Hải quân, dự bị động viên, dân quân tự vệ.',
+                'Không quân, cảnh sát biển, dân quân tự vệ.'
+            ],
+            answer: 0
+        },
+        {
+            id: 21,
+            q: '“Chính trị trọng hơn quân sự” được Chủ tịch Hồ Chí Minh viết trong chỉ thị?',
+            options: [
+                'Thành lập lực lượng Việt Minh.',
+                'Thành lập lực lượng vũ trang địa phương.',
+                'Thành lập đội Việt Nam tuyên truyền giải phóng quân.',
+                'Thành lập lực lượng vũ trang ba thứ quân.'
+            ],
+            answer: 2
+        },
+        {
+            id: 22,
+            q: 'Xây dựng quân đội về chính trị trong đó vấn đề nào là cốt lõi?',
+            options: [
+                'Bản chất giai cấp công nhân.',
+                'Tính nhân dân.',
+                'Tính dân tộc.',
+                'Phương án b, c đúng.'
+            ],
+            answer: 0
+        },
+        {
+            id: 23,
+            q: '“Dân tộc Việt Nam nhất định phải được giải phóng. Muốn đánh chúng phải có lực lượng quân sự, phải có tổ chức”. Ai khẳng định?',
+            options: [
+                'Chủ tịch Hồ Chí Minh.',
+                'Đại tướng Võ Nguyên Giáp.',
+                'Đại tướng Nguyễn Chí Thanh.',
+                'Đại tướng Phạm Văn Trà.'
+            ],
+            answer: 0
+        },
+        {
+            id: 24,
+            q: 'Đội Việt Nam tuyên truyền giải phóng quân được thành lập với bao nhiêu chiến sỹ, ai làm đội trưởng?',
+            options: [
+                '34 chiến sỹ, Võ Nguyên Giáp.',
+                '34 chiến sỹ, Hoàng Sâm.',
+                '34 chiến sỹ, Xích Thắng.',
+                '34 chiến sỹ, Hoàng Văn Thái.'
+            ],
+            answer: 1
+        },
+        {
+            id: 25,
+            q: 'Theo tư tưởng Hồ Chí Minh: Quân đội ta có sức mạnh vô địch vì:',
+            options: [
+                'Có Đảng xây dựng, Đảng lãnh đạo và giáo dục.',
+                'Được trải nghiệm và trưởng thành trong chiến đấu.',
+                'Nhà nước xây dựng quản lí điều hành.',
+                'Được kế thừa truyền thống dựng và giữ nước của dân tộc.'
+            ],
+            answer: 0
+        },
+        // Trang 5 (các câu từ 26-40)
+        {
+            id: 26,
+            q: '“Trong khi đặt trọng tâm vào nhiệm vụ xây dựng CNXH, chúng ta không một chút lơi lỏng nhiệm vụ bảo vệ Tổ quốc, luôn luôn coi trọng quốc phòng an ninh, coi đó là nhiệm vụ chiến lược gắn bó chặt chẽ”. Đảng ta khẳng định trong:',
+            options: [
+                'Văn kiện đại hội đại biểu Đảng toàn quốc lần thứ X.',
+                'Văn kiện đại hội đại biểu Đảng toàn quốc lần thứ IX.',
+                'Văn kiện đại hội đại biểu Đảng toàn quốc lần thứ VIII.',
+                'Văn kiện đại hội đại biểu Đảng toàn quốc lần thứ XI.'
+            ],
+            answer: 0
+        },
+        {
+            id: 27,
+            q: 'Chọn câu sai. Phương châm xây dựng nền quốc phòng toàn dân?',
+            options: [
+                'Độc lập tự chủ.',
+                'Liên minh quân sự với các nước khác.',
+                'Kết hợp sức mạnh dân tộc với sức mạnh thời đại.',
+                'Tranh thủ sự ủng hộ giúp đỡ của bạn bè quốc tế.'
+            ],
+            answer: 1
+        },
+        {
+            id: 28,
+            q: '“Xây dựng thế trận lòng dân làm nền tảng phát huy sức mạnh tổng hợp của toàn dân tộc, trong đó Quân đội nhân dân và Công an nhân dân là nòng cốt”. Đảng ta khẳng định trong:',
+            options: [
+                'Văn kiện đại hội Đảng toàn quốc lần thứ X.',
+                'Văn kiện đại hội Đảng toàn quốc lần thứ IX.',
+                'Văn kiện đại hội Đảng toàn quốc lần thứ VIII.',
+                'Văn kiện đại hội Đảng toàn quốc lần thứ XI.'
+            ],
+            answer: 0
+        },
+        {
+            id: 29,
+            q: 'Xây dựng nền quốc phòng toàn dân, an ninh nhân dân vững mạnh nhằm:',
+            options: [
+                'Bảo vệ Tổ quốc Việt Nam xã hội chủ nghĩa.',
+                'Tạo ra sức mạnh tổng hợp của đất nước.',
+                'Tạo thế chủ động cho sự nghiệp xây dựng, bảo vệ Tổ quốc.',
+                'Phương án a, b, c đúng.'
+            ],
+            answer: 3
+        },
+        {
+            id: 30,
+            q: 'Tiềm lực nào là cơ sở quyết định sức mạnh vật chất và kĩ thuật của nền quốc phòng toàn dân?',
+            options: [
+                'Tiềm lực chính trị tinh thần.',
+                'Tiềm lực kinh tế.',
+                'Tiềm lực quân sự.',
+                'Tiềm lực khoa học công nghệ.'
+            ],
+            answer: 2
+        },
+        {
+            id: 31,
+            q: 'Chọn câu sai. Mục đích của việc xây dựng nền quốc phòng toàn dân?',
+            options: [
+                'Tạo thế chủ động cho sự nghiệp xây dựng và bảo vệ Tổ quốc.',
+                'Tạo ra sức mạnh tổng hợp của đất nước.',
+                'Tạo điều kiện liên kết quân sự phát triển quốc phòng an ninh.',
+                'Bảo vệ vững chắc Tổ quốc Việt Nam xã hội chủ nghĩa.'
+            ],
+            answer: 2
+        },
+        {
+            id: 32,
+            q: 'Sự khác nhau giữa nền quốc phòng toàn dân với nền an ninh nhân dân?',
+            options: [
+                'Phương thức tổ chức lực lượng, hoạt động cụ thể, theo mục tiêu cụ thể được phân công.',
+                'Phương thức tổ chức lực lượng, hoạt động cụ thể theo nhiệm vụ.',
+                'Phương thức tổ chức, hoạt động cụ thể theo mục tiêu cụ thể được phân công.',
+                'Phương thức tổ chức quân sự, hoạt động theo mục tiêu cụ thể được phân công.'
+            ],
+            answer: 0
+        },
+        // Trang 6-7
+        {
+            id: 33,
+            q: 'Thực chất của việc xây dựng tiềm lực chính trị tinh thần là:',
+            options: [
+                'Xây dựng nhân tố con người mới Việt Nam XHCN.',
+                'Xây dựng lực lượng tiến hành công tác tư tưởng.',
+                'Xây dựng thế trận lòng dân.',
+                'Xây dựng hệ thống chính trị trong thời chiến.'
+            ],
+            answer: 0
+        },
+        {
+            id: 34,
+            q: 'Tiềm lực chính trị, tinh thần của nền quốc phòng toàn dân, an ninh nhân dân. Được xác định là:',
+            options: [
+                'Nhân tố cần thiết tạo nên sức mạnh của quốc phòng – an ninh.',
+                'Nhân tố quyết định tạo nên sức mạnh của quốc phòng – an ninh.',
+                'Nhân tố cơ bản tạo nên sức mạnh của quốc phòng – an ninh.',
+                'Nhân tố hàng đầu tạo nên sức mạnh của quốc phòng – an ninh.'
+            ],
+            answer: 1
+        },
+        {
+            id: 35,
+            q: 'Thế trận quốc phòng, an ninh là:',
+            options: [
+                'Sự tổ chức, bố trí lực lượng, tiềm lực mọi mặt của đất nước và của toàn dân trên toàn lãnh thổ.',
+                'Sự bố trí lực lượng, tiềm lực mọi mặt của đất nước và của toàn dân trên toàn lãnh thổ.',
+                'Sự tổ chức, bố trí lực lượng của đất nước và của toàn dân trên toàn lãnh thổ.',
+                'Sự tổ chức, bố trí tiềm lực mọi mặt của đất nước và của toàn dân trên toàn lãnh thổ.'
+            ],
+            answer: 0
+        },
+        {
+            id: 36,
+            q: '“Xây dựng thế trận quốc phòng toàn dân kết hợp chặt chẽ với thế trận an ninh vững chắc”. Đảng ta khẳng định trong:',
+            options: [
+                'Văn kiện đại hội Đảng toàn quốc lần thứ VIII.',
+                'Văn kiện đại hội Đảng toàn quốc lần thứ IX.',
+                'Văn kiện đại hội Đảng toàn quốc lần thứ X.',
+                'Văn kiện đại hội Đảng toàn quốc lần thứ XI.'
+            ],
+            answer: 2
+        },
+        {
+            id: 37,
+            q: 'Chọn câu sai. Các chính sách xây dựng thế trận chiến tranh nhân dân của ông cha ta?',
+            options: [
+                'Bách tính giai binh.',
+                'Tiên phát chế nhân.',
+                'Tận dân vi binh.',
+                'Cử quốc nghênh địch.'
+            ],
+            answer: 1
+        },
+        {
+            id: 38,
+            q: 'Cơ chế lãnh đạo, chỉ huy nền quốc phòng toàn dân?',
+            options: [
+                'Đảng lãnh đạo, nhà nước thống nhất quản lý.',
+                'Quân đội chỉ huy, quản lý.',
+                'Nhân dân tự nguyện tham gia.',
+                'Bộ quốc phòng lãnh đạo, chỉ huy.'
+            ],
+            answer: 0
+        },
+        {
+            id: 39,
+            q: '“Phải đặc biệt coi trọng giữ vững ổn định chính trị - xã hội, tăng cường quốc phòng, an ninh, bảo vệ vững chắc độc lập, chủ quyền, thống nhất và toàn vẹn lãnh thổ để bảo đảm cho đất nước phát triển nhanh và bền vững”. Đảng ta khẳng định trong:',
+            options: [
+                'Văn kiện đại hội Đảng toàn quốc lần thứ XI.',
+                'Văn kiện đại hội Đảng toàn quốc lần thứ X.',
+                'Văn kiện đại hội Đảng toàn quốc lần thứ IX.',
+                'Văn kiện đại hội Đảng toàn quốc lần thứ VIII.'
+            ],
+            answer: 0
+        },
+        {
+            id: 40,
+            q: '“Không quân đội nào, không khí giới nào có thể đánh ngã được tinh thần hy sinh của toàn thể một dân tộc”. Ai khẳng định?',
+            options: [
+                'C. Mác.',
+                'Ph. Ăngghen.',
+                'V.I. Lênin.',
+                'Hồ Chí Minh.'
+            ],
+            answer: 3
+        },
+        // Trang 7 (câu 1-9)
+        {
+            id: 41,
+            q: 'Chọn câu sai. Nội dung học thuyết bảo vệ Tổ quốc XHCN của Lênin?',
+            options: [
+                'Bảo vệ Tổ quốc XHCN là một tất yếu khách quan.',
+                'Bảo vệ Tổ quốc XHCN là nghĩa vụ, trách nhiệm của toàn dân.',
+                'Đảng Cộng sản lãnh đạo mọi mặt sự nghiệp bảo vệ Tổ quốc XHCN.',
+                'Là nhiệm vụ riêng của lực lượng vũ trang.'
+            ],
+            answer: 3
+        },
+        {
+            id: 42,
+            q: 'Theo tư tưởng Hồ Chí Minh, sự ra đời của quân đội là:',
+            options: [
+                'Tính quy luật trong đấu tranh giai cấp, đấu tranh dân tộc ở Việt Nam.',
+                'Một tất yếu, là tính quy luật trong đấu tranh giai cấp, đấu tranh dân tộc ở Việt Nam.',
+                'Đúng quy luật trong đấu tranh giải phóng dân tộc ở Việt Nam.',
+                'Yêu cầu trong đấu tranh giành và giữ chính quyền ở Việt Nam.'
+            ],
+            answer: 1
+        },
+        {
+            id: 43,
+            q: 'Quan điểm của chủ nghĩa Mác - Lênin về chiến tranh:',
+            options: [
+                'Chiến tranh có từ khi xuất hiện loài người.',
+                'Chiến tranh là hiện tượng chính trị - xã hội.',
+                'Chiến tranh là hiện tượng chính trị - xã hội có tính lịch sử.',
+                'Chiến tranh là hiện tượng xã hội vĩnh viễn.'
+            ],
+            answer: 2
+        },
+        {
+            id: 44,
+            q: 'Theo quan điểm chủ nghĩa Mác - Lênin: Chiến tranh kiểm tra sức sống của:',
+            options: [
+                'Đường lối quân sự và nghệ thuật quân sự.',
+                'Toàn bộ chế độ chính trị xã hội.',
+                'Nền kinh tế xã hội.',
+                'Phương án a, c đúng.'
+            ],
+            answer: 3
+        },
+        {
+            id: 45,
+            q: 'Chủ tịch Hồ Chí Minh khẳng định Quân đội nhân dân Việt Nam có:',
+            options: [
+                '3 nhiệm vụ, 2 chức năng.',
+                '3 nhiệm vụ, 3 chức năng.',
+                '2 nhiệm vụ, 2 chức năng.',
+                '2 nhiệm vụ, 3 chức năng.'
+            ],
+            answer: 1
+        },
+        {
+            id: 46,
+            q: 'Tư tưởng Hồ Chí Minh về bảo vệ Tổ quốc Việt Nam XHCN?',
+            options: [
+                'Bảo vệ Tổ quốc Việt Nam XHCN là tất yếu khách quan.',
+                'Mục tiêu bảo vệ Tổ quốc là độc lập dân tộc và CNXH là nghĩa vụ trách nhiệm của mọi công dân.',
+                'Xây dựng đất nước độc lập, dân giàu, nước mạnh, xã hội dân chủ, công bằng, văn minh.',
+                'Phương án a, b đúng.'
+            ],
+            answer: 3
+        },
+        {
+            id: 47,
+            q: 'Một trong những quan điểm chủ nghĩa Mác - Lênin về bảo vệ Tổ quốc XHCN là:',
+            options: [
+                'Bảo vệ Tổ quốc xã hội chủ nghĩa là một tất yếu khách quan.',
+                'Bảo vệ Tổ quốc là một tất yếu khách quan.',
+                'Bảo vệ Tổ quốc xã hội chủ nghĩa là nhiệm vụ tất yếu của quân đội.',
+                'Bảo vệ Tổ quốc là một qui luật khách quan.'
+            ],
+            answer: 0
+        },
+        {
+            id: 48,
+            q: 'Theo quan điểm của chủ nghĩa Mác - Lênin: Bảo vệ Tổ quốc xã hội chủ nghĩa, phải thường xuyên tăng cường:',
+            options: [
+                'Tiềm lực quốc phòng gắn với phát triển kinh tế - xã hội.',
+                'Tiềm lực quân sự gắn với phát triển kinh tế - xã hội.',
+                'Sức mạnh quân sự gắn với phát triển kinh tế - xã hội.',
+                'Tiềm lực an ninh gắn với phát triển kinh tế - xã hội.'
+            ],
+            answer: 0
+        },
+        {
+            id: 49,
+            q: 'Theo tư tưởng Hồ Chí Minh, sử dụng bạo lực cách mạng để:',
+            options: [
+                'Giải phóng dân tộc.',
+                'Giành chính quyền và bảo vệ chính quyền.',
+                'Xây dựng và bảo vệ chính quyền cách mạng.',
+                'Phương án a và c đúng.'
+            ],
+            answer: 1
+        },
+        // Trang 8
+        {
+            id: 50,
+            q: 'Khi nói về bản chất của chủ nghĩa đế quốc, Hồ Chí Minh đã khái quát bằng hình ảnh:',
+            options: [
+                'Con rắn độc.',
+                'Con bạch tuộc.',
+                'Con rồng tre.',
+                'Con đĩa hai vòi.'
+            ],
+            answer: 1
+        },
+        {
+            id: 51,
+            q: '“Giành chính quyền đã khó, nhưng giữ được chính quyền còn khó khăn hơn”. Ai khẳng định?',
+            options: [
+                'C. Mác.',
+                'V.I. Lênin.',
+                'Ph. Ăngghen.',
+                'Chủ tịch Hồ Chí Minh.'
+            ],
+            answer: 3
+        },
+        {
+            id: 52,
+            q: '“...Ai có súng thì dùng súng, ai có gươm thì dùng gươm, không có súng, gươm thì dùng cuốc thuổng, gậy, gộc...”. Được Chủ Tịch Hồ Chí Minh kêu gọi trong thời kì nào?',
+            options: [
+                'Chống Mĩ.',
+                'Chống Pháp.',
+                'Chống phát xít Nhật.',
+                'Phương án a, b đúng.'
+            ],
+            answer: 3
+        },
+        {
+            id: 53,
+            q: 'Chủ tịch Hồ Chí Minh xác định yếu tố con người có vai trò như thế nào trong xây dựng Quân đội nhân dân?',
+            options: [
+                'Con người giữ vai trò quan trọng nhất, chi phối các yếu tố khác.',
+                'Con người là quan trọng cùng với yếu tố quân sự là quyết định.',
+                'Con người có tri thức giữ vai trò quyết định.',
+                'Con người với trình độ chính trị cao giữ vai trò quyết định.'
+            ],
+            answer: 0
+        },
+        {
+            id: 54,
+            q: 'Trong thời đại ngày nay còn chủ nghĩa đế quốc thì còn nguy cơ xảy ra chiến tranh, chiến tranh là bạn đường của chủ nghĩa đế quốc. Ai khẳng định?',
+            options: [
+                'C. Mác.',
+                'Ph. Ăngghen.',
+                'V.I. Lênin.',
+                'C. Ph. Claudovit.'
+            ],
+            answer: 2
+        },
+        {
+            id: 55,
+            q: 'Lênin khẳng định: “Trong mọi cuộc chiến tranh rốt cuộc thắng lợi đều tùy thuộc vào:',
+            options: [
+                'Tinh thần của quần chúng đang đổ máu trên chiến trường quyết định.',
+                'Khả năng cơ động của quần chúng trên chiến trường quyết định.',
+                'Con người và vũ khí trên chiến trường quyết định.',
+                'Con người với trình độ sẵn sàng chiến đấu cao giữ vai trò quyết định.'
+            ],
+            answer: 0
+        },
+        {
+            id: 56,
+            q: 'Theo quan điểm của C.Mác - Ph.Ăngghen: Con người, kinh tế, chính trị, văn hóa, xã hội, vũ khí trang bị, khoa học quân sự. Được xác định là:',
+            options: [
+                'Bản chất giai cấp của quân đội.',
+                'Sức mạnh chiến đấu của quân đội.',
+                'Nguyên tắc xây dựng quân đội.',
+                'Nguồn gốc ra đời của quân đội.'
+            ],
+            answer: 1
+        },
+        {
+            id: 57,
+            q: '“Dân tộc Việt Nam nhất định phải được giải phóng. Muốn đánh chúng phải có lực lượng quân sự, phải có tổ chức”. Ai khẳng định?',
+            options: [
+                'Chủ tịch Hồ Chí Minh.',
+                'Chủ tịch Tôn Đức Thắng.',
+                'Thủ tướng Phạm Văn Đồng.',
+                'Đại tướng Võ Nguyên Giáp.'
+            ],
+            answer: 0
+        },
+        {
+            id: 58,
+            q: 'Khi bàn về chiến tranh, Claudovit đã quan niệm: Chiến tranh là một hành vi bạo lực. Nhưng lại không lý giải được:',
+            options: [
+                'Bản chất của chiến tranh.',
+                'Quy luật của chiến tranh.',
+                'Tính chất của chiến tranh.',
+                'Đặc điểm của chiến tranh.'
+            ],
+            answer: 0
+        },
+        // Trang 9 (câu 1-7)
+        {
+            id: 59,
+            q: 'Chọn câu sai. Nguyên tắc xây dựng quân đội kiểu mới của V.I.Lênin?',
+            options: [
+                'Đoàn kết thống nhất quân đội với nhân dân.',
+                'Xây dựng quân đội chính quy.',
+                'Trung thành với chủ nghĩa quốc tế vô sản.',
+                'Xây dựng quân đội làm công cụ bạo lực sắc bén.'
+            ],
+            answer: 3
+        },
+        {
+            id: 60,
+            q: 'Muốn xóa bỏ chiến tranh phải xóa bỏ:',
+            options: [
+                'Mâu thuẫn chính trị xã hội.',
+                'Lực lượng quân đội.',
+                'Nguồn gốc kinh tế, xã hội.',
+                'Nguồn gốc kinh tế, chính trị.'
+            ],
+            answer: 2
+        },
+        {
+            id: 61,
+            q: 'Xác định tính chất xã hội của chiến tranh, phân tích tính chất chính trị - xã hội của chiến tranh xâm lược thuộc địa, chiến tranh ăn cướp của chủ nghĩa đế quốc, chỉ ra tính chất chính nghĩa của chiến tranh giải phóng dân tộc. Được xác định là:',
+            options: [
+                'Quan điểm C.Mác - Ph.Ăngghen về chiến tranh.',
+                'Tư tưởng Hồ Chí Minh về chiến tranh.',
+                'Quan điểm của V.I.Lênin về chiến tranh.',
+                'Quan điểm của C.Mác - V.I.Lênin về chiến tranh.'
+            ],
+            answer: 3
+        },
+        {
+            id: 62,
+            q: 'Không ngừng hoàn thiện cơ cấu tổ chức; phát triển hài hòa các quân binh chủng. Được xác định là một trong những:',
+            options: [
+                'Nguyên tắc xây dựng quân đội kiểu mới của V.I.Lênin.',
+                'Nội dung xây dựng quân đội kiểu mới của V.I.Lênin.',
+                'Quan điểm xây dựng quân đội kiểu mới của V.I.Lênin.',
+                'Biện pháp xây dựng quân đội kiểu mới của V.I.Lênin.'
+            ],
+            answer: 0
+        },
+        {
+            id: 63,
+            q: 'Theo tư tưởng Hồ Chí Minh: Quân đội ta có mấy chức năng?',
+            options: [
+                'Có 3, đội quân chiến đấu, công tác và sản xuất.',
+                'Có 3, đội quân sẵn sàng chiến đấu, công tác, sản xuất.',
+                'Có 3, đội quân phục vụ chiến đấu, công tác và sản xuất.',
+                'Có 3, đội quân chiến đấu, cơ động và công tác.'
+            ],
+            answer: 0
+        },
+        {
+            id: 64,
+            q: 'Bản chất giai cấp của quân đội phụ thuộc vào:',
+            options: [
+                'Tiềm lực kinh tế của đất nước bảo đảm cho quân đội.',
+                'Bản chất giai cấp của nhà nước đã tổ chức ra nó.',
+                'Sự ủng hộ của quần chúng nhân dân đối với quân đội.',
+                'Phương án a, c đúng.'
+            ],
+            answer: 1
+        },
+        {
+            id: 65,
+            q: 'Theo quan điểm của chủ nghĩa C.Mác - V.I.Lênin nguồn gốc nảy sinh chiến tranh?',
+            options: [
+                'Chế độ công hữu về tư liệu sản xuất và sự tồn tại của nhà nước.',
+                'Chế độ tư hữu về tư liệu sản xuất và sự tồn tại của giai cấp và đối kháng giai cấp.',
+                'Bản năng sinh vật của con người.',
+                'Do định mệnh của loài người.'
+            ],
+            answer: 1
         }
     ];
 
@@ -401,7 +1023,6 @@
     const app = {
         data: questions,
         userAnswers: new Array(questions.length).fill(null),
-        // Mỗi câu: null = chưa chọn, false = sai, true = đúng (để tính điểm)
         isCorrect: new Array(questions.length).fill(null),
 
         init() {
@@ -457,24 +1078,20 @@
         },
 
         bindEvents() {
-            // Lắng nghe sự thay đổi radio
             document.querySelectorAll('input[type="radio"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     const label = e.target.closest('.option');
                     const qIdx = parseInt(label.dataset.q);
                     const optIdx = parseInt(label.dataset.opt);
-                    // Bỏ chọn các option khác trong cùng câu (do radio tự động)
-                    // Xóa trạng thái cũ của các option
+                    // Xóa trạng thái cũ
                     document.querySelectorAll(`.option[data-q="${qIdx}"]`).forEach(opt => {
                         opt.classList.remove('correct', 'wrong');
                     });
-                    // Đánh dấu đáp án đã chọn và kiểm tra
                     const correctAns = this.data[qIdx].answer;
                     const isCorrect = (optIdx === correctAns);
                     this.userAnswers[qIdx] = optIdx;
                     this.isCorrect[qIdx] = isCorrect;
 
-                    // Hiển thị badge Đúng/Sai
                     const badge = document.getElementById(`badge-${qIdx}`);
                     badge.style.display = 'inline-block';
                     if (isCorrect) {
@@ -485,7 +1102,7 @@
                         badge.textContent = 'Sai';
                         badge.className = 'result-badge wrong';
                         label.classList.add('wrong');
-                        // Tô màu đáp án đúng (màu xanh) để người dùng biết
+                        // Tô đáp án đúng
                         document.querySelectorAll(`.option[data-q="${qIdx}"]`).forEach(opt => {
                             if (parseInt(opt.dataset.opt) === correctAns) {
                                 opt.classList.add('correct');
@@ -498,12 +1115,10 @@
                 });
             });
 
-            // Nút làm lại
             document.getElementById('resetBtn').addEventListener('click', () => {
                 this.resetExam();
             });
 
-            // Nút xem đáp án đúng (hiển thị tất cả đáp án đúng)
             document.getElementById('showAnswerBtn').addEventListener('click', () => {
                 this.revealAnswers();
             });
@@ -528,7 +1143,6 @@
         },
 
         revealAnswers() {
-            // Hiển thị tất cả đáp án đúng
             document.querySelectorAll('.option').forEach(opt => {
                 const qIdx = parseInt(opt.dataset.q);
                 const optIdx = parseInt(opt.dataset.opt);
