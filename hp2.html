@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ôn tập QP2 - Trắc nghiệm như Azota</title>
-    <!-- Font Awesome (icon) -->
+    <title>Trắc nghiệm HP2 - Azota</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
         * {
@@ -26,7 +25,6 @@
             border-radius: 28px;
             box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.15);
             padding: 28px 24px 36px;
-            transition: 0.2s;
         }
         h1 {
             font-size: 26px;
@@ -79,12 +77,13 @@
         }
         .question-header {
             display: flex;
-            align-items: baseline;
+            align-items: center;
             gap: 10px;
             font-weight: 600;
             font-size: 17px;
             color: #0b2b4a;
             margin-bottom: 12px;
+            flex-wrap: wrap;
         }
         .question-header .qnum {
             background: #eef4fc;
@@ -93,6 +92,25 @@
             border-radius: 30px;
             font-size: 14px;
             font-weight: 700;
+        }
+        .question-header .result-badge {
+            font-size: 14px;
+            font-weight: 700;
+            padding: 2px 14px;
+            border-radius: 30px;
+            margin-left: 8px;
+        }
+        .result-badge.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+        .result-badge.wrong {
+            background: #f8dddd;
+            color: #721c24;
+        }
+        .result-badge.unanswered {
+            background: #f0f0f0;
+            color: #6c757d;
         }
         .question-text {
             font-size: 16px;
@@ -139,12 +157,10 @@
         .option .answer-text {
             flex: 1;
         }
-        /* trạng thái khi đã chọn */
         .option.selected {
             background: #ddeeff;
             border-color: #2a7de1;
         }
-        /* khi xem kết quả */
         .option.correct {
             background: #d4edda;
             border-color: #28a745;
@@ -160,10 +176,6 @@
         .option.disabled:hover {
             background: #f6f9fe;
             border-color: transparent;
-        }
-        .option.correct:hover,
-        .option.wrong:hover {
-            border-color: currentColor;
         }
 
         .action-bar {
@@ -245,7 +257,6 @@
             color: #1d3b5c;
         }
 
-        /* Responsive */
         @media (max-width: 640px) {
             .container {
                 padding: 18px 12px 28px;
@@ -276,16 +287,16 @@
 <div class="container" id="app">
     <h1>
         <i class="fas fa-graduation-cap"></i>
-        Trắc nghiệm QP2
+        Trắc nghiệm HP2
         <span style="font-size:14px; font-weight:400; margin-left:auto; color:#5b7b9c;">
             <i class="fas fa-clock"></i> 45 phút
         </span>
     </h1>
 
     <div class="stats">
-        <span><i class="fas fa-list-ul"></i> <span id="totalQ">0</span> câu hỏi</span>
+        <span><i class="fas fa-list-ul"></i> <span id="totalQ">0</span> câu</span>
         <span><i class="fas fa-check-circle"></i> Đã làm: <span id="answeredCount">0</span></span>
-        <span><i class="fas fa-flag"></i> Bài: <span id="currentLesson">8+9</span></span>
+        <span><i class="fas fa-flag"></i> Bài: HP2</span>
     </div>
 
     <div id="questionsContainer"></div>
@@ -308,11 +319,10 @@
 
 <script>
     // ============================================================
-    // Dữ liệu câu hỏi (trích từ tài liệu PDF, đáp án mặc định = A)
-    // Có thể mở rộng thêm câu hỏi từ các bài khác
+    // Dữ liệu câu hỏi HP2 (trích từ tài liệu)
     // ============================================================
     const questions = [
-        // Bài 8: Diễn biến hòa bình (câu 1-32)
+        // Bài 8: Diễn biến hòa bình
         { id: 1, q: 'Chiến lược "Diễn biến hòa bình" được tiến hành bằng:', 
           a: 'Biện pháp phi quân sự do chủ nghĩa đế quốc và các thế lực phản động tiến hành.', 
           b: 'Biện pháp quân sự do chủ nghĩa đế quốc và các thế lực phản động tiến hành.', 
@@ -413,7 +423,7 @@
           c: 'Phương châm phòng chống chiến lược “Diễn biến hòa bình”.', 
           d: 'Quan điểm phòng chống chiến lược “Diễn biến hòa bình”.', 
           ans: 0 },
-        // Bài 9: Vũ khí công nghệ cao (câu 1-10)
+        // Bài 9: Vũ khí công nghệ cao
         { id: 21, q: 'Vũ khí được nghiên cứu, thiết kế, chế tạo dựa trên thành tựu của cuộc cách mạng khoa học công nghệ hiện đại … Được xác định là:', 
           a: 'Vũ khí công nghệ cao.', 
           b: 'Khái niệm vũ khí công nghệ cao.', 
@@ -474,7 +484,7 @@
           c: 'Vũ khí hủy diệt lớn.', 
           d: 'Tất cả các phương án trên đúng.', 
           ans: 1 },
-        // Thêm vài câu từ bài 10 (Dân quân tự vệ) để đa dạng
+        // Bài 10: Dân quân tự vệ
         { id: 31, q: 'Lực lượng vũ trang quân chúng không thoát li sản xuất công tác là:', 
           a: 'Bộ đội chủ lực.', b: 'Dân quân tự vệ.', c: 'Bộ đội địa phương.', d: 'Dự bị động viên.', ans: 1 },
         { id: 32, q: 'Lực lượng vũ trang quân chúng tổ chức ở các cơ quan nhà nước, đơn vị hành chính sự nghiệp, tổ chức kinh tế, tổ chức chính trị, xã hội là:', 
@@ -486,7 +496,7 @@
     // ============================================================
     const app = {
         data: questions,
-        userAnswers: new Array(questions.length).fill(null), // lưu index đã chọn
+        userAnswers: new Array(questions.length).fill(null),
         isSubmitted: false,
 
         init() {
@@ -519,6 +529,7 @@
                     <div class="question-header">
                         <span class="qnum">Câu ${idx+1}</span>
                         <span style="font-weight:400; color:#5b7b9c; font-size:14px;">${q.id}</span>
+                        <span class="result-badge" id="badge-${idx}" style="display:none;"></span>
                     </div>
                     <div class="question-text">${q.q}</div>
                     <div class="options">${optionsHtml}</div>
@@ -534,14 +545,12 @@
         },
 
         bindEvents() {
-            // Lắng nghe sự thay đổi radio
             document.querySelectorAll('input[type="radio"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     if (this.isSubmitted) return;
                     const label = e.target.closest('.option');
                     const qIdx = parseInt(label.dataset.q);
                     const optIdx = parseInt(label.dataset.opt);
-                    // bỏ chọn các option khác trong cùng câu
                     document.querySelectorAll(`.option[data-q="${qIdx}"]`).forEach(opt => {
                         opt.classList.remove('selected');
                     });
@@ -551,7 +560,6 @@
                 });
             });
 
-            // Reset
             document.getElementById('resetBtn').addEventListener('click', () => {
                 if (this.isSubmitted) {
                     if (!confirm('Bạn đã nộp bài. Làm lại sẽ xóa kết quả. Tiếp tục?')) return;
@@ -559,7 +567,6 @@
                 this.resetExam();
             });
 
-            // Nộp bài
             document.getElementById('submitBtn').addEventListener('click', () => {
                 if (this.isSubmitted) {
                     alert('Bạn đã nộp bài rồi! Hãy nhấn "Làm lại" để làm mới.');
@@ -572,7 +579,6 @@
                 this.submitExam();
             });
 
-            // Xem đáp án
             document.getElementById('showAnswerBtn').addEventListener('click', () => {
                 if (!this.isSubmitted) {
                     alert('Bạn cần nộp bài trước khi xem đáp án.');
@@ -590,6 +596,10 @@
                 const radio = opt.querySelector('input[type="radio"]');
                 if (radio) radio.checked = false;
             });
+            document.querySelectorAll('.result-badge').forEach(b => {
+                b.style.display = 'none';
+                b.className = 'result-badge';
+            });
             document.getElementById('resultBox').classList.remove('show');
             document.getElementById('showAnswerBtn').disabled = true;
             document.getElementById('submitBtn').disabled = false;
@@ -600,7 +610,6 @@
 
         submitExam() {
             this.isSubmitted = true;
-            // Tính điểm
             let correct = 0;
             this.data.forEach((q, idx) => {
                 const chosen = this.userAnswers[idx];
@@ -611,11 +620,30 @@
             const percent = Math.round((correct / total) * 100);
             document.getElementById('resultDetail').textContent = `Bạn đã trả lời đúng ${correct}/${total} câu (${percent}%).`;
 
-            // Hiển thị kết quả
             const box = document.getElementById('resultBox');
             box.classList.add('show');
 
-            // Vô hiệu hóa các radio và đánh dấu đúng/sai
+            // Gán badge cho từng câu
+            document.querySelectorAll('.question-item').forEach((item, idx) => {
+                const badge = document.getElementById(`badge-${idx}`);
+                const chosen = this.userAnswers[idx];
+                if (chosen !== null) {
+                    badge.style.display = 'inline-block';
+                    if (chosen === this.data[idx].ans) {
+                        badge.textContent = 'Đúng';
+                        badge.className = 'result-badge correct';
+                    } else {
+                        badge.textContent = 'Sai';
+                        badge.className = 'result-badge wrong';
+                    }
+                } else {
+                    badge.style.display = 'inline-block';
+                    badge.textContent = 'Chưa làm';
+                    badge.className = 'result-badge unanswered';
+                }
+            });
+
+            // Tô màu đáp án
             document.querySelectorAll('.option').forEach(opt => {
                 const qIdx = parseInt(opt.dataset.q);
                 const optIdx = parseInt(opt.dataset.opt);
@@ -629,7 +657,6 @@
                 } else if (optIdx === this.userAnswers[qIdx] && this.userAnswers[qIdx] !== correctAns) {
                     opt.classList.add('wrong');
                 }
-                // nếu chọn đúng thì đã có class correct
                 if (optIdx === this.userAnswers[qIdx] && this.userAnswers[qIdx] === correctAns) {
                     opt.classList.add('correct');
                 }
@@ -642,7 +669,6 @@
         },
 
         revealAnswers() {
-            // Hiển thị đáp án đúng cho tất cả (nếu chưa hiển thị)
             document.querySelectorAll('.option').forEach(opt => {
                 const qIdx = parseInt(opt.dataset.q);
                 const optIdx = parseInt(opt.dataset.opt);
@@ -650,7 +676,6 @@
                 if (optIdx === correctAns) {
                     opt.classList.add('correct');
                 }
-                // Nếu đã có wrong thì giữ nguyên
             });
             alert('Đã hiển thị đáp án đúng (màu xanh).');
         }
