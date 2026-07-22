@@ -77,12 +77,13 @@
         }
         .question-header {
             display: flex;
-            align-items: baseline;
+            align-items: center;
             gap: 10px;
             font-weight: 600;
             font-size: 17px;
             color: #0b2b4a;
             margin-bottom: 12px;
+            flex-wrap: wrap;
         }
         .question-header .qnum {
             background: #eef4fc;
@@ -91,6 +92,21 @@
             border-radius: 30px;
             font-size: 14px;
             font-weight: 700;
+        }
+        .question-header .result-badge {
+            font-size: 14px;
+            font-weight: 700;
+            padding: 2px 14px;
+            border-radius: 30px;
+            margin-left: 8px;
+        }
+        .result-badge.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+        .result-badge.wrong {
+            background: #f8dddd;
+            color: #721c24;
         }
         .question-text {
             font-size: 16px;
@@ -587,6 +603,7 @@
                     <div class="question-header">
                         <span class="qnum">Câu ${idx+1}</span>
                         <span style="font-weight:400; color:#5b7b9c; font-size:14px;">${q.id}</span>
+                        <span class="result-badge" id="badge-${idx}" style="display:none;"></span>
                     </div>
                     <div class="question-text">${q.q}</div>
                     <div class="options">${optionsHtml}</div>
@@ -653,6 +670,10 @@
                 const radio = opt.querySelector('input[type="radio"]');
                 if (radio) radio.checked = false;
             });
+            document.querySelectorAll('.result-badge').forEach(b => {
+                b.style.display = 'none';
+                b.className = 'result-badge';
+            });
             document.getElementById('resultBox').classList.remove('show');
             document.getElementById('showAnswerBtn').disabled = true;
             document.getElementById('submitBtn').disabled = false;
@@ -675,6 +696,29 @@
 
             const box = document.getElementById('resultBox');
             box.classList.add('show');
+
+            // Đánh dấu từng câu và hiển thị badge Đúng/Sai
+            document.querySelectorAll('.question-item').forEach((item, idx) => {
+                const badge = document.getElementById(`badge-${idx}`);
+                const chosen = this.userAnswers[idx];
+                const isCorrect = (chosen !== null && chosen === this.data[idx].ans);
+                if (chosen !== null) {
+                    badge.style.display = 'inline-block';
+                    if (isCorrect) {
+                        badge.textContent = 'Đúng';
+                        badge.className = 'result-badge correct';
+                    } else {
+                        badge.textContent = 'Sai';
+                        badge.className = 'result-badge wrong';
+                    }
+                } else {
+                    badge.style.display = 'inline-block';
+                    badge.textContent = 'Chưa làm';
+                    badge.className = 'result-badge';
+                    badge.style.background = '#f0f0f0';
+                    badge.style.color = '#6c757d';
+                }
+            });
 
             document.querySelectorAll('.option').forEach(opt => {
                 const qIdx = parseInt(opt.dataset.q);
