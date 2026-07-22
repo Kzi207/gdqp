@@ -108,6 +108,10 @@
             background: #f8dddd;
             color: #721c24;
         }
+        .result-badge.unanswered {
+            background: #f0f0f0;
+            color: #6c757d;
+        }
         .question-text {
             font-size: 16px;
             line-height: 1.6;
@@ -673,6 +677,7 @@
             document.querySelectorAll('.result-badge').forEach(b => {
                 b.style.display = 'none';
                 b.className = 'result-badge';
+                b.textContent = '';
             });
             document.getElementById('resultBox').classList.remove('show');
             document.getElementById('showAnswerBtn').disabled = true;
@@ -697,14 +702,13 @@
             const box = document.getElementById('resultBox');
             box.classList.add('show');
 
-            // Đánh dấu từng câu và hiển thị badge Đúng/Sai
+            // Gán badge cho từng câu
             document.querySelectorAll('.question-item').forEach((item, idx) => {
                 const badge = document.getElementById(`badge-${idx}`);
                 const chosen = this.userAnswers[idx];
-                const isCorrect = (chosen !== null && chosen === this.data[idx].ans);
                 if (chosen !== null) {
                     badge.style.display = 'inline-block';
-                    if (isCorrect) {
+                    if (chosen === this.data[idx].ans) {
                         badge.textContent = 'Đúng';
                         badge.className = 'result-badge correct';
                     } else {
@@ -714,12 +718,11 @@
                 } else {
                     badge.style.display = 'inline-block';
                     badge.textContent = 'Chưa làm';
-                    badge.className = 'result-badge';
-                    badge.style.background = '#f0f0f0';
-                    badge.style.color = '#6c757d';
+                    badge.className = 'result-badge unanswered';
                 }
             });
 
+            // Tô màu đáp án
             document.querySelectorAll('.option').forEach(opt => {
                 const qIdx = parseInt(opt.dataset.q);
                 const optIdx = parseInt(opt.dataset.opt);
