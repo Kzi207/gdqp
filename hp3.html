@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trắc nghiệm HP3 - Azota</title>
+    <title>Trắc nghiệm HP3 - Tự chấm ngay</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -62,6 +62,10 @@
             width: 20px;
             text-align: center;
         }
+        .stats .score {
+            font-weight: 700;
+            color: #1a5fb0;
+        }
         .question-item {
             background: #ffffff;
             border: 1px solid #e2e9f2;
@@ -108,10 +112,6 @@
             background: #f8dddd;
             color: #721c24;
         }
-        .result-badge.unanswered {
-            background: #f0f0f0;
-            color: #6c757d;
-        }
         .question-text {
             font-size: 16px;
             line-height: 1.6;
@@ -156,10 +156,6 @@
         }
         .option .answer-text {
             flex: 1;
-        }
-        .option.selected {
-            background: #ddeeff;
-            border-color: #2a7de1;
         }
         .option.correct {
             background: #d4edda;
@@ -228,23 +224,14 @@
             background: #e6eff9;
             border-color: #2a7de1;
         }
-        .btn:disabled {
-            opacity: 0.5;
-            transform: none !important;
-            box-shadow: none !important;
-            cursor: not-allowed;
-        }
 
         .result-box {
             background: #eef4fc;
             border-radius: 16px;
             padding: 18px 24px;
             margin-top: 24px;
-            display: none;
-            border-left: 6px solid #1a5fb0;
-        }
-        .result-box.show {
             display: block;
+            border-left: 6px solid #1a5fb0;
         }
         .result-box .score {
             font-size: 22px;
@@ -273,14 +260,14 @@
         <i class="fas fa-graduation-cap"></i>
         Trắc nghiệm HP3
         <span style="font-size:14px; font-weight:400; margin-left:auto; color:#5b7b9c;">
-            <i class="fas fa-clock"></i> 45 phút
+            <i class="fas fa-check-circle"></i> Tự chấm ngay
         </span>
     </h1>
 
     <div class="stats">
         <span><i class="fas fa-list-ul"></i> <span id="totalQ">0</span> câu</span>
         <span><i class="fas fa-check-circle"></i> Đã làm: <span id="answeredCount">0</span></span>
-        <span><i class="fas fa-flag"></i> Bài: HP3</span>
+        <span><i class="fas fa-star"></i> Điểm: <span id="liveScore" class="score">0</span></span>
     </div>
 
     <div id="questionsContainer"></div>
@@ -289,9 +276,8 @@
         <div>
             <button class="btn btn-outline" id="resetBtn"><i class="fas fa-undo-alt"></i> Làm lại</button>
         </div>
-        <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <button class="btn btn-primary" id="submitBtn"><i class="fas fa-paper-plane"></i> Nộp bài</button>
-            <button class="btn btn-success" id="showAnswerBtn" disabled><i class="fas fa-eye"></i> Xem đáp án</button>
+        <div>
+            <button class="btn btn-primary" id="showAnswerBtn"><i class="fas fa-eye"></i> Xem đáp án đúng</button>
         </div>
     </div>
 
@@ -303,7 +289,7 @@
 
 <script>
     // ------------------------------------------------------------
-    // Dữ liệu câu hỏi (trích từ tài liệu HP3)
+    // Dữ liệu câu hỏi HP3 (chuyển sang dạng options)
     // ------------------------------------------------------------
     const rawQuestions = [
         // Phần 1: Chế độ sinh hoạt
@@ -411,7 +397,7 @@
     ];
 
     // ------------------------------------------------------------
-    // Xây dựng câu hỏi với options sinh tự động
+    // Chuyển rawQuestions thành định dạng options
     // ------------------------------------------------------------
     function shuffleArray(arr) {
         for (let i = arr.length - 1; i > 0; i--) {
@@ -449,12 +435,13 @@
     const app = {
         data: questions,
         userAnswers: new Array(questions.length).fill(null),
-        isSubmitted: false,
+        isCorrect: new Array(questions.length).fill(null),
 
         init() {
             this.renderQuestions();
             this.updateStats();
             this.bindEvents();
+            this.updateScoreDisplay();
         },
 
         renderQuestions() {
@@ -486,133 +473,89 @@
         },
 
         updateStats() {
-            document.getElementById('totalQ').textContent = this.data.length;
+            const total = this.data.length;
+            document.getElementById('totalQ').textContent = total;
             const answered = this.userAnswers.filter(a => a !== null).length;
             document.getElementById('answeredCount').textContent = answered;
         },
 
+        updateScoreDisplay() {
+            const total = this.data.length;
+            const correct = this.isCorrect.filter(v => v === true).length;
+            document.getElementById('liveScore').textContent = correct;
+            document.getElementById('scoreDisplay').textContent = `Điểm: ${correct} / ${total}`;
+            const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
+            document.getElementById('resultDetail').textContent = `Bạn đã trả lời đúng ${correct}/${total} câu (${percent}%).`;
+        },
+
         bindEvents() {
+            // Lắng nghe thay đổi radio
             document.querySelectorAll('input[type="radio"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    if (this.isSubmitted) return;
                     const label = e.target.closest('.option');
                     const qIdx = parseInt(label.dataset.q);
                     const optIdx = parseInt(label.dataset.opt);
+                    // Xóa trạng thái cũ của các option trong câu
                     document.querySelectorAll(`.option[data-q="${qIdx}"]`).forEach(opt => {
-                        opt.classList.remove('selected');
+                        opt.classList.remove('correct', 'wrong');
                     });
-                    label.classList.add('selected');
+                    // Kiểm tra đáp án
+                    const correctAns = this.data[qIdx].answer;
+                    const isCorrect = (optIdx === correctAns);
                     this.userAnswers[qIdx] = optIdx;
+                    this.isCorrect[qIdx] = isCorrect;
+
+                    // Hiển thị badge
+                    const badge = document.getElementById(`badge-${qIdx}`);
+                    badge.style.display = 'inline-block';
+                    if (isCorrect) {
+                        badge.textContent = 'Đúng';
+                        badge.className = 'result-badge correct';
+                        label.classList.add('correct');
+                    } else {
+                        badge.textContent = 'Sai';
+                        badge.className = 'result-badge wrong';
+                        label.classList.add('wrong');
+                        // Tô đáp án đúng
+                        document.querySelectorAll(`.option[data-q="${qIdx}"]`).forEach(opt => {
+                            if (parseInt(opt.dataset.opt) === correctAns) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
+
                     this.updateStats();
+                    this.updateScoreDisplay();
                 });
             });
 
+            // Làm lại
             document.getElementById('resetBtn').addEventListener('click', () => {
-                if (this.isSubmitted) {
-                    if (!confirm('Bạn đã nộp bài. Làm lại sẽ xóa kết quả. Tiếp tục?')) return;
-                }
                 this.resetExam();
             });
 
-            document.getElementById('submitBtn').addEventListener('click', () => {
-                if (this.isSubmitted) {
-                    alert('Bạn đã nộp bài rồi! Hãy nhấn "Làm lại" để làm mới.');
-                    return;
-                }
-                const unanswered = this.userAnswers.some(a => a === null);
-                if (unanswered) {
-                    if (!confirm('Bạn chưa trả lời hết câu hỏi. Vẫn muốn nộp bài?')) return;
-                }
-                this.submitExam();
-            });
-
+            // Xem đáp án đúng
             document.getElementById('showAnswerBtn').addEventListener('click', () => {
-                if (!this.isSubmitted) {
-                    alert('Bạn cần nộp bài trước khi xem đáp án.');
-                    return;
-                }
                 this.revealAnswers();
             });
         },
 
         resetExam() {
-            this.isSubmitted = false;
             this.userAnswers.fill(null);
+            this.isCorrect.fill(null);
             document.querySelectorAll('.option').forEach(opt => {
-                opt.classList.remove('selected', 'correct', 'wrong', 'disabled');
+                opt.classList.remove('correct', 'wrong');
                 const radio = opt.querySelector('input[type="radio"]');
                 if (radio) radio.checked = false;
             });
             document.querySelectorAll('.result-badge').forEach(b => {
                 b.style.display = 'none';
                 b.className = 'result-badge';
+                b.textContent = '';
             });
-            document.getElementById('resultBox').classList.remove('show');
-            document.getElementById('showAnswerBtn').disabled = true;
-            document.getElementById('submitBtn').disabled = false;
-            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-paper-plane"></i> Nộp bài';
             this.updateStats();
+            this.updateScoreDisplay();
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        },
-
-        submitExam() {
-            this.isSubmitted = true;
-            let correct = 0;
-            this.data.forEach((q, idx) => {
-                const chosen = this.userAnswers[idx];
-                if (chosen !== null && chosen === q.answer) correct++;
-            });
-            const total = this.data.length;
-            document.getElementById('scoreDisplay').textContent = `Điểm: ${correct} / ${total}`;
-            const percent = Math.round((correct / total) * 100);
-            document.getElementById('resultDetail').textContent = `Bạn đã trả lời đúng ${correct}/${total} câu (${percent}%).`;
-
-            const box = document.getElementById('resultBox');
-            box.classList.add('show');
-
-            // Gán badge cho từng câu
-            document.querySelectorAll('.question-item').forEach((item, idx) => {
-                const badge = document.getElementById(`badge-${idx}`);
-                const chosen = this.userAnswers[idx];
-                if (chosen !== null) {
-                    badge.style.display = 'inline-block';
-                    if (chosen === this.data[idx].answer) {
-                        badge.textContent = 'Đúng';
-                        badge.className = 'result-badge correct';
-                    } else {
-                        badge.textContent = 'Sai';
-                        badge.className = 'result-badge wrong';
-                    }
-                } else {
-                    badge.style.display = 'inline-block';
-                    badge.textContent = 'Chưa làm';
-                    badge.className = 'result-badge unanswered';
-                }
-            });
-
-            // Tô màu đáp án
-            document.querySelectorAll('.option').forEach(opt => {
-                const qIdx = parseInt(opt.dataset.q);
-                const optIdx = parseInt(opt.dataset.opt);
-                const radio = opt.querySelector('input[type="radio"]');
-                radio.disabled = true;
-                opt.classList.add('disabled');
-
-                const correctAns = this.data[qIdx].answer;
-                if (optIdx === correctAns) {
-                    opt.classList.add('correct');
-                } else if (optIdx === this.userAnswers[qIdx] && this.userAnswers[qIdx] !== correctAns) {
-                    opt.classList.add('wrong');
-                }
-                if (optIdx === this.userAnswers[qIdx] && this.userAnswers[qIdx] === correctAns) {
-                    opt.classList.add('correct');
-                }
-            });
-
-            document.getElementById('showAnswerBtn').disabled = false;
-            document.getElementById('submitBtn').disabled = true;
-            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-check-circle"></i> Đã nộp';
-            this.updateStats();
         },
 
         revealAnswers() {
@@ -624,7 +567,7 @@
                     opt.classList.add('correct');
                 }
             });
-            alert('Đã hiển thị đáp án đúng (màu xanh).');
+            alert('Đã hiển thị đáp án đúng (màu xanh) cho tất cả câu hỏi.');
         }
     };
 
