@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trắc nghiệm QP1 - Azota</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc nghiệm QP1 - Tự chấm ngay</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -62,6 +62,10 @@
             width: 20px;
             text-align: center;
         }
+        .stats .score {
+            font-weight: 700;
+            color: #1a5fb0;
+        }
         .question-item {
             background: #ffffff;
             border: 1px solid #e2e9f2;
@@ -108,10 +112,6 @@
             background: #f8dddd;
             color: #721c24;
         }
-        .result-badge.unanswered {
-            background: #f0f0f0;
-            color: #6c757d;
-        }
         .question-text {
             font-size: 16px;
             line-height: 1.6;
@@ -156,10 +156,6 @@
         }
         .option .answer-text {
             flex: 1;
-        }
-        .option.selected {
-            background: #ddeeff;
-            border-color: #2a7de1;
         }
         .option.correct {
             background: #d4edda;
@@ -228,23 +224,14 @@
             background: #e6eff9;
             border-color: #2a7de1;
         }
-        .btn:disabled {
-            opacity: 0.5;
-            transform: none !important;
-            box-shadow: none !important;
-            cursor: not-allowed;
-        }
 
         .result-box {
             background: #eef4fc;
             border-radius: 16px;
             padding: 18px 24px;
             margin-top: 24px;
-            display: none;
-            border-left: 6px solid #1a5fb0;
-        }
-        .result-box.show {
             display: block;
+            border-left: 6px solid #1a5fb0;
         }
         .result-box .score {
             font-size: 22px;
@@ -258,28 +245,12 @@
         }
 
         @media (max-width: 640px) {
-            .container {
-                padding: 18px 12px 28px;
-            }
-            .question-item {
-                padding: 16px 14px;
-            }
-            .stats {
-                font-size: 13px;
-                padding: 10px 16px;
-                gap: 8px 16px;
-            }
-            .btn {
-                padding: 10px 20px;
-                font-size: 14px;
-            }
-            .action-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .action-bar .btn {
-                justify-content: center;
-            }
+            .container { padding: 18px 12px 28px; }
+            .question-item { padding: 16px 14px; }
+            .stats { font-size: 13px; padding: 10px 16px; gap: 8px 16px; }
+            .btn { padding: 10px 20px; font-size: 14px; }
+            .action-bar { flex-direction: column; align-items: stretch; }
+            .action-bar .btn { justify-content: center; }
         }
     </style>
 </head>
@@ -289,14 +260,14 @@
         <i class="fas fa-graduation-cap"></i>
         Trắc nghiệm QP1
         <span style="font-size:14px; font-weight:400; margin-left:auto; color:#5b7b9c;">
-            <i class="fas fa-clock"></i> 45 phút
+            <i class="fas fa-check-circle"></i> Tự chấm ngay
         </span>
     </h1>
 
     <div class="stats">
         <span><i class="fas fa-list-ul"></i> <span id="totalQ">0</span> câu</span>
         <span><i class="fas fa-check-circle"></i> Đã làm: <span id="answeredCount">0</span></span>
-        <span><i class="fas fa-flag"></i> Bài: QP1</span>
+        <span><i class="fas fa-star"></i> Điểm: <span id="liveScore" class="score">0</span></span>
     </div>
 
     <div id="questionsContainer"></div>
@@ -305,9 +276,8 @@
         <div>
             <button class="btn btn-outline" id="resetBtn"><i class="fas fa-undo-alt"></i> Làm lại</button>
         </div>
-        <div style="display:flex; gap:12px; flex-wrap:wrap;">
-            <button class="btn btn-primary" id="submitBtn"><i class="fas fa-paper-plane"></i> Nộp bài</button>
-            <button class="btn btn-success" id="showAnswerBtn" disabled><i class="fas fa-eye"></i> Xem đáp án</button>
+        <div>
+            <button class="btn btn-primary" id="showAnswerBtn"><i class="fas fa-eye"></i> Xem đáp án đúng</button>
         </div>
     </div>
 
@@ -319,254 +289,110 @@
 
 <script>
     // ============================================================
-    // Dữ liệu câu hỏi (trích từ tài liệu QP1)
+    // Dữ liệu câu hỏi (từ QP1 và bổ sung câu 13 từ ảnh)
     // ============================================================
     const questions = [
-        // Trang 1
-        { id: 1, q: 'Thực trạng của lực lượng vũ trang nhân dân trong giai đoạn hiện nay là một trong những:',
-          a: 'Nhiệm vụ xây dựng lực lượng công an nhân dân trong điều kiện khu vực Đông Nam Á đã thay biến phức tạp.',
-          b: 'Yêu cầu xây dựng lực lượng vũ trang nhân dân trong điều kiện khu vực Đông Nam Á đã thay đổi nhiều diễn biến phức tạp.',
-          c: 'Biện pháp xây dựng lực lượng vũ trang trong điều kiện đất nước đã thay đổi có nhiều diễn biến phức tạp.',
-          d: 'Đặc điểm liên quan đến xây dựng lực lượng vũ trang nhân dân Việt Nam.',
-          ans: 3 },
-        { id: 2, q: 'Lực lượng vũ trang nhân dân là các tổ chức vũ trang và bán vũ trang của nhân dân Việt Nam do tổ chức nào lãnh đạo?',
-          a: 'Đảng Cộng sản Việt Nam.',
-          b: 'Quốc hội nước cộng hòa xã hội chủ nghĩa Việt Nam.',
-          c: 'Nhà nước cộng hòa xã hội chủ nghĩa Việt Nam.',
-          d: 'Mặt trận Tổ quốc Việt Nam.',
-          ans: 0 },
-        { id: 3, q: 'Đảm bảo cho lực lượng vũ trang luôn trong tư thế sẵn sàng chiến đấu và chiến đấu thắng lợi được xác định là một trong những:',
-          a: 'Phương hướng lãnh đạo của Đảng đối với lực lượng vũ trang.',
-          b: 'Phương châm hành động cách mạng của quân đội.',
-          c: 'Giải pháp chiến đấu của công an nhân dân.',
-          d: 'Quan điểm, nguyên tắc cơ bản trong xây dựng lực lượng vũ trang nhân dân ta hiện nay.',
-          ans: 3 },
-        { id: 4, q: 'Phương hướng xây dựng quân đội nhân dân Việt Nam hiện nay:',
-          a: 'Cách mạng, chính qui, tinh nhuệ, từng bước hiện đại.',
-          b: 'Mua sắm vũ khí trang bị hiện đại cho quân đội.',
-          c: 'Nhanh chóng hiện đại hóa vũ khí trang bị cho quân đội.',
-          d: 'Chú trọng xây dựng đời sống văn hóa tinh thần của quân đội.',
-          ans: 0 },
-        { id: 5, q: 'Đảng lãnh đạo lực lượng vũ trang nhân dân Việt Nam theo nguyên tắc?',
-          a: 'Tuyệt đối, toàn diện.',
-          b: 'Tuyệt đối và trực tiếp.',
-          c: 'Tuyệt đối, trực tiếp về mọi mặt.',
-          d: 'Trực tiếp về mọi mặt.',
-          ans: 2 },
-        { id: 6, q: 'Đội quân chiến đấu, đội quân công tác, đội quân sản xuất. Được xác định là:',
-          a: 'Biện pháp xây dựng quân đội.',
-          b: 'Nhiệm vụ của quân đội.',
-          c: 'Chức năng của quân đội.',
-          d: 'Nguyên tắc xây dựng của quân đội.',
-          ans: 2 },
-        { id: 7, q: 'Một trong những quan điểm, nguyên tắc của Đảng về xây dựng lực lượng vũ trang nhân dân Việt Nam là:',
-          a: 'Lấy chất lượng là chính, lấy xây dựng chính trị làm cơ sở.',
-          b: 'Lấy số lượng là chính, lấy xây dựng chính trị làm cơ sở.',
-          c: 'Lấy chất lượng là chính, lấy xây dựng quân sự làm cơ sở.',
-          d: 'Lấy số lượng là chính, lấy xây dựng quân sự làm cơ sở.',
-          ans: 0 },
-        { id: 8, q: 'Tổ chức các đơn vị lực lượng vũ trang:',
-          a: 'Nhanh, mạnh, chính xác.',
-          b: 'Tinh gọn, có sức cơ động nhanh.',
-          c: 'Bảo đảm số lượng, chất lượng.',
-          d: 'Gọn, mạnh, cơ động.',
-          ans: 3 },
-        // Trang 2
-        { id: 9, q: 'Xây dựng đội ngũ cán bộ lực lượng vũ trang nhân dân có:',
-          a: 'Trình độ khoa học cao.',
-          b: 'Phẩm chất, năng lực tốt.',
-          c: 'Trình độ chuyên môn giỏi.',
-          d: 'Thể lực tốt.',
-          ans: 1 },
-        { id: 10, q: 'Tổ chức các đơn vị lực lượng vũ trang phù hợp với:',
-          a: 'Tình hình thế giới, khu vực và thế trận cả nước.',
-          b: 'Tình hình cụ thể khu vực và thế trận cả nước.',
-          c: 'Tình hình trong nước, khu vực và thế trận cả nước.',
-          d: 'Tình hình cụ thể ở từng địa phương, khu vực và thế trận cả nước.',
-          ans: 3 },
-        { id: 11, q: 'Chiến lược bảo vệ tổ quốc xác định: “ tập trung xây dựng Lực lượng quân đội, công an có bản lĩnh chính trị vững vàng, lòng trung thành tuyệt đối với Đảng, Tổ quốc và nhân dân..” hội nghị lần thứ mấy, khóa bao nhiêu của BCH TƯ Đảng xác định?',
-          a: 'Hội nghị lần thứ 7, khóa VIII.',
-          b: 'Hội nghị lần thứ 8, khóa IX.',
-          c: 'Hội nghị lần thứ 9, khóa X.',
-          d: 'Hội nghị lần thứ 10, khóa XI.',
-          ans: 1 },
-        { id: 12, q: 'Quân đội nhân dân Việt Nam gồm có mấy Quân khu, Quân đoàn?',
-          a: '05 Quân khu, 02 Quân đoàn.',
-          b: '06 Quân khu, 03 Quân đoàn.',
-          c: '07 Quân khu, 04 Quân đoàn.',
-          d: '08 Quân khu, 05 Quân đoàn.',
-          ans: 2 },
-        { id: 13, q: 'Vì sao sự lãnh đạo của Đảng CS đối với lực lượng vũ trang là nguyên tắc quan trọng nhất?',
-          a: 'Quyết định đến sự trưởng thành của quân đội nhân dân.',
-          b: 'Quyết định đến mục tiêu, phương hướng chiến đấu.',
-          c: 'Quyết định sức mạnh, sự tồn tại, phát triển, chiến đấu, chiến thắng của LLVT.',
-          d: 'Quyết định đến cơ chế hoạt động của công an nhân dân.',
-          ans: 2 },
-        { id: 14, q: 'Quân đội nhân dân Việt Nam hiện nay có mấy Quân chủng, Bình chủng?',
-          a: '05 Quân chủng, 02 Bình chủng.',
-          b: '02 Quân chủng, 05 Bình chủng.',
-          c: '03 Quân chủng, 06 Bình chủng.',
-          d: '06 Quân chủng, 03 Bình chủng.',
-          ans: 1 },
-        { id: 15, q: 'Giữ vững và tăng cường sự lãnh đạo của Đảng Cộng sản Việt Nam đối với lực lượng vũ trang nhân dân Việt Nam. Được xác định là:',
-          a: 'Biện pháp xây dựng lực lượng vũ trang nhân dân.',
-          b: 'Nội dung, nhiệm vụ xây dựng lực lượng vũ trang nhân dân.',
-          c: 'Quan điểm, nguyên tắc xây dựng lực lượng vũ trang nhân dân.',
-          d: 'Phương hướng xây dựng lực lượng vũ trang nhân dân.',
-          ans: 2 },
-        { id: 16, q: 'Đứng trước diễn biến của tình hình, có khả năng phân tích và kết luận chính xác đúng, sai từ đó có thái độ đúng đắn với sự việc đó. Được xác định là:',
-          a: 'Tinh nhuệ về kĩ thuật của lực lượng vũ trang nhân dân.',
-          b: 'Tinh nhuệ về chính trị của lực lượng vũ trang nhân dân.',
-          c: 'Tinh nhuệ về chiến thuật của lực lượng vũ trang nhân dân.',
-          d: 'Tất cả các phương án trên đúng.',
-          ans: 1 },
-        { id: 17, q: 'Xây dựng quân đội nhân dân, công an nhân dân chính quy là:',
-          a: 'Thực hiện thống nhất về mọi mặt (tổ chức biên chế, trang bị…)',
-          b: 'Thực hiện thống nhất về chính trị, quân sự, hậu cần.',
-          c: 'Thực hiện thống nhất về nhận thức chính trị, tư tưởng.',
-          d: 'Thực hiện thống nhất về chính trị, mục tiêu chiến đấu.',
-          ans: 0 },
-        // Trang 3
-        { id: 18, q: 'Một trong những nội dung xây dựng quân đội cách mạng là:',
-          a: 'Xây dựng lòng tự hào, tự tôn dân tộc.',
-          b: 'Xây dựng truyền thống đánh giá các giữ nước.',
-          c: 'Xây dựng truyền thống quân đội của dân, đo dân, vì dân.',
-          d: 'Xây dựng bản chất giai cấp công nhân cho quân đội.',
-          ans: 3 },
-        { id: 19, q: 'Một trong những đặc điểm liên quan đến việc xây dựng lực lượng vũ trang nhân dân Việt Nam hiện nay?',
-          a: 'Xây dựng LLVTND trong điều kiện quốc tế đã thay đổi có nhiều diễn biến phức tạp.',
-          b: 'Xây dựng quân đội trong điều kiện quốc tế đã thay đổi có nhiều diễn biến phức tạp.',
-          c: 'Xây dựng công an trong điều kiện quốc tế đã thay đổi có nhiều diễn biến phức tạp.',
-          d: 'Xây dựng dân quân tự vệ trong điều kiện quốc tế đã thay đổi có nhiều diễn biến phức tạp.',
-          ans: 0 },
-        { id: 20, q: 'Lực lượng vũ trang nhân dân Việt Nam bao gồm:',
-          a: 'Quân đội nhân dân, công an nhân dân, dân quân tự vệ.',
-          b: 'Quân đội nhân dân, dự bị động viên, dân quân tự vệ.',
-          c: 'Hải quân, dự bị động viên, dân quân tự vệ.',
-          d: 'Không quân, cảnh sát biển, dân quân tự vệ.',
-          ans: 0 },
-        { id: 21, q: '“Chính trị trọng hơn quân sự” được Chủ tịch Hồ Chí Minh viết trong chỉ thị?',
-          a: 'Thành lập lực lượng Việt Minh.',
-          b: 'Thành lập lực lượng vũ trang địa phương.',
-          c: 'Thành lập đội Việt Nam tuyên truyền giải phóng quân.',
-          d: 'Thành lập lực lượng vũ trang ba thứ quân.',
-          ans: 2 },
-        { id: 22, q: 'Xây dựng quân đội về chính trị trong đó vấn đề nào là cốt lõi?',
-          a: 'Bản chất giai cấp công nhân.',
-          b: 'Tính nhân dân.',
-          c: 'Tính dân tộc.',
-          d: 'Phương án b, c đúng.',
-          ans: 0 },
-        { id: 23, q: '“Dân tộc Việt Nam nhất định phải được giải phóng. Muốn đánh chúng phải có lực lượng quân sự, phải có tổ chức”. Ai khẳng định?',
-          a: 'Chủ tịch Hồ Chí Minh.',
-          b: 'Đại tướng Võ Nguyên Giáp.',
-          c: 'Đại tướng Nguyễn Chí Thanh.',
-          d: 'Đại tướng Phạm Văn Trà.',
-          ans: 0 },
-        { id: 24, q: 'Đội Việt Nam tuyên truyền giải phóng quân được thành lập với bao nhiêu chiến sỹ, ai làm đội trưởng?',
-          a: '34 chiến sỹ, Võ Nguyên Giáp.',
-          b: '34 chiến sỹ, Hoàng Sâm.',
-          c: '34 chiến sỹ, Xích Thắng.',
-          d: '34 chiến sỹ, Hoàng Văn Thái.',
-          ans: 1 },
-        { id: 25, q: 'Theo tư tưởng Hồ Chí Minh: Quân đội ta có sức mạnh vô địch vì:',
-          a: 'Có Đảng xây dựng, Đảng lãnh đạo và giáo dục.',
-          b: 'Được trải nghiệm và trưởng thành trong chiến đấu.',
-          c: 'Nhà nước xây dựng quản lí điều hành.',
-          d: 'Được kế thừa truyền thống dựng và giữ nước của dân tộc.',
-          ans: 0 },
-        // Trang 5 (bỏ qua 4)
-        { id: 26, q: '“Trong khi đặt trọng tâm vào nhiệm vụ xây dựng CNXH, chúng ta không một chút lơi lỏng nhiệm vụ bảo vệ Tổ quốc, luôn luôn coi trọng quốc phòng an ninh, coi đó là nhiệm vụ chiến lược gắn bó chặt chẽ”. Đảng ta khẳng định trong:',
-          a: 'Văn kiện đại hội đại biểu Đảng toàn quốc lần thứ X.',
-          b: 'Văn kiện đại hội đại biểu Đảng toàn quốc lần thứ IX.',
-          c: 'Văn kiện đại hội đại biểu Đảng toàn quốc lần thứ VIII.',
-          d: 'Văn kiện đại hội đại biểu Đảng toàn quốc lần thứ XI.',
-          ans: 0 },
-        { id: 27, q: 'Chọn câu sai. Phương châm xây dựng nền quốc phòng toàn dân?',
-          a: 'Độc lập tự chủ.',
-          b: 'Liên minh quân sự với các nước khác.',
-          c: 'Kết hợp sức mạnh dân tộc với sức mạnh thời đại.',
-          d: 'Tranh thủ sự ủng hộ giúp đỡ của bạn bè quốc tế.',
-          ans: 1 },
-        { id: 28, q: '“Xây dựng thế trận lòng dân làm nền tảng phát huy sức mạnh tổng hợp của toàn dân tộc, trong đó Quân đội nhân dân và Công an nhân dân là nòng cốt”. Đảng ta khẳng định trong:',
-          a: 'Văn kiện đại hội Đảng toàn quốc lần thứ X.',
-          b: 'Văn kiện đại hội Đảng toàn quốc lần thứ IX.',
-          c: 'Văn kiện đại hội Đảng toàn quốc lần thứ VIII.',
-          d: 'Văn kiện đại hội Đảng toàn quốc lần thứ XI.',
-          ans: 0 },
-        { id: 29, q: 'Xây dựng nền quốc phòng toàn dân, an ninh nhân dân vững mạnh nhằm:',
-          a: 'Bảo vệ Tổ quốc Việt Nam xã hội chủ nghĩa.',
-          b: 'Tạo ra sức mạnh tổng hợp của đất nước.',
-          c: 'Tạo thế chủ động cho sự nghiệp xây dựng, bảo vệ Tổ quốc.',
-          d: 'Phương án a, b, c đúng.',
-          ans: 3 },
-        { id: 30, q: 'Tiềm lực nào là cơ sở quyết định sức mạnh vật chất và kĩ thuật của nền quốc phòng toàn dân?',
-          a: 'Tiềm lực chính trị tinh thần.',
-          b: 'Tiềm lực kinh tế.',
-          c: 'Tiềm lực quân sự.',
-          d: 'Tiềm lực khoa học công nghệ.',
-          ans: 2 },
-        { id: 31, q: 'Chọn câu sai. Mục đích của việc xây dựng nền quốc phòng toàn dân?',
-          a: 'Tạo thế chủ động cho sự nghiệp xây dựng và bảo vệ Tổ quốc.',
-          b: 'Tạo ra sức mạnh tổng hợp của đất nước.',
-          c: 'Tạo điều kiện liên kết quân sự phát triển quốc phòng an ninh.',
-          d: 'Bảo vệ vững chắc Tổ quốc Việt Nam xã hội chủ nghĩa.',
-          ans: 2 },
-        { id: 32, q: 'Sự khác nhau giữa nền quốc phòng toàn dân với nền an ninh nhân dân?',
-          a: 'Phương thức tổ chức lực lượng, hoạt động cụ thể, theo mục tiêu cụ thể được phân công.',
-          b: 'Phương thức tổ chức lực lượng, hoạt động cụ thể theo nhiệm vụ.',
-          c: 'Phương thức tổ chức, hoạt động cụ thể theo mục tiêu cụ thể được phân công.',
-          d: 'Phương thức tổ chức quân sự, hoạt động theo mục tiêu cụ thể được phân công.',
-          ans: 0 },
-        // Thêm vài câu từ trang 6-7
-        { id: 33, q: 'Thực chất của việc xây dựng tiềm lực chính trị tinh thần là:',
-          a: 'Xây dựng nhân tố con người mới Việt Nam XHCN.',
-          b: 'Xây dựng lực lượng tiến hành công tác tư tưởng.',
-          c: 'Xây dựng thế trận lòng dân.',
-          d: 'Xây dựng hệ thống chính trị trong thời chiến.',
-          ans: 0 },
-        { id: 34, q: 'Tiềm lực chính trị, tinh thần của nền quốc phòng toàn dân, an ninh nhân dân. Được xác định là:',
-          a: 'Nhân tố cần thiết tạo nên sức mạnh của quốc phòng – an ninh.',
-          b: 'Nhân tố quyết định tạo nên sức mạnh của quốc phòng – an ninh.',
-          c: 'Nhân tố cơ bản tạo nên sức mạnh của quốc phòng – an ninh.',
-          d: 'Nhân tố hàng đầu tạo nên sức mạnh của quốc phòng – an ninh.',
-          ans: 1 },
-        { id: 35, q: 'Thế trận quốc phòng, an ninh là:',
-          a: 'Sự tổ chức, bố trí lực lượng, tiềm lực mọi mặt của đất nước và của toàn dân trên toàn lãnh thổ.',
-          b: 'Sự bố trí lực lượng, tiềm lực mọi mặt của đất nước và của toàn dân trên toàn lãnh thổ.',
-          c: 'Sự tổ chức, bố trí lực lượng của đất nước và của toàn dân trên toàn lãnh thổ.',
-          d: 'Sự tổ chức, bố trí tiềm lực mọi mặt của đất nước và của toàn dân trên toàn lãnh thổ.',
-          ans: 0 },
-        { id: 36, q: '“Xây dựng thế trận quốc phòng toàn dân kết hợp chặt chẽ với thế trận an ninh vững chắc”. Đảng ta khẳng định trong:',
-          a: 'Văn kiện đại hội Đảng toàn quốc lần thứ VIII.',
-          b: 'Văn kiện đại hội Đảng toàn quốc lần thứ IX.',
-          c: 'Văn kiện đại hội Đảng toàn quốc lần thứ X.',
-          d: 'Văn kiện đại hội Đảng toàn quốc lần thứ XI.',
-          ans: 2 },
-        { id: 37, q: 'Chọn câu sai. Các chính sách xây dựng thế trận chiến tranh nhân dân của ông cha ta?',
-          a: 'Bách tính giai binh.',
-          b: 'Tiên phát chế nhân.',
-          c: 'Tận dân vi binh.',
-          d: 'Cử quốc nghênh địch.',
-          ans: 1 },
-        { id: 38, q: 'Cơ chế lãnh đạo, chỉ huy nền quốc phòng toàn dân?',
-          a: 'Đảng lãnh đạo, nhà nước thống nhất quản lý.',
-          b: 'Quân đội chỉ huy, quản lý.',
-          c: 'Nhân dân tự nguyện tham gia.',
-          d: 'Bộ quốc phòng lãnh đạo, chỉ huy.',
-          ans: 0 },
-        { id: 39, q: '“Phải đặc biệt coi trọng giữ vững ổn định chính trị - xã hội, tăng cường quốc phòng, an ninh, bảo vệ vững chắc độc lập, chủ quyền, thống nhất và toàn vẹn lãnh thổ để bảo đảm cho đất nước phát triển nhanh và bền vững”. Đảng ta khẳng định trong:',
-          a: 'Văn kiện đại hội Đảng toàn quốc lần thứ XI.',
-          b: 'Văn kiện đại hội Đảng toàn quốc lần thứ X.',
-          c: 'Văn kiện đại hội Đảng toàn quốc lần thứ IX.',
-          d: 'Văn kiện đại hội Đảng toàn quốc lần thứ VIII.',
-          ans: 0 },
-        { id: 40, q: '“Không quân đội nào, không khí giới nào có thể đánh ngã được tinh thần hy sinh của toàn thể một dân tộc”. Ai khẳng định?',
-          a: 'C. Mác.',
-          b: 'Ph. Ăngghen.',
-          c: 'V.I. Lênin.',
-          d: 'Hồ Chí Minh.',
-          ans: 3 }
+        // Câu 13 từ ảnh
+        {
+            id: 13,
+            q: 'Theo quan điểm của C.Mác - Ph.Ăngghen: con người, kinh tế, chính trị, văn hóa, xã hội, vũ khí trang bị, khoa học quân sự, được xác định là:',
+            options: [
+                'Bản chất giai cấp của quân đội',
+                'Sức mạnh chiến đấu của quân đội',
+                'Nguyên tắc xây dựng quân đội',
+                'Nguồn gốc ra đời của quân đội'
+            ],
+            answer: 1  // B
+        },
+        // Các câu khác từ QP1
+        {
+            id: 1,
+            q: 'Thực trạng của lực lượng vũ trang nhân dân trong giai đoạn hiện nay là một trong những:',
+            options: [
+                'Nhiệm vụ xây dựng lực lượng công an nhân dân trong điều kiện khu vực Đông Nam Á đã thay biến phức tạp.',
+                'Yêu cầu xây dựng lực lượng vũ trang nhân dân trong điều kiện khu vực Đông Nam Á đã thay đổi nhiều diễn biến phức tạp.',
+                'Biện pháp xây dựng lực lượng vũ trang trong điều kiện đất nước đã thay đổi có nhiều diễn biến phức tạp.',
+                'Đặc điểm liên quan đến xây dựng lực lượng vũ trang nhân dân Việt Nam.'
+            ],
+            answer: 3
+        },
+        {
+            id: 2,
+            q: 'Lực lượng vũ trang nhân dân là các tổ chức vũ trang và bán vũ trang của nhân dân Việt Nam do tổ chức nào lãnh đạo?',
+            options: [
+                'Đảng Cộng sản Việt Nam.',
+                'Quốc hội nước cộng hòa xã hội chủ nghĩa Việt Nam.',
+                'Nhà nước cộng hòa xã hội chủ nghĩa Việt Nam.',
+                'Mặt trận Tổ quốc Việt Nam.'
+            ],
+            answer: 0
+        },
+        {
+            id: 3,
+            q: 'Đảm bảo cho lực lượng vũ trang luôn trong tư thế sẵn sàng chiến đấu và chiến đấu thắng lợi được xác định là một trong những:',
+            options: [
+                'Phương hướng lãnh đạo của Đảng đối với lực lượng vũ trang.',
+                'Phương châm hành động cách mạng của quân đội.',
+                'Giải pháp chiến đấu của công an nhân dân.',
+                'Quan điểm, nguyên tắc cơ bản trong xây dựng lực lượng vũ trang nhân dân ta hiện nay.'
+            ],
+            answer: 3
+        },
+        {
+            id: 4,
+            q: 'Phương hướng xây dựng quân đội nhân dân Việt Nam hiện nay:',
+            options: [
+                'Cách mạng, chính qui, tinh nhuệ, từng bước hiện đại.',
+                'Mua sắm vũ khí trang bị hiện đại cho quân đội.',
+                'Nhanh chóng hiện đại hóa vũ khí trang bị cho quân đội.',
+                'Chú trọng xây dựng đời sống văn hóa tinh thần của quân đội.'
+            ],
+            answer: 0
+        },
+        {
+            id: 5,
+            q: 'Đảng lãnh đạo lực lượng vũ trang nhân dân Việt Nam theo nguyên tắc?',
+            options: [
+                'Tuyệt đối, toàn diện.',
+                'Tuyệt đối và trực tiếp.',
+                'Tuyệt đối, trực tiếp về mọi mặt.',
+                'Trực tiếp về mọi mặt.'
+            ],
+            answer: 2
+        },
+        {
+            id: 6,
+            q: 'Đội quân chiến đấu, đội quân công tác, đội quân sản xuất. Được xác định là:',
+            options: [
+                'Biện pháp xây dựng quân đội.',
+                'Nhiệm vụ của quân đội.',
+                'Chức năng của quân đội.',
+                'Nguyên tắc xây dựng của quân đội.'
+            ],
+            answer: 2
+        },
+        {
+            id: 7,
+            q: 'Một trong những quan điểm, nguyên tắc của Đảng về xây dựng lực lượng vũ trang nhân dân Việt Nam là:',
+            options: [
+                'Lấy chất lượng là chính, lấy xây dựng chính trị làm cơ sở.',
+                'Lấy số lượng là chính, lấy xây dựng chính trị làm cơ sở.',
+                'Lấy chất lượng là chính, lấy xây dựng quân sự làm cơ sở.',
+                'Lấy số lượng là chính, lấy xây dựng quân sự làm cơ sở.'
+            ],
+            answer: 0
+        },
+        {
+            id: 8,
+            q: 'Tổ chức các đơn vị lực lượng vũ trang:',
+            options: [
+                'Nhanh, mạnh, chính xác.',
+                'Tinh gọn, có sức cơ động nhanh.',
+                'Bảo đảm số lượng, chất lượng.',
+                'Gọn, mạnh, cơ động.'
+            ],
+            answer: 3
+        }
     ];
 
     // ============================================================
@@ -575,12 +401,14 @@
     const app = {
         data: questions,
         userAnswers: new Array(questions.length).fill(null),
-        isSubmitted: false,
+        // Mỗi câu: null = chưa chọn, false = sai, true = đúng (để tính điểm)
+        isCorrect: new Array(questions.length).fill(null),
 
         init() {
             this.renderQuestions();
             this.updateStats();
             this.bindEvents();
+            this.updateScoreDisplay();
         },
 
         renderQuestions() {
@@ -591,22 +419,18 @@
                 div.className = 'question-item';
                 div.dataset.index = idx;
 
-                const optionsHtml = ['a', 'b', 'c', 'd'].map((letter, optIdx) => {
-                    const text = q[letter];
-                    if (!text) return '';
-                    return `
-                        <label class="option" data-q="${idx}" data-opt="${optIdx}">
-                            <input type="radio" name="q${idx}" value="${optIdx}" />
-                            <span class="letter">${letter.toUpperCase()}.</span>
-                            <span class="answer-text">${text}</span>
-                        </label>
-                    `;
-                }).join('');
+                const optionsHtml = q.options.map((opt, optIdx) => `
+                    <label class="option" data-q="${idx}" data-opt="${optIdx}">
+                        <input type="radio" name="q${idx}" value="${optIdx}" />
+                        <span class="letter">${String.fromCharCode(65 + optIdx)}.</span>
+                        <span class="answer-text">${opt}</span>
+                    </label>
+                `).join('');
 
                 div.innerHTML = `
                     <div class="question-header">
                         <span class="qnum">Câu ${idx+1}</span>
-                        <span style="font-weight:400; color:#5b7b9c; font-size:14px;">${q.id}</span>
+                        <span style="font-weight:400; color:#5b7b9c; font-size:14px;">(ID ${q.id})</span>
                         <span class="result-badge" id="badge-${idx}" style="display:none;"></span>
                     </div>
                     <div class="question-text">${q.q}</div>
@@ -617,60 +441,79 @@
         },
 
         updateStats() {
-            document.getElementById('totalQ').textContent = this.data.length;
+            const total = this.data.length;
+            document.getElementById('totalQ').textContent = total;
             const answered = this.userAnswers.filter(a => a !== null).length;
             document.getElementById('answeredCount').textContent = answered;
         },
 
+        updateScoreDisplay() {
+            const total = this.data.length;
+            const correct = this.isCorrect.filter(v => v === true).length;
+            document.getElementById('liveScore').textContent = correct;
+            document.getElementById('scoreDisplay').textContent = `Điểm: ${correct} / ${total}`;
+            const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
+            document.getElementById('resultDetail').textContent = `Bạn đã trả lời đúng ${correct}/${total} câu (${percent}%).`;
+        },
+
         bindEvents() {
+            // Lắng nghe sự thay đổi radio
             document.querySelectorAll('input[type="radio"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    if (this.isSubmitted) return;
                     const label = e.target.closest('.option');
                     const qIdx = parseInt(label.dataset.q);
                     const optIdx = parseInt(label.dataset.opt);
+                    // Bỏ chọn các option khác trong cùng câu (do radio tự động)
+                    // Xóa trạng thái cũ của các option
                     document.querySelectorAll(`.option[data-q="${qIdx}"]`).forEach(opt => {
-                        opt.classList.remove('selected');
+                        opt.classList.remove('correct', 'wrong');
                     });
-                    label.classList.add('selected');
+                    // Đánh dấu đáp án đã chọn và kiểm tra
+                    const correctAns = this.data[qIdx].answer;
+                    const isCorrect = (optIdx === correctAns);
                     this.userAnswers[qIdx] = optIdx;
+                    this.isCorrect[qIdx] = isCorrect;
+
+                    // Hiển thị badge Đúng/Sai
+                    const badge = document.getElementById(`badge-${qIdx}`);
+                    badge.style.display = 'inline-block';
+                    if (isCorrect) {
+                        badge.textContent = 'Đúng';
+                        badge.className = 'result-badge correct';
+                        label.classList.add('correct');
+                    } else {
+                        badge.textContent = 'Sai';
+                        badge.className = 'result-badge wrong';
+                        label.classList.add('wrong');
+                        // Tô màu đáp án đúng (màu xanh) để người dùng biết
+                        document.querySelectorAll(`.option[data-q="${qIdx}"]`).forEach(opt => {
+                            if (parseInt(opt.dataset.opt) === correctAns) {
+                                opt.classList.add('correct');
+                            }
+                        });
+                    }
+
                     this.updateStats();
+                    this.updateScoreDisplay();
                 });
             });
 
+            // Nút làm lại
             document.getElementById('resetBtn').addEventListener('click', () => {
-                if (this.isSubmitted) {
-                    if (!confirm('Bạn đã nộp bài. Làm lại sẽ xóa kết quả. Tiếp tục?')) return;
-                }
                 this.resetExam();
             });
 
-            document.getElementById('submitBtn').addEventListener('click', () => {
-                if (this.isSubmitted) {
-                    alert('Bạn đã nộp bài rồi! Hãy nhấn "Làm lại" để làm mới.');
-                    return;
-                }
-                const unanswered = this.userAnswers.some(a => a === null);
-                if (unanswered) {
-                    if (!confirm('Bạn chưa trả lời hết câu hỏi. Vẫn muốn nộp bài?')) return;
-                }
-                this.submitExam();
-            });
-
+            // Nút xem đáp án đúng (hiển thị tất cả đáp án đúng)
             document.getElementById('showAnswerBtn').addEventListener('click', () => {
-                if (!this.isSubmitted) {
-                    alert('Bạn cần nộp bài trước khi xem đáp án.');
-                    return;
-                }
                 this.revealAnswers();
             });
         },
 
         resetExam() {
-            this.isSubmitted = false;
             this.userAnswers.fill(null);
+            this.isCorrect.fill(null);
             document.querySelectorAll('.option').forEach(opt => {
-                opt.classList.remove('selected', 'correct', 'wrong', 'disabled');
+                opt.classList.remove('correct', 'wrong');
                 const radio = opt.querySelector('input[type="radio"]');
                 if (radio) radio.checked = false;
             });
@@ -679,84 +522,22 @@
                 b.className = 'result-badge';
                 b.textContent = '';
             });
-            document.getElementById('resultBox').classList.remove('show');
-            document.getElementById('showAnswerBtn').disabled = true;
-            document.getElementById('submitBtn').disabled = false;
-            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-paper-plane"></i> Nộp bài';
             this.updateStats();
+            this.updateScoreDisplay();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         },
 
-        submitExam() {
-            this.isSubmitted = true;
-            let correct = 0;
-            this.data.forEach((q, idx) => {
-                const chosen = this.userAnswers[idx];
-                if (chosen !== null && chosen === q.ans) correct++;
-            });
-            const total = this.data.length;
-            document.getElementById('scoreDisplay').textContent = `Điểm: ${correct} / ${total}`;
-            const percent = Math.round((correct / total) * 100);
-            document.getElementById('resultDetail').textContent = `Bạn đã trả lời đúng ${correct}/${total} câu (${percent}%).`;
-
-            const box = document.getElementById('resultBox');
-            box.classList.add('show');
-
-            // Gán badge cho từng câu
-            document.querySelectorAll('.question-item').forEach((item, idx) => {
-                const badge = document.getElementById(`badge-${idx}`);
-                const chosen = this.userAnswers[idx];
-                if (chosen !== null) {
-                    badge.style.display = 'inline-block';
-                    if (chosen === this.data[idx].ans) {
-                        badge.textContent = 'Đúng';
-                        badge.className = 'result-badge correct';
-                    } else {
-                        badge.textContent = 'Sai';
-                        badge.className = 'result-badge wrong';
-                    }
-                } else {
-                    badge.style.display = 'inline-block';
-                    badge.textContent = 'Chưa làm';
-                    badge.className = 'result-badge unanswered';
-                }
-            });
-
-            // Tô màu đáp án
-            document.querySelectorAll('.option').forEach(opt => {
-                const qIdx = parseInt(opt.dataset.q);
-                const optIdx = parseInt(opt.dataset.opt);
-                const radio = opt.querySelector('input[type="radio"]');
-                radio.disabled = true;
-                opt.classList.add('disabled');
-
-                const correctAns = this.data[qIdx].ans;
-                if (optIdx === correctAns) {
-                    opt.classList.add('correct');
-                } else if (optIdx === this.userAnswers[qIdx] && this.userAnswers[qIdx] !== correctAns) {
-                    opt.classList.add('wrong');
-                }
-                if (optIdx === this.userAnswers[qIdx] && this.userAnswers[qIdx] === correctAns) {
-                    opt.classList.add('correct');
-                }
-            });
-
-            document.getElementById('showAnswerBtn').disabled = false;
-            document.getElementById('submitBtn').disabled = true;
-            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-check-circle"></i> Đã nộp';
-            this.updateStats();
-        },
-
         revealAnswers() {
+            // Hiển thị tất cả đáp án đúng
             document.querySelectorAll('.option').forEach(opt => {
                 const qIdx = parseInt(opt.dataset.q);
                 const optIdx = parseInt(opt.dataset.opt);
-                const correctAns = this.data[qIdx].ans;
+                const correctAns = this.data[qIdx].answer;
                 if (optIdx === correctAns) {
                     opt.classList.add('correct');
                 }
             });
-            alert('Đã hiển thị đáp án đúng (màu xanh).');
+            alert('Đã hiển thị đáp án đúng (màu xanh) cho tất cả câu hỏi.');
         }
     };
 
