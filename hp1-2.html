@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📘 Trắc nghiệm Quốc phòng - An ninh (Azota Style)</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: #f4f7fc;
+            padding: 20px;
+            color: #1e293b;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+            padding: 30px 35px 40px;
+            position: relative;
+            transition: 0.3s;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            border-bottom: 2px solid #e9edf4;
+            padding-bottom: 18px;
+            margin-bottom: 28px;
+        }
+        .header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1e4b7a, #2a6b9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+        .header .info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 15px;
+            color: #475569;
+        }
+        .header .info span {
+            background: #f1f5f9;
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+        .header .info .progress-text {
+            background: #dbeafe;
+            color: #1e4b7a;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .progress-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb, #3b82f6);
+            border-radius: 10px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+        .question-card {
+            background: #fafcff;
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            border: 1px solid #e9edf4;
+            transition: 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .question-card:hover {
+            border-color: #cbd5e1;
+        }
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .question-number {
+            font-weight: 700;
+            font-size: 17px;
+            color: #1e293b;
+            background: #eef2f6;
+            padding: 2px 14px;
+            border-radius: 30px;
+        }
+        .question-status {
+            font-size: 14px;
+            color: #64748b;
+        }
+        .question-text {
+            font-size: 17px;
+            line-height: 1.6;
+            font-weight: 500;
+            margin-bottom: 18px;
+            color: #0f172a;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-left: 4px;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 18px;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.15s;
+            font-size: 15px;
+            color: #1e293b;
+        }
+        .option:hover:not(.disabled) {
+            background: #f8fafc;
+            border-color: #94a3b8;
+        }
+        .option input[type="radio"] {
+            accent-color: #2563eb;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            cursor: pointer;
+            pointer-events: none;
+        }
+        .option.selected-correct {
+            border-color: #16a34a;
+            background: #f0fdf4;
+        }
+        .option.selected-wrong {
+            border-color: #dc2626;
+            background: #fef2f2;
+        }
+        .option.correct-reveal {
+            border-color: #16a34a;
+            background: #f0fdf4;
+        }
+        .option.wrong-reveal {
+            border-color: #dc2626;
+            background: #fef2f2;
+        }
+        .option.disabled {
+            opacity: 0.7;
+            cursor: default;
+        }
+        .option .letter {
+            font-weight: 700;
+            color: #475569;
+            width: 24px;
+            flex-shrink: 0;
+        }
+        .feedback-text {
+            margin-top: 10px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            display: none;
+        }
+        .feedback-text.correct {
+            color: #16a34a;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            display: block;
+        }
+        .feedback-text.wrong {
+            color: #dc2626;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            display: block;
+        }
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9edf4;
+        }
+        .footer .stats {
+            font-size: 15px;
+            color: #475569;
+        }
+        .footer .stats strong {
+            color: #1e293b;
+        }
+        .btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .btn-success {
+            background: #16a34a;
+            color: white;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25);
+        }
+        .btn-success:hover {
+            background: #15803d;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #94a3b8;
+        }
+        .btn-outline:hover {
+            background: #f1f5f9;
+        }
+        .result-box {
+            margin-top: 20px;
+            padding: 18px 24px;
+            border-radius: 16px;
+            background: #f8fafc;
+            border: 1px solid #d1d9e6;
+            display: none;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .result-box.show {
+            display: block;
+        }
+        .result-box .score {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1e4b7a;
+        }
+        .result-box .detail {
+            margin-top: 10px;
+            color: #334155;
+        }
+        .result-box .correct-count {
+            color: #16a34a;
+            font-weight: 600;
+        }
+        .result-box .wrong-count {
+            color: #dc2626;
+            font-weight: 600;
+        }
+        .tag {
+            display: inline-block;
+            background: #e2e8f0;
+            padding: 2px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            color: #475569;
+            margin-right: 8px;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 16px; }
+            .question-card { padding: 16px; }
+            .header h1 { font-size: 20px; }
+            .footer { flex-direction: column; align-items: stretch; }
+            .btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="app">
+    <div class="header">
+        <h1>📖 Trắc nghiệm Quốc phòng - An ninh</h1>
+        <div class="info">
+            <span class="progress-text" id="answeredCount">0/0</span>
+            <span id="totalQuestions">0</span>
+        </div>
+    </div>
+    <div class="progress-bar">
+        <div class="fill" id="progressFill"></div>
+    </div>
+
+    <div id="questionsContainer"></div>
+
+    <div class="footer">
+        <div class="stats">
+            <span id="statsText">Đã trả lời: <strong id="answeredStats">0</strong> / <strong id="totalStats">0</strong></span>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="btn btn-outline" onclick="resetExam()">🔄 Làm lại</button>
+            <button class="btn btn-primary" id="submitBtn" onclick="submitExam()">📝 Nộp bài</button>
+        </div>
+    </div>
+
+    <div class="result-box" id="resultBox">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <span class="score" id="scoreDisplay">0%</span>
+            <span style="font-size: 15px; color: #475569;">
+                <span class="correct-count" id="correctCount">0</span> đúng · 
+                <span class="wrong-count" id="wrongCount">0</span> sai
+            </span>
+        </div>
+        <div class="detail" id="resultDetail"></div>
+    </div>
+</div>
+
+<script>
+    // ============================================================
+    // 📌 DỮ LIỆU CÂU HỎI (trích xuất từ file PDF)
+    // ============================================================
+    const questionData = [
+        // ---- CHUYÊN ĐỀ 1: QUAN ĐIỂM CN MLN, TƯ TƯỞNG HCM ----
+        {
+            id: 1,
+            question: "Chọn câu sai. Nội dung học thuyết bảo vệ Tổ quốc XHCN của Lênin?",
+            options: [
+                "Bảo vệ Tổ quốc XHCN là một tất yếu khách quan",
+                "Bảo vệ Tổ quốc XHCN là nghĩa vụ, trách nhiệm của toàn dân",
+                "Đảng Cộng sản lãnh đạo mọi mặt sự nghiệp bảo vệ Tổ quốc XHCN",
+                "Là nhiệm vụ riêng của lực lượng vũ trang"
+            ],
+            answer: 3
+        },
+        {
+            id: 2,
+            question: "Theo tư tưởng Hồ Chí Minh, sự ra đời của quân đội là:",
+            options: [
+                "Tính quy luật trong đấu tranh giai cấp, đấu tranh dân tộc ở Việt Nam",
+                "Một tất yếu, là tính quy luật trong đấu tranh giai cấp, đấu tranh dân tộc ở Việt Nam",
+                "Đúng quy luật trong đấu tranh giải phóng dân tộc ở Việt Nam",
+                "Yêu cầu trong đấu tranh giành và giữ chính quyền ở Việt Nam"
+            ],
+            answer: 1
+        },
+        {
+            id: 3,
+            question: "Quan điểm của chủ nghĩa Mác - Lênin về chiến tranh:",
+            options: [
+                "Chiến tranh có từ khi xuất hiện loài người",
+                "Chiến tranh là hiện tượng chính trị - xã hội",
+                "Chiến tranh là hiện tượng chính trị - xã hội có tính lịch sử",
+                "Chiến tranh là hiện tượng tranh chấp của giai cấp thống trị"
+            ],
+            answer: 2
+        },
+        {
+            id: 4,
+            question: "Theo quan điểm chủ nghĩa Mác - Lênin: Chiến tranh kiểm tra sức sống của:",
+            options: [
+                "Đường lối quân sự và nghệ thuật quân sự",
+                "Toàn bộ chế độ chính trị - xã hội",
+                "Nền kinh tế xã hội",
+                "Phương án a và c đúng"
+            ],
+            answer: 1
+        },
+        {
+            id: 5,
+            question: "Chủ tịch Hồ Chí Minh khẳng định Quân đội nhân dân Việt Nam có:",
+            options: [
+                "3 nhiệm vụ, 2 chức năng",
+                "3 nhiệm vụ, 3 chức năng",
+                "2 nhiệm vụ, 2 chức năng",
+                "2 nhiệm vụ, 3 chức năng"
+            ],
+            answer: 3
+        },
+        {
+            id: 6,
+            question: "Tư tưởng Hồ Chí Minh về bảo vệ Tổ quốc Việt Nam XHCN?",
+            options: [
+                "Bảo vệ Tổ quốc Việt Nam XHCN là tất yếu khách quan",
+                "Mục tiêu bảo vệ Tổ quốc là độc lập dân tộc và CNXH là nghĩa vụ trách nhiệm của mọi công dân",
+                "Xây dựng đất nước độc lập, dân giàu, nước mạnh, xã hội dân chủ, công bằng, văn minh",
+                "Phương án a, b đúng"
+            ],
+            answer: 3
+        },
+        {
+            id: 7,
+            question: "Một trong những quan điểm chủ nghĩa Mác - Lênin về bảo vệ Tổ quốc XHCN là:",
+            options: [
+                "Bảo vệ Tổ quốc xã hội chủ nghĩa là một tất yếu khách quan",
+                "Bảo vệ Tổ quốc là một tất yếu khách quan",
+                "Bảo vệ Tổ quốc xã hội chủ nghĩa là nhiệm vụ tất yếu của quân đội",
+                "Bảo vệ Tổ quốc là một quy luật khách quan"
+            ],
+            answer: 0
+        },
+        {
+            id: 8,
+            question: "Theo quan điểm của chủ nghĩa Mác - Lênin: Bảo vệ Tổ quốc xã hội chủ nghĩa, phải thường xuyên tăng cường:",
+            options: [
+                "Tiềm lực quốc phòng gắn với phát triển kinh tế xã hội",
+                "Tiềm lực quân sự gắn với phát triển kinh tế - xã hội",
+                "Sức mạnh quân sự gắn với phát triển kinh tế - xã hội",
+                "Tiềm lực an ninh gắn với phát triển kinh tế xã hội"
+            ],
+            answer: 0
+        },
+        {
+            id: 9,
+            question: "Theo tư tưởng Hồ Chí Minh, sử dụng bạo lực cách mạng để:",
+            options: [
+                "Giải phóng dân tộc",
+                "Giành chính quyền và bảo vệ chính quyền",
+                "Xây dựng và bảo vệ chính quyền cách mạng",
+                "Phương án a và c đúng"
+            ],
+            answer: 1
+        },
+        {
+            id: 10,
+            question: "Khi nói về bản chất của chủ nghĩa đế quốc, Hồ Chí Minh đã khái quát bằng hình ảnh:",
+            options: [
+                "Con rắn độc",
+                "Con bạch tuộc",
+                "Con rồng tre",
+                "Con đỉa hai vòi"
+            ],
+            answer: 3
+        },
+        {
+            id: 11,
+            question: "'Giành chính quyền đã khó, nhưng giữ được chính quyền còn khó khăn hơn'. Ai khẳng định?",
+            options: [
+                "C. Mác",
+                "V.I. Lênin",
+                "Ph. Ăngghen",
+                "Chủ tịch Hồ Chí Minh"
+            ],
+            answer: 1
+        },
+        {
+            id: 12,
+            question: "Trong thời đại ngày nay còn chủ nghĩa đế quốc thì còn nguy cơ xảy ra chiến tranh, chiến tranh là bạn đường của chủ nghĩa đế quốc. Ai khẳng định?",
+            options: [
+                "C. Mác",
+                "Ph. Ăngghen",
+                "V.I. Lênin",
+                "C. Ph. Claudovit"
+            ],
+            answer: 2
+        },
+        {
+            id: 13,
+            question: "Theo quan điểm của C.Mác - Ph.Ăngghen: con người, kinh tế, chính trị, văn hóa, xã hội, vũ khí trang bị, khoa học quân sự, được xác định là:",
+            options: [
+                "Bản chất giai cấp của quân đội",
+                "Sức mạnh chiến đấu của quân đội",
+                "Nguyên tắc xây dựng quân đội",
+                "Nguồn gốc ra đời của quân đội"
+            ],
+            answer: 1
+        },
+        {
+            id: 14,
+            question: "'Dân tộc Việt Nam nhất định phải được giải phóng. Muốn đánh chúng phải có lực lượng quân sự, phải có tổ chức'. Ai khẳng định?",
+            options: [
+                "Chủ tịch Hồ Chí Minh",
+                "Chủ tịch Tôn Đức Thắng",
+                "Thủ tướng Phạm Văn Đồng",
+                "Đại tướng Võ Nguyên Giáp"
+            ],
+            answer: 0
+        },
+        {
+            id: 15,
+            question: "Khi bàn về chiến tranh, Claudovit đã quan niệm: Chiến tranh là một hành vi bạo lực. Nhưng lại không lý giải được:",
+            options: [
+                "Bản chất của chiến tranh",
+                "Quy luật của chiến tranh",
+                "Tính chất của chiến tranh",
+                "Đặc điểm của chiến tranh"
+            ],
+            answer: 0
+        },
+        {
+            id: 16,
+            question: "Muốn xóa bỏ chiến tranh phải xóa bỏ:",
+            options: [
+                "Mâu thuẫn chính trị xã hội",
+                "Lực lượng quân đội",
+                "Nguồn gốc kinh tế, xã hội",
+                "Nguồn gốc kinh tế, chính trị"
+            ],
+            answer: 2
+        },
+        {
+            id: 17,
+            question: "Xác định tính chất xã hội của chiến tranh, phân tích tính chất chính trị - xã hội của chiến tranh xâm lược thuộc địa, chiến tranh ăn cướp của chủ nghĩa đế quốc, chỉ ra tính chất chính nghĩa của chiến tranh giải phóng dân tộc. Được xác định là:",
+            options: [
+                "Quan điểm C.Mác - Ph.Ăngghen về chiến tranh",
+                "Tư tưởng Hồ Chí Minh về chiến tranh",
+                "Quan điểm của V.I.Lênin về chiến tranh",
+                "Quan điểm của C.Mác - V.I.Lênin về chiến tranh"
+            ],
+            answer: 1
+        },
+
+        // ---- XÂY DỰNG NỀN QUỐC PHÒNG TOÀN DÂN ----
+        {
+            id: 18,
+            question: "'Sức mạnh quốc phòng của đất nước, được xây dựng trên nền tảng chính trị, tinh thần, nhân lực, vật lực, tài chính, mang tính chất toàn dân, toàn diện, độc lập, tự chủ, tự lực, tự cường'. Được xác định là:",
+            options: [
+                "Khái niệm nền quốc phòng toàn dân",
+                "Khái niệm an ninh nhân dân",
+                "Khái niệm lực lượng vũ trang nhân dân",
+                "Khái niệm bảo vệ Tổ quốc"
+            ],
+            answer: 0
+        },
+        {
+            id: 19,
+            question: "Nền quốc phòng toàn dân, an ninh nhân dân chỉ có mục đích duy nhất là tự vệ chính đáng. Được xác định là một trong những:",
+            options: [
+                "Vị trí nền quốc phòng toàn dân, an ninh nhân dân",
+                "Đặc trưng nền quốc phòng toàn dân, an ninh nhân dân",
+                "Khái niệm nền quốc phòng toàn dân, an ninh nhân dân",
+                "Biện pháp xây dựng nền quốc phòng toàn dân, an ninh nhân dân"
+            ],
+            answer: 1
+        },
+        {
+            id: 20,
+            question: "Điền vào chỗ (...) cho hoàn chỉnh khái niệm về quốc phòng: Quốc phòng là công cuộc giữ nước bằng sức mạnh tổng hợp của toàn dân tộc, trong đó ..., lực lượng vũ trang nhân dân làm nòng cốt.",
+            options: [
+                "Sức mạnh kinh tế là đặc trưng",
+                "Sức mạnh khoa học công nghệ là đặc trưng",
+                "Sức mạnh quân sự là đặc trưng",
+                "Sức mạnh chính trị là đặc trưng"
+            ],
+            answer: 2
+        },
+        {
+            id: 21,
+            question: "Nền quốc phòng, an ninh vì dân, của dân và do toàn thể nhân dân tiến hành. Được xác định là một trong những:",
+            options: [
+                "Đặc trưng nền quốc phòng toàn dân, an ninh nhân dân",
+                "Vị trí nền quốc phòng toàn dân, an ninh nhân dân",
+                "Nội dung nền quốc phòng toàn dân, an ninh nhân dân",
+                "Biện pháp xây dựng nền quốc phòng toàn dân, an ninh nhân dân"
+            ],
+            answer: 0
+        },
+        {
+            id: 22,
+            question: "Xây dựng lực lượng quốc phòng và an ninh đáp ứng yêu cầu bảo vệ vững chắc Tổ quốc Việt Nam xã hội chủ nghĩa. Được xác định là một trong những:",
+            options: [
+                "Nội dung xây dựng nền quốc phòng và an ninh",
+                "Vị trí xây dựng nền quốc phòng và an ninh",
+                "Biện pháp xây dựng nền quốc phòng và an ninh",
+                "Nhiệm vụ xây dựng nền quốc phòng và an ninh"
+            ],
+            answer: 3
+        },
+        {
+            id: 23,
+            question: "Nền quốc phòng toàn dân là sức mạnh quốc phòng của đất nước, được xây dựng trên nền tảng chính trị, tinh thần, nhân lực, vật lực, tài chính, mang tính chất toàn dân, toàn diện, độc lập, tự chủ, tự cường. Được quy định tại:",
+            options: [
+                "Khoản 1, Điều 7, Luật quốc phòng 2018",
+                "Khoản 1, Điều 8, Luật quốc phòng 2018",
+                "Khoản 1, Điều 9, Luật quốc phòng 2018",
+                "Khoản 1, Điều 10, Luật quốc phòng 2018"
+            ],
+            answer: 0
+        },
+        {
+            id: 24,
+            question: "Tiềm lực nào sau đây là cơ sở vật chất cho các tiềm lực khác trong xây dựng nền quốc phòng toàn dân, an ninh nhân dân?",
+            options: [
+                "Tiềm lực chính trị, tinh thần",
+                "Tiềm lực kinh tế",
+                "Tiềm lực quân sự, an ninh",
+                "Tiềm lực khoa học, công nghệ"
+            ],
+            answer: 1
+        },
+        {
+            id: 25,
+            question: "Thực chất của việc xây dựng tiềm lực chính trị, tinh thần là:",
+            options: [
+                "Xây dựng nhân tố con người mới Việt Nam xã hội chủ nghĩa",
+                "Xây dựng lực lượng tiến hành công tác tư tưởng",
+                "Xây dựng thế trận lòng dân",
+                "Xây dựng hệ thống chính trị trong thời chiến"
+            ],
+            answer: 2
+        },
+        {
+            id: 26,
+            question: "'Không quân đội nào, không khí giới nào có thể đánh ngã được tinh thần hy sinh của toàn thể một dân tộc'. Ai khẳng định?",
+            options: [
+                "C. Mác",
+                "Ph. Ăngghen",
+                "V.I. Lênin",
+                "Hồ Chí Minh"
+            ],
+            answer: 3
+        },
+        {
+            id: 27,
+            question: "Nền quốc phòng toàn dân gắn chặt với nền an ninh nhân dân. Được xác định là một trong những:",
+            options: [
+                "Đặc trưng của nền quốc phòng toàn dân và an ninh nhân dân",
+                "Vị trí của nền quốc phòng toàn dân và an ninh nhân dân",
+                "Khái niệm của nền quốc phòng toàn dân và an ninh nhân dân",
+                "Mục đích của nền quốc phòng toàn dân và an ninh nhân dân"
+            ],
+            answer: 0
+        },
+
+        // ---- CHIẾN TRANH NHÂN DÂN ----
+        {
+            id: 28,
+            question: "Đối tượng tác chiến của chiến tranh nhân dân là:",
+            options: [
+                "Chủ nghĩa khủng bố quốc tế và các thế lực phản động",
+                "Chủ nghĩa đế quốc",
+                "Chủ nghĩa đế quốc và các thế lực phản động",
+                "Tất cả các phương án trên"
+            ],
+            answer: 2
+        },
+        {
+            id: 29,
+            question: "Đánh nhanh, thắng nhanh khi tiến hành chiến tranh xâm lược nước ta. Được hiểu là:",
+            options: [
+                "Âm mưu, thủ đoạn của địch",
+                "Cách đánh của địch",
+                "Phương thức tác chiến của địch",
+                "Phương châm tác chiến của địch"
+            ],
+            answer: 0
+        },
+        {
+            id: 30,
+            question: "Địa hình thời tiết nước ta phức tạp khó khăn cho địch khi sử dụng lực lượng, phương tiện. Được xác định là:",
+            options: [
+                "Đặc điểm của chiến tranh",
+                "Khái niệm của chiến tranh",
+                "Tính chất của chiến tranh",
+                "Điểm yếu của kẻ thù"
+            ],
+            answer: 3
+        },
+        {
+            id: 31,
+            question: "Tiến hành chiến tranh toàn diện, kết hợp chặt chẽ giữa đấu tranh Quân sự, chính trị, ngoại giao, kinh tế, văn hóa và tư tưởng, lấy đấu tranh quân sự là chủ yếu, lấy thắng lợi trên chiến trường là yếu tố quyết định để giành thắng lợi trong chiến tranh. Được xác định là:",
+            options: [
+                "Mục đích của chiến tranh nhân dân",
+                "Biện pháp của chiến tranh nhân dân",
+                "Quan điểm của Đảng trong chiến tranh nhân dân",
+                "Nội dung của chiến tranh nhân dân"
+            ],
+            answer: 2
+        },
+        {
+            id: 32,
+            question: "Yếu tố quyết định đến thắng lợi của chiến tranh nhân dân bảo vệ Tổ quốc Việt Nam xã hội chủ nghĩa là:",
+            options: [
+                "Sự quản lý, điều hành của nhà nước",
+                "Ý chí, quyết tâm của nhân dân Việt Nam",
+                "Đảng Cộng sản Việt Nam lãnh đạo",
+                "Sự giúp đỡ của nhân dân yêu chuộng hòa bình trên thế giới"
+            ],
+            answer: 2
+        },
+        {
+            id: 33,
+            question: "Mục đích của chiến tranh nhân dân là:",
+            options: [
+                "Làm thất bại chiến lược 'Diễn biến hòa bình' của các thế lực thù địch",
+                "Sử dụng tiềm lực của đất nước, nhất là tiềm lực quốc phòng, an ninh nhằm đánh bại ý đồ xâm lược của kẻ thù",
+                "Làm thất bại âm mưu, thủ đoạn bạo loạn lật đổ của các thế lực thù địch",
+                "Phương án a, b, c đúng"
+            ],
+            answer: 1
+        },
+        {
+            id: 34,
+            question: "Chiến tranh nhân dân bảo vệ Tổ quốc Việt Nam xã hội chủ nghĩa là cuộc chiến tranh toàn dân, toàn diện. Trong đó lực lượng nào làm nòng cốt?",
+            options: [
+                "Lực lượng quân đội và công an",
+                "Lực lượng quân đội",
+                "Lực lượng vũ trang ba thứ quân",
+                "Lực lượng vũ trang địa phương"
+            ],
+            answer: 2
+        },
+        {
+            id: 35,
+            question: "Chiến tranh nhân dân bảo vệ Tổ quốc Việt Nam XHCN là cuộc chiến tranh hiện đại về vũ khí, trang bị, tri thức và nghệ thuật quân sự. Được hiểu là:",
+            options: [
+                "Điểm mạnh của chiến tranh",
+                "Đặc điểm của chiến tranh",
+                "Tính chất của chiến tranh",
+                "Quan điểm của chiến tranh"
+            ],
+            answer: 2
+        },
+        {
+            id: 36,
+            question: "Bản chất của chiến tranh?",
+            options: [
+                "Là sự kế tục của chính trị bằng thủ đoạn bạo lực",
+                "Là thủ đoạn của kinh tế, chính trị xã hội",
+                "Là quy luật của xã hội loài người",
+                "Là bản chất của xã hội loài người"
+            ],
+            answer: 0
+        },
+        {
+            id: 37,
+            question: "Tiến hành chiến tranh nhân dân, toàn dân đánh giặc lấy lực lượng vũ trang nhân dân làm nòng cốt. Được xác định là:",
+            options: [
+                "Mục đích",
+                "Quan điểm",
+                "Tính chất",
+                "Biện pháp"
+            ],
+            answer: 1
+        },
+        {
+            id: 38,
+            question: "Lực lượng nòng cốt của chiến tranh nhân dân?",
+            options: [
+                "Lực lượng vũ trang nhân dân",
+                "Bộ đội chủ lực",
+                "Hải quân, cảnh sát biển",
+                "Bộ đội địa phương"
+            ],
+            answer: 0
+        },
+
+        // ---- XÂY DỰNG LLVTND ----
+        {
+            id: 39,
+            question: "Lực lượng vũ trang nhân dân Việt Nam do tổ chức nào lãnh đạo?",
+            options: [
+                "Đảng Cộng sản Việt Nam",
+                "Quốc hội",
+                "Chính phủ",
+                "Mặt trận Tổ quốc"
+            ],
+            answer: 0
+        },
+        {
+            id: 40,
+            question: "Chiến đấu giành và giữ độc lập, chủ quyền thống nhất và toàn vẹn lãnh thổ của Tổ quốc. Được xác định là một trong những:",
+            options: [
+                "Nhiệm vụ của lực lượng vũ trang nhân dân Việt Nam",
+                "Đặc điểm của lực lượng vũ trang nhân dân Việt Nam",
+                "Nội dung của lực lượng vũ trang nhân dân Việt Nam",
+                "Tính chất của lực lượng vũ trang nhân dân Việt Nam"
+            ],
+            answer: 0
+        },
+        {
+            id: 41,
+            question: "Xây dựng bản chất giai cấp công nhân cho quân đội, công an, làm cho lực lượng này tuyệt đối trung thành với Đảng với Tổ quốc với nhân dân. Được xác định là một trong những:",
+            options: [
+                "Nội dung xây dựng quân đội, công an cách mạng",
+                "Nội dung xây dựng quân đội, công an chính quy",
+                "Nội dung xây dựng quân đội, công an tinh nhuệ",
+                "Nội dung xây dựng quân đội, công an hiện đại"
+            ],
+            answer: 0
+        },
+        {
+            id: 42,
+            question: "Thành phần của lực lượng vũ trang nhân dân Việt Nam gồm:",
+            options: [
+                "Quân đội nhân dân, Công an nhân dân và Dân quân tự vệ",
+                "Quân đội nhân dân, Công an nhân dân và Hội cựu Chiến binh",
+                "Quân đội nhân dân, Công an nhân dân và Đoàn thanh niên",
+                "Quân đội nhân dân, Công an nhân dân và Thanh niên xung kích"
+            ],
+            answer: 0
+        },
+        {
+            id: 43,
+            question: "Quân đội nhân dân Việt Nam gồm có mấy Quân khu, Quân đoàn?",
+            options: [
+                "05 Quân khu, 02 Quân đoàn",
+                "06 Quân khu, 03 Quân đoàn",
+                "07 Quân khu, 04 Quân đoàn",
+                "08 Quân khu, 05 Quân đoàn"
+            ],
+            answer: 2
+        },
+        {
+            id: 44,
+            question: "Quân đội nhân dân Việt Nam hiện nay có mấy Quân chủng, Binh chủng?",
+            options: [
+                "05 Quân chủng, 02 Binh chủng",
+                "02 Quân chủng, 05 Binh chủng",
+                "03 Quân chủng, 06 Binh chủng",
+                "06 Quân chủng, 03 Binh chủng"
+            ],
+            answer: 2
+        },
+        {
+            id: 45,
+            question: "Ngày 22 tháng 12 hằng năm là ngày truyền thống của lực lượng:",
+            options: [
+                "Quân đội nhân dân",
+                "Công an nhân dân",
+                "Dân quân tự vệ",
+                "Dự bị động viên"
+            ],
+            answer: 0
+        },
+        {
+            id: 46,
+            question: "Theo tư tưởng Hồ Chí Minh: Quân đội ta có sức mạnh vô địch vì:",
+            options: [
+                "Có Đảng xây dựng, Đảng lãnh đạo và giáo dục",
+                "Được trải nghiệm và trưởng thành trong chiến đấu",
+                "Có nhà nước xây dựng quản lý điều hành",
+                "Được kế thừa truyền thống dựng và giữ nước của dân tộc"
+            ],
+            answer: 0
+        },
+
+        // ---- KẾT HỢP KINH TẾ VỚI QUỐC PHÒNG ----
+        {
+            id: 47,
+            question: "Trong mối quan hệ giữa kinh tế và quốc phòng thì yếu tố ... suy đến cùng quyết định đến quốc phòng và an ninh.",
+            options: [
+                "Kinh tế",
+                "Văn hóa",
+                "Khoa học",
+                "Ngoại giao"
+            ],
+            answer: 0
+        },
+        {
+            id: 48,
+            question: "Kết hợp phát triển kinh tế, văn hóa, xã hội với tăng cường củng cố quốc phòng và an ninh được xác định là quy luật của:",
+            options: [
+                "Chế độ xã hội chủ nghĩa",
+                "Mọi quốc gia có chủ quyền",
+                "Mọi quốc gia dân tộc có độc lập chủ quyền",
+                "Chế độ tư bản chủ nghĩa"
+            ],
+            answer: 1
+        },
+        {
+            id: 49,
+            question: "Kinh tế và quốc phòng có mối quan hệ chặt chẽ và tác động qua lại lẫn nhau, trong đó lĩnh vực nào sau đây giữ vai trò quyết định?",
+            options: [
+                "Kinh tế",
+                "Chính trị",
+                "Văn hóa",
+                "Quốc phòng"
+            ],
+            answer: 0
+        },
+        {
+            id: 50,
+            question: "Trong xây dựng các công trình quốc phòng, quân sự, phòng thủ dân sự, thiết bị chiến trường phải bảo đảm tính:",
+            options: [
+                "Cạnh tranh",
+                "Thị trường",
+                "Lưỡng dụng",
+                "Thẩm mỹ"
+            ],
+            answer: 2
+        },
+        {
+            id: 51,
+            question: "Kế sách 'ngụ binh ư nông' được thực hiện đầu tiên ở nước ta vào triều đại nào?",
+            options: [
+                "Nhà Đinh",
+                "Nhà Tiền Lê",
+                "Nhà Lý",
+                "Nhà Hậu Lê"
+            ],
+            answer: 2
+        },
+        {
+            id: 52,
+            question: "'Dựng nước đi đôi với giữ nước' có ý nghĩa gì đối với nước ta?",
+            options: [
+                "Là quy luật tồn tại và phát triển của dân tộc",
+                "Là góp phần giữ gìn hòa bình cho khu vực",
+                "Là góp phần giữ gìn hòa bình trên thế giới",
+                "Là góp phần giữ vững ổn định cho khu vực và trên thế giới"
+            ],
+            answer: 0
+        },
+
+        // ---- NGHỆ THUẬT QUÂN SỰ VIỆT NAM ----
+        {
+            id: 53,
+            question: "Cuộc khởi nghĩa Lam Sơn năm 1418 – 1427 do ai lãnh đạo?",
+            options: [
+                "Lê Lợi - Nguyễn Trãi",
+                "Nguyễn Trãi - Trần Nguyên Hãn",
+                "Quang Trung - Ngô Thì Nhậm",
+                "Trần Quốc Tuấn - Trần Quang Khải"
+            ],
+            answer: 0
+        },
+        {
+            id: 54,
+            question: "Thời nhà Trần chống quân Nguyên - Mông lần thứ 2 diễn ra vào thời gian nào?",
+            options: [
+                "Năm 1258",
+                "Năm 1285",
+                "Năm 1287",
+                "Năm 1288"
+            ],
+            answer: 1
+        },
+        {
+            id: 55,
+            question: "Cuộc kháng chiến chống quân Nguyên - Mông lần thứ ba do nhà Trần lãnh đạo, quân và dân ta đã đánh thắng:",
+            options: [
+                "03 vạn quân",
+                "50 vạn quân",
+                "60 vạn quân",
+                "29 vạn quân"
+            ],
+            answer: 1
+        },
+        {
+            id: 56,
+            question: "Trong lịch sử chống giặc ngoại xâm. Ai là người lãnh đạo quân dân ta đã giành thắng lợi đánh quân Nam Hán ở đâu, thời gian nào?",
+            options: [
+                "Lý Thường Kiệt. Sông Như Nguyệt. Năm 1077",
+                "Ngô Quyền. Sông Bạch Đằng. Năm 938",
+                "Lê Lợi - Nguyễn Trãi. Lũng Nhai. Năm 1418",
+                "Quang Trung. Ngọc Hồi. Năm 1789"
+            ],
+            answer: 1
+        },
+        {
+            id: 57,
+            question: "Nghệ thuật quân sự Việt Nam có mấy bộ phận hợp thành?",
+            options: [
+                "03; Nghệ thuật chiến dịch, chiến thuật và tác chiến điện tử",
+                "02, Chiến lược quân sự, nghệ thuật chiến dịch",
+                "03, Chiến lược quân sự, nghệ thuật chiến dịch và chiến thuật",
+                "02, Nghệ thuật chiến thuật và cách đánh"
+            ],
+            answer: 2
+        },
+        {
+            id: 58,
+            question: "Trong nghệ thuật quân sự Việt Nam, bộ phận nào dưới đây giữ vai trò chủ đạo?",
+            options: [
+                "Chiến lược quân sự",
+                "Nghệ thuật chiến dịch",
+                "Nghệ thuật chiến thuật",
+                "Phương thức tiến hành chiến tranh"
+            ],
+            answer: 0
+        },
+        {
+            id: 59,
+            question: "Người phất cờ khởi nghĩa tại núi Nưa - Triệu Sơn - Thanh Hóa, vào năm nào?",
+            options: [
+                "Triệu Thị Trinh, năm 248",
+                "Trưng Nữ Vương, năm 248",
+                "Công chúa Ngọc Hân, năm 1770 - 1799",
+                "Bùi Thị Xuân, năm 1802"
+            ],
+            answer: 0
+        },
+        {
+            id: 60,
+            question: "Chiến dịch Điện Biên Phủ năm 1954, được xác định là loại hình chiến dịch gì?",
+            options: [
+                "Tiến công",
+                "Phòng ngự",
+                "Phản công",
+                "Tập kích"
+            ],
+            answer: 0
+        },
+        {
+            id: 61,
+            question: "Để đánh thắng 29 vạn quân xâm lược Mãn Thanh và 2 vạn quân bán nước Lê Chiêu Thống. Quang Trung đã dùng lối đánh:",
+            options: [
+                "Đánh chắc, tiến chắc, bất ngờ",
+                "Đánh nhanh sục sạo kỹ vừa đánh vừa địch vận",
+                "Táo bạo, thần tốc, bất ngờ",
+                "Bí mật, tinh khôn, mưu mẹo"
+            ],
+            answer: 2
+        },
+        {
+            id: 62,
+            question: "Quân Tây Sơn tiêu diệt 5 vạn quân Xiêm tại đâu? Vào thời gian nào?",
+            options: [
+                "Rạch Gầm - Xoài Mút, năm 1782 – 1783",
+                "Rạch Gầm - Xoài Mút, năm 1783 – 1784",
+                "Rạch Gầm - Xoài Mút, năm 1784 – 1785",
+                "Rạch Gầm - Xoài Mút, năm 1785 – 1786"
+            ],
+            answer: 2
+        },
+        {
+            id: 63,
+            question: "Một trong những lý do chính mà nước ta thường xuyên bị kẻ thù nhòm ngó, đe dọa, tiến công xâm lược?",
+            options: [
+                "Việt Nam có vị trí địa lý chiến lược trọng yếu ở khu vực Đông Nam Á và Châu Á Thái Bình Dương",
+                "Việt Nam có nhiều tài nguyên thiên nhiên và khoáng sản với trữ lượng lớn nhất ở khu vực Đông Nam Á và Châu Á Thái Bình Dương",
+                "Việt Nam có địa hình hiểm trở",
+                "Việt Nam có đồng bằng sông Cửu Long lớn thứ 2 trên thế giới"
+            ],
+            answer: 0
+        },
+        {
+            id: 64,
+            question: "Lý Thường Kiệt đã sử dụng biện pháp 'Tiên phát chế nhân', nghĩa là:",
+            options: [
+                "Chủ động tiến công trước, đẩy kẻ thù vào thế bị động",
+                "Thực hiện đánh nhanh và thắng nhanh",
+                "Nhanh chóng hoàn thành mục tiêu đặt ra",
+                "Chủ động tiến công phá vỡ thế phòng thủ của giặc"
+            ],
+            answer: 0
+        },
+        {
+            id: 65,
+            question: "Một trong những nội dung nghệ thuật đánh giặc của ông cha ta là?",
+            options: [
+                "Lấy nhỏ đánh lớn, lấy ít địch nhiều, lấy yếu chống mạnh",
+                "Thực hiện đánh nhanh, thắng nhanh sang đánh chắc, tiến chắc",
+                "Đem đại nghĩa thắng hung tàn, lấy chí nhân thay cường bạo",
+                "Thực hiện đánh chắc, tiến chắc sang đánh nhanh, tiến nhanh"
+            ],
+            answer: 0
+        },
+
+        // ---- BIÊN GIỚI LÃNH THỔ ----
+        {
+            id: 66,
+            question: "Các yếu tố nào cấu thành nên quốc gia?",
+            options: [
+                "Lãnh thổ, dân cư và biên giới",
+                "Lãnh thổ, biên giới và hệ thống chính trị",
+                "Lãnh thổ, biển đảo và chế độ chính trị",
+                "Lãnh thổ, dân cư và quyền lực công cộng"
+            ],
+            answer: 3
+        },
+        {
+            id: 67,
+            question: "Lãnh thổ quốc gia là phạm vi không gian được giới hạn bởi:",
+            options: [
+                "Vùng đặc quyền kinh tế",
+                "Lãnh hải quốc gia",
+                "Biên giới quốc gia",
+                "Nội thủy quốc gia"
+            ],
+            answer: 2
+        },
+        {
+            id: 68,
+            question: "Lãnh thổ quốc gia Việt Nam bao gồm đầy đủ các yếu tố nào sau đây?",
+            options: [
+                "Vùng đất, vùng trời, ngoài ra còn có lãnh thổ quốc gia đặc biệt",
+                "Vùng đất, vùng trời, thềm lục địa và lãnh thổ quốc gia đặc biệt",
+                "Vùng đất, vùng biển, vùng trời, lãnh thổ quốc gia đặc biệt",
+                "Vùng đất, vùng biển, ngoài ra còn có lãnh thổ quốc gia đặc biệt"
+            ],
+            answer: 2
+        },
+        {
+            id: 69,
+            question: "Theo Công ước Luật Biển 1982, Việt Nam có mấy vùng biển?",
+            options: [
+                "Có 3 vùng",
+                "Có 4 vùng",
+                "Có 5 vùng",
+                "Có 6 vùng"
+            ],
+            answer: 2
+        },
+        {
+            id: 70,
+            question: "Theo Công ước Luật Biển 1982, Nội thủy được xác định là:",
+            options: [
+                "Vùng nước ở phía trong đường cơ sở của lãnh hải",
+                "Vùng nước nằm ở phía ngoài đường cơ sở",
+                "Vùng nước nằm ở phía ngoài vùng đặc quyền kinh tế",
+                "Vùng nước nằm phía ngoài vùng lãnh hải"
+            ],
+            answer: 0
+        },
+        {
+            id: 71,
+            question: "Tôn trọng chủ quyền lãnh thổ quốc gia. Được xác định là:",
+            options: [
+                "Nguyên tắc trong quan hệ quốc tế",
+                "Nguyên tắc trong xây dựng và bảo vệ Tổ quốc",
+                "Nguyên tắc đấu tranh bảo vệ Tổ quốc",
+                "Nguyên tắc cơ bản trong quan hệ và luật pháp quốc tế"
+            ],
+            answer: 3
+        },
+        {
+            id: 72,
+            question: "Chọn phương án đầy đủ nhất: Biên giới quốc gia Việt Nam gồm:",
+            options: [
+                "Biên giới trên đất liền, trên biển, trên không và trong lòng đất",
+                "Biên giới trên đất liền, trên không, lãnh thổ quốc gia đặc biệt",
+                "Biên giới trên đất liền, trên biển, trong lòng đất, thềm lục địa",
+                "Biên giới trên đất liền, trên biển, trên không"
+            ],
+            answer: 0
+        },
+        {
+            id: 73,
+            question: "Theo Luật Biển Việt Nam 2012. Lãnh hải nước ta có chiều rộng bao nhiêu hải lý?",
+            options: [
+                "12 hải lý",
+                "24 hải lý",
+                "200 hải lý",
+                "350 hải lý"
+            ],
+            answer: 0
+        },
+        {
+            id: 74,
+            question: "Biên giới quốc gia trên biển được hoạch định và đánh dấu bằng:",
+            options: [
+                "Hệ thống mốc quốc giới",
+                "Các tọa độ trên bản đồ",
+                "Các tọa độ trên hải đồ",
+                "Bản đồ kỹ thuật số"
+            ],
+            answer: 2
+        },
+        {
+            id: 75,
+            question: "Lực lượng nào làm nòng cốt, chuyên trách trong quản lý, bảo vệ biên giới quốc gia trên đất liền?",
+            options: [
+                "Cảnh sát biển",
+                "Dân quân tự vệ",
+                "Công an nhân dân",
+                "Bộ đội Biên phòng"
+            ],
+            answer: 3
+        },
+        {
+            id: 76,
+            question: "Huyện đảo Hoàng Sa thuộc tỉnh, thành phố nào của Việt Nam?",
+            options: [
+                "Đà Nẵng",
+                "Quảng Nam",
+                "Khánh Hòa",
+                "Bình Định"
+            ],
+            answer: 0
+        },
+        {
+            id: 77,
+            question: "Huyện đảo Trường Sa thuộc tỉnh, thành phố nào của Việt Nam?",
+            options: [
+                "Đà Nẵng",
+                "Quảng Nam",
+                "Khánh Hòa",
+                "Bình Định"
+            ],
+            answer: 2
+        },
+        {
+            id: 78,
+            question: "Huyện đảo Trường Sa có các đơn vị hành chính nào?",
+            options: [
+                "Thị trấn Trường Sa, xã Song Tử Tây và xã Cô Lin",
+                "Thị trấn Trường Sa, xã Cô Lin và xã Sinh Tồn",
+                "Thị trấn Trường Sa, xã Song Tử Tây và xã Sinh Tồn",
+                "Thị trấn Trường Sa, xã Sinh Tồn, xã Len Đao"
+            ],
+            answer: 2
+        },
+        {
+            id: 79,
+            question: "Hiện nay nước ta có bao nhiêu tỉnh, thành phố có biển?",
+            options: [
+                "26 tỉnh, thành phố",
+                "27 tỉnh, thành phố",
+                "28 tỉnh, thành phố",
+                "29 tỉnh, thành phố"
+            ],
+            answer: 2
+        },
+
+        // ---- AN NINH MẠNG, KHÔNG GIAN MẠNG ----
+        {
+            id: 80,
+            question: "An ninh mạng là:",
+            options: [
+                "Sự bảo đảm hoạt động trên không gian mạng không gây phương hại đến an ninh quốc gia, trật tự an toàn xã hội, quyền và lợi ích hợp pháp của cơ quan, tổ chức, cá nhân",
+                "Sự bảo đảm hoạt động trên không gian mạng gây phương hại đến an ninh quốc gia, trật tự an toàn xã hội, quyền và lợi ích hợp pháp của cơ quan, tổ chức, cá nhân",
+                "Sự bảo đảm hoạt động trên không gian mạng không gây phương hại đến an ninh quốc gia, an toàn xã hội và cơ quan, tổ chức, cá nhân",
+                "Sự bảo đảm hoạt động một cách liên tục, thông suốt trên không gian mạng gây phương hại đến an ninh quốc gia, trật tự an toàn xã hội, quyền và lợi ích hợp pháp của cơ quan, tổ chức, cá nhân"
+            ],
+            answer: 0
+        },
+        {
+            id: 81,
+            question: "Không gian mạng là:",
+            options: [
+                "Mạng lưới kết nối của cơ sở hạ tầng công nghệ thông tin, bao gồm mạng viễn thông, mạng internet, mạng máy tính, hệ thống thông tin, hệ thống xử lý và điều khiển thông tin, cơ sở dữ liệu; là nơi con người thực hiện các hành vi xã hội không bị giới hạn bởi không gian và thời gian",
+                "Bao gồm mạng viễn thông, mạng internet, mạng máy tính, hệ thống thông tin, hệ thống xử lý và điều khiển thông tin",
+                "Là nơi con người thực hiện các hành vi xã hội bị giới hạn bởi không gian và thời gian",
+                "Mạng lưới kết nối của cơ sở hạ tầng công nghệ thông tin, là nơi con người thực hiện các hành vi xã hội bị giới hạn bởi không gian và thời gian"
+            ],
+            answer: 0
+        },
+        {
+            id: 82,
+            question: "Tội phạm mạng là:",
+            options: [
+                "Hành vi sử dụng không gian mạng, công nghệ thông tin hoặc phương tiện điện tử để thực hiện tội phạm",
+                "Hành vi sử dụng không gian mạng, công nghệ thông tin hoặc phương tiện điện tử để thực hiện tội phạm được quy định tại Bộ luật hình sự",
+                "Hành vi sử dụng không gian mạng, công nghệ thông tin hoặc phương tiện điện tử để thực hiện tội phạm để trục lợi",
+                "Hành vi sử dụng không gian mạng, công nghệ thông tin hoặc phương tiện điện tử để thực hiện tội phạm được quy định tại Bộ luật dân sự"
+            ],
+            answer: 1
+        },
+        {
+            id: 83,
+            question: "Tấn công mạng là:",
+            options: [
+                "Hành vi sử dụng không gian mạng, công nghệ thông tin hoặc phương tiện điện tử để phá hoại gây gián đoạn hoạt động của mạng viễn thông, internet, máy tính, hệ thống thông tin, hệ thống xử lý và điều khiển thông tin, cơ sở dữ liệu, phương tiện điện tử",
+                "Hành vi sử dụng công nghệ thông tin hoặc phương tiện điện tử để phá hoại gây gián đoạn hoạt động của mạng viễn thông, internet, máy tính, hệ thống thông tin, hệ thống xử lý và điều khiển thông tin, cơ sở dữ liệu, phương tiện điện tử",
+                "Hành vi phá hoại gây gián đoạn hoạt động của mạng viễn thông, internet, máy tính, hệ thống thông tin, hệ thống xử lý và điều khiển thông tin, cơ sở dữ liệu, phương tiện điện tử",
+                "Hành vi sử dụng không gian mạng, công nghệ thông tin để khai thác hoặc phá hoại gây gián đoạn hoạt động của mạng viễn thông, internet, máy tính, hệ thống thông tin, hệ thống xử lý và điều khiển thông tin, cơ sở dữ liệu, phương tiện điện tử"
+            ],
+            answer: 0
+        },
+        {
+            id: 84,
+            question: "Hành vi bị nghiêm cấm về an ninh mạng:",
+            options: [
+                "Tổ chức hoạt động cấu kết, xúi giục, mua chuộc, lừa gạt, lôi kéo, đào tạo, huấn luyện người chống Nhà nước CHXHCN Việt Nam",
+                "Thực hiện chương trình, dự án hợp tác quốc tế về an ninh mạng",
+                "Ký và thực hiện điều ước quốc tế, thỏa thuận quốc tế về an ninh mạng",
+                "Tổ chức đào tạo, phát triển và sử dụng nhân lực an ninh mạng"
+            ],
+            answer: 0
+        },
+        {
+            id: 85,
+            question: "Đặc điểm của an toàn thông tin:",
+            options: [
+                "Tính bí mật, tính toàn vẹn",
+                "Tính toàn vẹn, tính sẵn sàng, tính khả dụng của thông tin",
+                "Tính sẵn sàng, tính toàn vẹn, tính tiện ích",
+                "Tính bí mật, tính toàn vẹn, tính sẵn sàng"
+            ],
+            answer: 3
+        },
+        {
+            id: 86,
+            question: "Các hành vi bị nghiêm cấm về an ninh mạng, được quy định tại:",
+            options: [
+                "Điều 7, Luật An ninh mạng",
+                "Điều 8, Luật An ninh mạng",
+                "Điều 9, Luật An ninh mạng",
+                "Điều 10, Luật An ninh mạng"
+            ],
+            answer: 1
+        },
+        {
+            id: 87,
+            question: "Bảo vệ an ninh mạng là:",
+            options: [
+                "Phòng ngừa, phát hiện, ngăn chặn, xử lý hành vi xâm phạm an ninh mạng",
+                "Phát hiện, ngăn chặn, đấu tranh, xử lý hành vi xâm phạm an ninh mạng",
+                "Dò tìm, cảnh báo, phát hiện, ngăn chặn, đấu tranh, xử lý hành vi xâm phạm an ninh mạng",
+                "Sử dụng biện pháp nghiệp vụ để phát hiện, ngăn chặn, xử lý hành vi xâm phạm an ninh mạng"
+            ],
+            answer: 0
+        },
+        {
+            id: 88,
+            question: "Nội dung nào dưới đây là khái niệm của khủng bố mạng?",
+            options: [
+                "Là việc sử dụng không gian mạng, công nghệ thông tin hoặc phương tiện điện tử để xuyên tạc lịch sử",
+                "Là việc sử dụng không gian mạng, công nghệ thông tin hoặc phương tiện điện tử để thực hiện hành vi khủng bố, tài trợ khủng bố",
+                "Là việc sử dụng không gian mạng, công nghệ thông tin hoặc phương tiện điện tử để chống phá Đảng và Nhà nước",
+                "Là việc sử dụng không gian mạng, công nghệ thông tin hoặc phương tiện điện tử để xâm phạm bí mật nhà nước, bí mật công tác"
+            ],
+            answer: 1
+        },
+        {
+            id: 89,
+            question: "Điều 101 Nghị định 15/2020/NĐ-CP vi phạm các quy tắc về trách nhiệm sử dụng mạng xã hội cung cấp, chia sẻ thông tin giả mạo, thông tin sai sự thật, vu khống, xúc phạm uy tín của cơ quan, tổ chức, danh dự, nhân phẩm của cá nhân... sẽ bị phạt:",
+            options: [
+                "Từ 7 triệu đồng đến 10 triệu đồng",
+                "Từ 10 triệu đồng đến 20 triệu đồng",
+                "Từ 20 triệu đồng đến 30 triệu đồng",
+                "Từ 30 triệu đồng đến 40 triệu đồng"
+            ],
+            answer: 1
+        },
+
+        // ---- DIỄN BIẾN HÒA BÌNH ----
+        {
+            id: 90,
+            question: "Chiến lược diễn biến hòa bình được tiến hành bằng:",
+            options: [
+                "Biện pháp phi quân sự do chủ nghĩa đế quốc và các thế lực phản động tiến hành",
+                "Biện pháp quân sự do chủ nghĩa đế quốc và các thế lực phản động tiến hành",
+                "Biện pháp kinh tế do chủ nghĩa đế quốc và các thế lực phản động tiến hành",
+                "Biện pháp vũ trang do chủ nghĩa đế quốc và các thế lực phản động tiến hành"
+            ],
+            answer: 0
+        },
+        {
+            id: 91,
+            question: "Là chiến lược cơ bản nhằm lật đổ chế độ chính trị của các nước tiến bộ, trước hết là các nước xã hội chủ nghĩa từ bên trong bằng biện pháp phi quân sự. Được hiểu là:",
+            options: [
+                "Khái niệm của chiến lược diễn biến hòa bình",
+                "Thủ đoạn của chiến lược diễn biến hòa bình",
+                "Mục đích của chiến lược diễn biến hòa bình",
+                "Âm mưu của chiến lược diễn biến hòa bình"
+            ],
+            answer: 0
+        },
+        {
+            id: 92,
+            question: "Ngày 11 tháng 7 năm 1995, Mỹ tuyên bố nội dung gì với Việt Nam?",
+            options: [
+                "Xóa bỏ cấm vận kinh tế với Việt Nam",
+                "Xóa bỏ cấm vận quân sự với Việt Nam",
+                "Bình thường hóa quan hệ ngoại giao với Việt Nam",
+                "Xóa bỏ cấm vận vũ khí sát thương với Việt Nam"
+            ],
+            answer: 2
+        },
+        {
+            id: 93,
+            question: "Tháng 12/1957, Tổng thống Aixenhao đã tuyên bố nội dung gì trong chiến lược diễn biến hòa bình?",
+            options: [
+                "Mỹ sẽ giành thắng lợi bằng hòa bình",
+                "Mỹ phát triển mạnh về khoa học kỹ thuật",
+                "Mỹ làm bá chủ thế giới",
+                "Mỹ cho người lên sống mặt trăng"
+            ],
+            answer: 0
+        },
+        {
+            id: 94,
+            question: "Bình thường hóa quan hệ ngoại giao với Việt Nam được Mỹ tuyên bố vào ngày:",
+            options: [
+                "11/7/1995",
+                "7/11/1995",
+                "25/8/1995",
+                "11/7/1985"
+            ],
+            answer: 0
+        },
+        {
+            id: 95,
+            question: "'Xóa bỏ vai trò lãnh đạo của Đảng, xóa bỏ chế độ xã hội chủ nghĩa, lái nước ta đi theo con đường tư bản và lệ thuộc vào chủ nghĩa đế quốc'. Được xác định là:",
+            options: [
+                "Mục tiêu nhất quán chiến lược diễn biến hòa bình đối với Việt Nam",
+                "Biện pháp nhất quán chiến lược diễn biến hòa bình đối với Việt Nam",
+                "Thủ đoạn nhất quán chiến lược diễn biến hòa bình đối với Việt Nam",
+                "Nhiệm vụ nhất quán chiến lược diễn biến hòa bình đối với Việt Nam"
+            ],
+            answer: 0
+        },
+        {
+            id: 96,
+            question: "Khích lệ thành phần kinh tế tư nhân phát triển, từng bước làm mất vai trò chủ đạo của thành phần kinh tế Nhà nước, là một trong những nội dung âm mưu thủ đoạn chống phá của chiến lược diễn biến hòa bình về:",
+            options: [
+                "Kinh tế",
+                "Chính trị",
+                "Dân tộc",
+                "Tôn giáo"
+            ],
+            answer: 0
+        },
+        {
+            id: 97,
+            question: "Xóa bỏ chủ nghĩa Mác - Lênin, tư tưởng Hồ Chí Minh. Là một trong những thủ đoạn chống phá của chiến lược diễn biến hòa bình về:",
+            options: [
+                "Chính trị - kinh tế",
+                "Tư tưởng - văn hóa",
+                "Dân tộc - tôn giáo",
+                "Quốc phòng - an ninh"
+            ],
+            answer: 1
+        },
+        {
+            id: 98,
+            question: "Hạn chế sự mở rộng quan hệ hợp tác của Việt Nam đối với các nước lớn trên thế giới, tìm cách ngăn cản những dự án đầu tư quốc tế vào Việt Nam là một trong những thủ đoạn chống phá của chiến lược diễn biến hòa bình về lĩnh vực:",
+            options: [
+                "Đối ngoại",
+                "Dân tộc",
+                "Quân sự",
+                "Chính trị"
+            ],
+            answer: 0
+        },
+        {
+            id: 99,
+            question: "Ai là người khởi xướng chiến lược diễn biến hòa bình của chủ nghĩa đế quốc?",
+            options: [
+                "Kennan",
+                "Mác San",
+                "Truman",
+                "Aixenhao"
+            ],
+            answer: 0
+        },
+        {
+            id: 100,
+            question: "Lợi dụng xu thế hợp tác để du nhập những sản phẩm văn hóa đồi trụy, lối sống phương Tây. Được xác định là thủ đoạn chống phá trên lĩnh vực nào của chủ nghĩa đế quốc?",
+            options: [
+                "Chống phá chính trị trong chiến lược diễn biến hòa bình",
+                "Chống phá tư tưởng văn hóa trong chiến lược diễn biến hòa bình",
+                "Chống phá tôn giáo dân tộc trong chiến lược diễn biến hòa bình",
+                "Chống phá quốc phòng an ninh trong chiến lược diễn biến hòa bình"
+            ],
+            answer: 1
+        },
+        {
+            id: 101,
+            question: "Là hành động chống phá bằng bạo lực có tổ chức do lực lượng phản động hay lực lượng ly khai, đối lập trong nước hoặc cấu kết với nước ngoài tiến hành nhằm gây rối loạn an ninh chính trị, trật tự, an toàn xã hội hoặc lật đổ chính quyền ở địa phương hay Trung ương. Được xác định là:",
+            options: [
+                "Khái niệm bạo loạn lật đổ",
+                "Khái niệm diễn biến hòa bình",
+                "Khái niệm gây rối",
+                "Khái niệm an ninh quốc gia"
+            ],
+            answer: 0
+        },
+
+        // ---- AN NINH QUỐC GIA, TRẬT TỰ AN TOÀN XÃ HỘI ----
+        {
+            id: 102,
+            question: "Sự ổn định, phát triển bền vững của chế độ xã hội chủ nghĩa và Nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam, sự bất khả xâm phạm độc lập, chủ quyền, thống nhất, toàn vẹn lãnh thổ của Tổ quốc. Được hiểu là:",
+            options: [
+                "Khái niệm an ninh quốc gia",
+                "Khái niệm bảo vệ an ninh quốc gia",
+                "Khái niệm trật tự an toàn xã hội",
+                "Khái niệm quốc phòng"
+            ],
+            answer: 0
+        },
+        {
+            id: 103,
+            question: "Luật An ninh quốc gia của Việt Nam có hiệu lực thi hành vào năm nào?",
+            options: [
+                "2004",
+                "2005",
+                "2006",
+                "2007"
+            ],
+            answer: 1
+        },
+        {
+            id: 104,
+            question: "Phòng ngừa, phát hiện, ngăn chặn, đấu tranh làm thất bại các hoạt động xâm phạm an ninh quốc gia. Được xác định là:",
+            options: [
+                "Nhiệm vụ bảo vệ an ninh quốc gia",
+                "Nội dung bảo vệ an ninh quốc gia",
+                "Khái niệm bảo vệ an ninh quốc gia",
+                "Mục tiêu bảo vệ an ninh quốc gia"
+            ],
+            answer: 2
+        },
+        {
+            id: 105,
+            question: "Bảo vệ an ninh về tư tưởng và văn hóa, khối đại đoàn kết toàn dân tộc, quyền và lợi ích hợp pháp của cơ quan, tổ chức, cá nhân. Được xác định là một trong những:",
+            options: [
+                "Nhiệm vụ bảo vệ an ninh quốc gia",
+                "Nguyên tắc bảo vệ an ninh quốc gia",
+                "Biện pháp bảo vệ an ninh quốc gia",
+                "Nội dung bảo vệ an ninh quốc gia"
+            ],
+            answer: 0
+        },
+        {
+            id: 106,
+            question: "Chủ động phòng ngừa, chủ động đấu tranh làm thất bại mọi âm mưu và hoạt động xâm phạm an ninh quốc gia. Được xác định là một trong những:",
+            options: [
+                "Nguyên tắc bảo vệ an ninh quốc gia",
+                "Nhiệm vụ bảo vệ an ninh quốc gia",
+                "Biện pháp bảo vệ an ninh quốc gia",
+                "Mục tiêu bảo vệ an ninh quốc gia"
+            ],
+            answer: 0
+        },
+        {
+            id: 107,
+            question: "Bảo vệ an ninh quốc gia, giữ gìn trật tự an toàn xã hội là sự nghiệp của ai?",
+            options: [
+                "Toàn dân",
+                "Quân đội",
+                "Công an",
+                "Đảng và Nhà nước"
+            ],
+            answer: 0
+        },
+        {
+            id: 108,
+            question: "Cơ quan chuyên trách bảo vệ an ninh quốc gia ở khu vực biên giới trên đất liền và trên biển là:",
+            options: [
+                "Bộ đội Biên phòng và Cảnh sát biển",
+                "Công an nhân dân",
+                "Quân đội nhân dân",
+                "Dân quân tự vệ"
+            ],
+            answer: 0
+        },
+        {
+            id: 109,
+            question: "Lực lượng nào giữ vai trò nòng cốt trong bảo vệ trật tự, an toàn xã hội?",
+            options: [
+                "Công an nhân dân",
+                "Quân đội nhân dân",
+                "Dân quân tự vệ",
+                "Bộ đội Biên phòng"
+            ],
+            answer: 0
+        },
+        {
+            id: 110,
+            question: "Theo Điểm a, Khoản 1, Điều 110 Bộ Luật hình sự số 12/2017/QH14 quy định đối với người có hành vi: Hoạt động tình báo, phá hoại hoặc gây cơ sở để hoạt động tình báo, phá hoại chống Nhà nước Cộng hòa xã hội chủ nghĩa Việt Nam. Thì bị:",
+            options: [
+                "Phạt tù từ 12 năm đến 20 năm, tù chung thân hoặc tử hình",
+                "Phạt tù từ 5 năm đến 10 năm",
+                "Phạt tù từ 3 năm đến 7 năm",
+                "Phạt tù từ 15 năm đến 20 năm"
+            ],
+            answer: 0
+        },
+        {
+            id: 111,
+            question: "Điểm b, Khoản 1, Điều 240, Bộ Luật hình sự năm 2015 sửa đổi, bổ sung năm 2017 quy định: Người nào thực hiện hành vi đưa vào hoặc cho phép đưa vào lãnh thổ Việt Nam động vật, thực vật hoặc sản phẩm động vật, thực vật bị nhiễm bệnh hoặc mang mầm bệnh nguy hiểm có khả năng lây truyền cho người. Thì bị:",
+            options: [
+                "Phạt tiền từ 50 triệu đến 200 triệu đồng hoặc phạt tù từ 1 năm đến 5 năm",
+                "Phạt tiền từ 50 triệu đến 200 triệu đồng hoặc phạt tù từ 3 năm đến 10 năm",
+                "Phạt tiền từ 50 triệu đến 200 triệu đồng hoặc phạt tù từ 7 năm đến 15 năm",
+                "Phạt tiền từ 50 triệu đến 200 triệu đồng hoặc phạt tù từ 1 năm đến 7 năm"
+            ],
+            answer: 0
+        },
+
+        // ---- PHONG TRÀO TOÀN DÂN BẢO VỆ AN NINH TỔ QUỐC ----
+        {
+            id: 112,
+            question: "Một hình thức hoạt động tự giác, có tổ chức của đông đảo nhân dân lao động tham gia phòng ngừa, phát hiện, đấu tranh chống các loại tội phạm nhằm bảo vệ an ninh chính trị, giữ gìn trật tự, an toàn xã hội, bảo vệ tài sản Nhà nước và tính mạng, tài sản của nhân dân. Được xác định là:",
+            options: [
+                "Mục đích của 'Phong trào toàn dân bảo vệ an ninh Tổ quốc'",
+                "Phương pháp xây dựng 'Phong trào toàn dân bảo vệ an ninh Tổ quốc'",
+                "Vị trí 'Phong trào toàn dân bảo vệ an ninh Tổ quốc'",
+                "Khái niệm 'Phong trào toàn dân bảo vệ an ninh Tổ quốc'"
+            ],
+            answer: 3
+        },
+        {
+            id: 113,
+            question: "Ngày toàn dân bảo vệ an ninh Tổ quốc là ngày:",
+            options: [
+                "19 tháng 8",
+                "22 tháng 12",
+                "3 tháng 2",
+                "30 tháng 4"
+            ],
+            answer: 0
+        },
+        {
+            id: 114,
+            question: "Phong trào toàn dân bảo vệ an ninh Tổ quốc là hình thức cơ bản để tập hợp thu hút đông đảo quần chúng, phát huy quyền làm chủ của mình tham gia bảo vệ an ninh trật tự. Được xác định là một trong những:",
+            options: [
+                "Mục đích",
+                "Biện pháp",
+                "Vị trí, tác dụng",
+                "Đặc điểm"
+            ],
+            answer: 2
+        }
+    ];
+
+    // ============================================================
+    // ỨNG DỤNG CHÍNH
+    // ============================================================
+    let userAnswers = new Array(questionData.length).fill(null);
+    let submitted = false;
+
+    const container = document.getElementById('questionsContainer');
+    const progressFill = document.getElementById('progressFill');
+    const answeredCountSpan = document.getElementById('answeredCount');
+    const totalQuestionsSpan = document.getElementById('totalQuestions');
+    const answeredStats = document.getElementById('answeredStats');
+    const totalStats = document.getElementById('totalStats');
+    const resultBox = document.getElementById('resultBox');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const correctCountSpan = document.getElementById('correctCount');
+    const wrongCountSpan = document.getElementById('wrongCount');
+    const resultDetail = document.getElementById('resultDetail');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function render() {
+        container.innerHTML = '';
+        let answered = 0;
+        questionData.forEach((q, idx) => {
+            const isAnswered = userAnswers[idx] !== null;
+            if (isAnswered) answered++;
+
+            const card = document.createElement('div');
+            card.className = 'question-card';
+
+            const header = document.createElement('div');
+            header.className = 'question-header';
+            const numSpan = document.createElement('span');
+            numSpan.className = 'question-number';
+            numSpan.textContent = `Câu ${idx+1}`;
+            header.appendChild(numSpan);
+            const statusSpan = document.createElement('span');
+            statusSpan.className = 'question-status';
+            if (isAnswered) {
+                const ans = userAnswers[idx];
+                if (ans === q.answer) {
+                    statusSpan.textContent = '✅ Đúng';
+                } else {
+                    statusSpan.textContent = '❌ Sai';
+                }
+            } else {
+                statusSpan.textContent = '⏳ Chưa trả lời';
+            }
+            header.appendChild(statusSpan);
+            card.appendChild(header);
+
+            const textDiv = document.createElement('div');
+            textDiv.className = 'question-text';
+            textDiv.textContent = q.question;
+            card.appendChild(textDiv);
+
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            const letters = ['A', 'B', 'C', 'D'];
+            q.options.forEach((opt, oi) => {
+                const optDiv = document.createElement('div');
+                optDiv.className = 'option';
+                if (submitted) {
+                    optDiv.classList.add('disabled');
+                    if (oi === q.answer) {
+                        optDiv.classList.add('correct-reveal');
+                    }
+                    if (userAnswers[idx] === oi && oi !== q.answer) {
+                        optDiv.classList.add('wrong-reveal');
+                    }
+                } else {
+                    if (userAnswers[idx] === oi) {
+                        if (oi === q.answer) {
+                            optDiv.classList.add('selected-correct');
+                        } else {
+                            optDiv.classList.add('selected-wrong');
+                        }
+                    }
+                }
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `q${idx}`;
+                radio.value = oi;
+                radio.checked = (userAnswers[idx] === oi);
+                if (submitted) radio.disabled = true;
+                const letterSpan = document.createElement('span');
+                letterSpan.className = 'letter';
+                letterSpan.textContent = letters[oi] + '.';
+                optDiv.appendChild(radio);
+                optDiv.appendChild(letterSpan);
+                const textSpan = document.createElement('span');
+                textSpan.textContent = opt;
+                optDiv.appendChild(textSpan);
+
+                // 🔥 CLICK TOÀN BỘ OPTION (không cần chấm tròn)
+                optDiv.addEventListener('click', function(e) {
+                    if (submitted) return;
+                    // Chỉ chọn nếu chưa chọn hoặc đang chọn khác
+                    if (userAnswers[idx] !== oi) {
+                        userAnswers[idx] = oi;
+                        render();
+                    }
+                });
+
+                optionsDiv.appendChild(optDiv);
+            });
+            card.appendChild(optionsDiv);
+            container.appendChild(card);
+        });
+
+        // Cập nhật tiến độ
+        const total = questionData.length;
+        const pct = total > 0 ? (answered / total) * 100 : 0;
+        progressFill.style.width = pct + '%';
+        answeredCountSpan.textContent = `${answered}/${total}`;
+        totalQuestionsSpan.textContent = total;
+        answeredStats.textContent = answered;
+        totalStats.textContent = total;
+
+        if (submitted) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = '✅ Đã nộp';
+            showResult();
+        } else {
+            submitBtn.disabled = false;
+            submitBtn.textContent = '📝 Nộp bài';
+        }
+    }
+
+    function showResult() {
+        let correct = 0;
+        let wrong = 0;
+        let skipped = 0;
+        questionData.forEach((q, idx) => {
+            const ans = userAnswers[idx];
+            if (ans === null) {
+                skipped++;
+            } else if (ans === q.answer) {
+                correct++;
+            } else {
+                wrong++;
+            }
+        });
+        const total = questionData.length;
+        const score = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+        scoreDisplay.textContent = score + '%';
+        correctCountSpan.textContent = correct;
+        wrongCountSpan.textContent = wrong;
+        resultDetail.textContent = `Đúng ${correct}, Sai ${wrong}, Bỏ qua ${skipped}`;
+        resultBox.classList.add('show');
+    }
+
+    function submitExam() {
+        const unanswered = userAnswers.some(a => a === null);
+        if (unanswered) {
+            if (!confirm('Bạn còn ' + userAnswers.filter(a => a === null).length + ' câu chưa trả lời. Bạn có chắc muốn nộp bài?')) {
+                return;
+            }
+        }
+        submitted = true;
+        render();
+        document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function resetExam() {
+        if (submitted) {
+            if (!confirm('Bạn có muốn làm lại từ đầu? Kết quả hiện tại sẽ bị mất.')) return;
+        }
+        userAnswers.fill(null);
+        submitted = false;
+        resultBox.classList.remove('show');
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Khởi tạo
+    render();
+</script>
+</body>
+</html>
