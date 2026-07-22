@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Chủ Ôn Tập GDQP & AN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background: linear-gradient(135deg, #1a3a1a 0%, #2d5a2d 30%, #1e4d1e 70%, #0f2f0f 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+            50% { transform: translateY(-100px) rotate(180deg); opacity: 0.8; }
+        }
+
+        /* Header */
+        .header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 60px 20px 40px;
+            background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 100%);
+        }
+
+        .flag-pattern {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .star {
+            color: #FFD700;
+            font-size: 32px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3), 0 4px 8px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.85);
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .header .divider {
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FFD700, transparent);
+            margin: 20px auto;
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+            text-align: center;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.8);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+        }
+
+        /* Cards Container */
+        .cards-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.1), transparent);
+            transition: left 0.6s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 215, 0, 0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px rgba(255,215,0,0.1);
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            color: #1a3a1a;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .card:hover .card-icon {
+            transform: rotate(360deg) scale(1.1);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .card-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #1a3a1a;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .card-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Footer */
+        .footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(0deg, rgba(0,0,0,0.5), transparent);
+        }
+
+        .footer p {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+
+        .footer .heart {
+            color: #ff4757;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2rem; }
+            .header .subtitle { font-size: 1rem; letter-spacing: 2px; }
+            .cards-container { grid-template-columns: 1fr; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- Animated Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="flag-pattern">
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star" style="animation-delay: 0.2s"></i>
+            <i class="fas fa-star star" style="animation-delay: 0.4s"></i>
+        </div>
+        <h1>ÔN TẬP GDQP & AN</h1>
+        <div class="divider"></div>
+        <p class="subtitle">Giáo Dục Quốc Phòng và An Ninh</p>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <p>
+            Chào mừng bạn đến với trang ôn tập Giáo Dục Quốc Phòng và An Ninh. 
+            Hãy chọn bài học phù hợp để bắt đầu ôn tập và chuẩn bị cho kỳ thi của bạn!
+        </p>
+    </section>
+
+    <!-- Cards -->
+    <div class="cards-container">
+        <div class="card" onclick="location.href='hp1.html'">
+            <div class="card-icon"><i class="fas fa-book"></i></div>
+            <h3>Bài 1</h3>
+            <p>Nội dung ôn tập bài học số 1.</p>
+            <a href="hp1.html" class="card-btn">Bắt Đầu <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="card" onclick="location.href='hp2.html'">
+            <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+            <h3>Bài 2</h3>
+            <p>Nội dung ôn tập bài học số 2.</p>
+            <a href="hp2.html" class="card-btn">Bắt Đầu <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="card" onclick="location.href='hp3.html'">
+            <div class="card-icon"><i class="fas fa-crosshairs"></i></div>
+            <h3>Bài 3</h3>
+            <p>Nội dung ôn tập bài học số 3.</p>
+            <a href="hp3.html" class="card-btn">Bắt Đầu <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="card" onclick="location.href='hp4.html'">
+            <div class="card-icon"><i class="fas fa-flag"></i></div>
+            <h3>Bài 4</h3>
+            <p>Nội dung ôn tập bài học số 4.</p>
+            <a href="hp4.html" class="card-btn">Bắt Đầu <i class="fas fa-arrow-right"></i></a>
+        </div>
+
+        <div class="card" onclick="location.href='hp1-2.html'">
+            <div class="card-icon"><i class="fas fa-layer-group"></i></div>
+            <h3>Bài 1 & 2</h3>
+            <p>Ôn tập tổng hợp bài 1 và bài 2 - Ôn.</p>
+            <a href="hp1-2.html" class="card-btn">Bắt Đầu <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Chúc bạn ôn tập tốt! <i class="fas fa-heart heart"></i> GDQP & AN</p>
+    </footer>
+
+    <script>
+        // Create animated particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            particle.style.animationDuration = (5 + Math.random() * 5) + 's';
+            particle.style.width = (3 + Math.random() * 6) + 'px';
+            particle.style.height = particle.style.width;
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+</body>
+</html>
