@@ -3,1143 +3,511 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📘 Trắc nghiệm HP4 - Quân sự</title>
+    <title>Ôn tập HP4 - Trắc nghiệm</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         body {
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f4f7fc;
             padding: 20px;
-            color: #1e293b;
+            color: #333;
         }
+
         .container {
-            max-width: 920px;
+            max-width: 900px;
             margin: 0 auto;
-            background: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-            padding: 30px 35px 40px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 30px 25px;
         }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-            border-bottom: 2px solid #e9edf4;
-            padding-bottom: 18px;
-            margin-bottom: 28px;
-        }
-        .header h1 {
-            font-size: 26px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #1e4b7a, #2a6b9e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
-        }
-        .header .info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            font-size: 15px;
-            color: #475569;
-        }
-        .header .info span {
-            background: #f1f5f9;
-            padding: 6px 16px;
-            border-radius: 30px;
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
             font-weight: 600;
+            color: #1a2b4a;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
         }
-        .header .info .progress-text {
-            background: #dbeafe;
-            color: #1e4b7a;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 10px;
+
+        .subtitle {
+            text-align: center;
+            font-size: 16px;
+            color: #6b7a8f;
             margin-bottom: 30px;
-            overflow: hidden;
+            border-bottom: 2px solid #eef2f7;
+            padding-bottom: 15px;
         }
-        .progress-bar .fill {
-            height: 100%;
-            background: linear-gradient(90deg, #2563eb, #3b82f6);
+
+        .question-block {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 10px;
-            transition: width 0.4s ease;
-            width: 0%;
+            padding: 18px 20px 20px 20px;
+            margin-bottom: 20px;
+            transition: border-color 0.2s;
         }
-        .question-card {
-            background: #fafcff;
-            border-radius: 16px;
-            padding: 24px 28px;
-            margin-bottom: 24px;
-            border: 1px solid #e9edf4;
-            transition: 0.2s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+
+        .question-block:hover {
+            border-color: #b0c4de;
         }
-        .question-card:hover {
-            border-color: #cbd5e1;
-        }
-        .question-header {
+
+        .q-header {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            align-items: baseline;
+            gap: 10px;
             margin-bottom: 12px;
-        }
-        .question-number {
-            font-weight: 700;
+            font-weight: 600;
             font-size: 17px;
-            color: #1e293b;
-            background: #eef2f6;
-            padding: 2px 14px;
-            border-radius: 30px;
+            color: #1e2f4e;
         }
-        .question-status {
+
+        .q-number {
+            background: #1a2b4a;
+            color: #fff;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             font-size: 14px;
-            color: #64748b;
+            flex-shrink: 0;
         }
-        .question-text {
-            font-size: 17px;
-            line-height: 1.6;
-            font-weight: 500;
-            margin-bottom: 18px;
-            color: #0f172a;
+
+        .q-text {
+            line-height: 1.5;
         }
+
         .options {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            padding-left: 4px;
+            gap: 8px;
+            margin-top: 6px;
+            padding-left: 10px;
         }
+
         .option {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 12px 18px;
-            background: #ffffff;
+            gap: 12px;
+            padding: 10px 16px;
             border: 2px solid #e2e8f0;
-            border-radius: 12px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: 0.15s;
             font-size: 15px;
-            color: #1e293b;
+            transition: all 0.15s ease;
+            background: #fafcff;
         }
-        .option:hover:not(.disabled) {
-            background: #f8fafc;
-            border-color: #94a3b8;
+
+        .option:hover {
+            background: #f0f5ff;
+            border-color: #a0b8d4;
         }
-        .option input[type="radio"] {
-            accent-color: #2563eb;
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-            pointer-events: none;
+
+        .option .label {
+            font-weight: 600;
+            color: #2c3e66;
+            min-width: 24px;
         }
-        .option.selected-correct {
-            border-color: #16a34a;
-            background: #f0fdf4;
+
+        .option .text {
+            flex: 1;
         }
-        .option.selected-wrong {
-            border-color: #dc2626;
-            background: #fef2f2;
+
+        /* Trạng thái */
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
         }
-        .option.correct-reveal {
-            border-color: #16a34a;
-            background: #f0fdf4;
+
+        .option.correct .label {
+            color: #155724;
         }
-        .option.wrong-reveal {
-            border-color: #dc2626;
-            background: #fef2f2;
+
+        .option.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
         }
+
+        .option.wrong .label {
+            color: #721c24;
+        }
+
         .option.disabled {
-            opacity: 0.7;
             cursor: default;
+            opacity: 0.85;
         }
-        .option .letter {
-            font-weight: 700;
-            color: #475569;
-            width: 24px;
-            flex-shrink: 0;
+
+        .option.show-correct {
+            background: #d4edda;
+            border-color: #28a745;
         }
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #e9edf4;
-        }
-        .footer .stats {
+
+        .result-badge {
+            margin-top: 14px;
+            font-weight: 500;
             font-size: 15px;
-            color: #475569;
+            padding: 6px 12px;
+            border-radius: 6px;
+            display: inline-block;
         }
-        .footer .stats strong {
-            color: #1e293b;
+
+        .result-badge.correct {
+            color: #155724;
+            background: #d4edda;
         }
-        .btn {
-            padding: 12px 32px;
-            border: none;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.2s;
-            background: #e2e8f0;
-            color: #1e293b;
+
+        .result-badge.wrong {
+            color: #721c24;
+            background: #f8d7da;
         }
-        .btn-primary {
-            background: #2563eb;
-            color: white;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
-        }
-        .btn-primary:hover {
-            background: #1d4ed8;
-            transform: translateY(-2px);
-        }
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #94a3b8;
-        }
-        .btn-outline:hover {
-            background: #f1f5f9;
-        }
-        .result-box {
-            margin-top: 20px;
-            padding: 18px 24px;
-            border-radius: 16px;
-            background: #f8fafc;
-            border: 1px solid #d1d9e6;
-            display: none;
-            font-size: 16px;
-            line-height: 1.6;
-        }
-        .result-box.show {
+
+        .btn-show-answers {
             display: block;
-        }
-        .result-box .score {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1e4b7a;
-        }
-        .result-box .detail {
-            margin-top: 10px;
-            color: #334155;
-        }
-        .result-box .correct-count {
-            color: #16a34a;
+            margin: 25px auto 10px;
+            padding: 12px 36px;
+            background: #1a2b4a;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
             font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px rgba(26,43,74,0.25);
         }
-        .result-box .wrong-count {
-            color: #dc2626;
+
+        .btn-show-answers:hover {
+            background: #2c3f66;
+        }
+
+        .btn-reset {
+            display: inline-block;
+            margin-left: 20px;
+            padding: 10px 24px;
+            background: #e2e8f0;
+            color: #1a2b4a;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
             font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
         }
+
+        .btn-reset:hover {
+            background: #cdd7e6;
+        }
+
+        .footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .progress {
+            text-align: center;
+            font-size: 16px;
+            color: #4a5a72;
+            margin-top: 15px;
+        }
+
         @media (max-width: 600px) {
-            .container { padding: 16px; }
-            .question-card { padding: 16px; }
-            .header h1 { font-size: 20px; }
-            .footer { flex-direction: column; align-items: stretch; }
-            .btn { width: 100%; text-align: center; }
+            .container { padding: 15px; }
+            .option { font-size: 14px; padding: 8px 12px; }
+            .q-header { font-size: 15px; }
         }
     </style>
 </head>
 <body>
-<div class="container" id="app">
-    <div class="header">
-        <h1>📘 Trắc nghiệm HP4 - Quân sự</h1>
-        <div class="info">
-            <span class="progress-text" id="answeredCount">0/0</span>
-            <span id="totalQuestions">0</span>
-        </div>
-    </div>
-    <div class="progress-bar">
-        <div class="fill" id="progressFill"></div>
-    </div>
+    <div class="container" id="app">
+        <h1>📘 ÔN TẬP LÝ THUYẾT HP4</h1>
+        <div class="subtitle">Súng AK · Lựu đạn · Tiến công · Phòng ngự</div>
 
-    <div id="questionsContainer"></div>
+        <div id="questions-container"></div>
 
-    <div class="footer">
-        <div class="stats">
-            <span id="statsText">Đã trả lời: <strong id="answeredStats">0</strong> / <strong id="totalStats">0</strong></span>
+        <div class="footer">
+            <button class="btn-show-answers" id="showAllBtn">📌 Hiển thị tất cả đáp án đúng</button>
+            <button class="btn-reset" id="resetBtn">🔄 Làm lại</button>
         </div>
-        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-            <button class="btn btn-outline" onclick="resetExam()">🔄 Làm lại</button>
-            <button class="btn btn-primary" id="submitBtn" onclick="submitExam()">📝 Nộp bài</button>
-        </div>
+        <div class="progress" id="progress"></div>
     </div>
 
-    <div class="result-box" id="resultBox">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-            <span class="score" id="scoreDisplay">0%</span>
-            <span style="font-size: 15px; color: #475569;">
-                <span class="correct-count" id="correctCount">0</span> đúng · 
-                <span class="wrong-count" id="wrongCount">0</span> sai
-            </span>
-        </div>
-        <div class="detail" id="resultDetail"></div>
-    </div>
-</div>
+    <script>
+        // ===================== DỮ LIỆU CÂU HỎI =====================
+        // Mỗi câu: { id, text, options: [text1, text2, ...], correct: index (0-based) }
+        // Lấy từ file HP4 (đã trích xuất và gán đáp án tham khảo)
 
-<script>
-    // ============================================================
-    // 📌 DỮ LIỆU CÂU HỎI HP4 (từ hp4m.pdf)
-    // ============================================================
-    const questionData = [
-        // ===== SÚNG AK =====
-        {
-            q: "Súng tiểu liên AK có cỡ nòng là bao nhiêu mm?",
-            opts: ["7,62mm.", "6,72mm.", "76,2mm.", "72,6mm."],
-            ans: 0
-        },
-        {
-            q: "Khi bắn súng tiểu liên AK (góc bắn tốt nhất), thì tầm bay xa nhất của đầu đạn là bao nhiêu mét?",
-            opts: ["3.000 mét.", "1.500 mét.", "3.600 mét.", "800 mét."],
-            ans: 0
-        },
-        {
-            q: "Tầm bắn hiệu quả: Hỏa lực tập trung bắn mục tiêu mặt đất của súng tiểu liên AK đến cự ly bao nhiêu mét?",
-            opts: ["500 mét.", "1.500 mét.", "3.000 mét.", "800 mét."],
-            ans: 3
-        },
-        {
-            q: "Yếu tố nào sau đây làm ảnh hưởng đến đường đạn bay trong không khí là một đường cong?",
-            opts: ["Do động tác người bắn.", "Do trọng lượng của súng.", "Do cấu tạo của súng và đạn.", "Lực cản của không khí."],
-            ans: 3
-        },
-        {
-            q: "Là đường ngắm cơ bản được đóng vào điểm ngắm đã xác định trên mục tiêu với điều kiện mặt súng thẳng bằng. Được xác định là:",
-            opts: ["Đường ngắm sai.", "Điểm ngắm đúng.", "Đường ngắm đúng.", "Đường ngắm cơ bản."],
-            ans: 2
-        },
-        {
-            q: "Khi bắn, mặt súng bị nghiêng thì:",
-            opts: ["Mặt súng nghiêng về bên nào, đạn lệch về bên đó và lên cao.", "Mặt súng nghiêng về bên nào, đạn lệch theo chiều ngược lại và thấp xuống.", "Mặt súng nghiêng về bên nào, đạn lệch về bên đó và thấp xuống.", "Mặt súng nghiêng về bên nào, đạn lệch theo chiều ngược lại và lên cao."],
-            ans: 2
-        },
-        {
-            q: "Tầm bay xa nhất của đầu đạn súng tiểu liên AK đạt 3.000 mét khi đó góc bắn là bao nhiêu độ?",
-            opts: ["70⁰ – 90⁰", "32⁰ – 35⁰", "40⁰ – 45⁰", "10⁰ – 15⁰"],
-            ans: 1
-        },
-        {
-            q: "Là đường thẳng từ mắt người ngắm qua chính giữa mép trên khe ngắm (tâm lỗ ngắm) đến điểm chính giữa mép trên đầu ngắm. Được xác định là:",
-            opts: ["Khái niệm đường ngắm cơ bản.", "Khái niệm đường ngắm đúng.", "Khái niệm điểm ngắm đúng.", "Khái niệm điểm bắn đúng."],
-            ans: 0
-        },
-        {
-            q: "Trọng lượng của súng tiểu liên AK khi không có đạn và khi đã lắp đủ đạn là bao nhiêu kg?",
-            opts: ["3,8kg và 4,3kg.", "3,8kg và 4,8kg.", "3,5kg và 4,3kg.", "4,3kg và 5,8kg."],
-            ans: 0
-        },
-        {
-            q: "Nếu đầu ngắm thấp hơn mép trên khe ngắm, thì điểm chạm của đạn sẽ:",
-            opts: ["Cao hơn so với điểm định bắn trúng.", "Thấp hơn so với điểm định bắn trúng.", "Thấp hơn và lệch sang phải so với điểm định bắn trúng.", "Thấp hơn và lệch sang trái so với điểm định bắn trúng."],
-            ans: 1
-        },
-        {
-            q: "Tầm bắn thẳng của súng tiểu liên AK, khi mục tiêu người nằm cao 0,5 mét là bao nhiêu mét?",
-            opts: ["330 mét.", "350 mét.", "710 mét.", "735 mét."],
-            ans: 1
-        },
-        {
-            q: "Khi ngắm chụm kết quả đánh giá giỏi là:",
-            opts: ["3 điểm ngắm được chấm, lọt vào lỗ có đường kính 10 mm.", "3 điểm ngắm được chấm, lọt vào lỗ có đường kính 5 mm.", "3 điểm ngắm được chấm, lọt vào lỗ có đường kính 2 mm.", "3 điểm ngắm được chấm, lọt vào lỗ có đường kính 7 mm."],
-            ans: 2
-        },
-        {
-            q: "Nếu đầu ngắm cao hơn mép trên khe ngắm, thì điểm chạm của đạn sẽ:",
-            opts: ["Thấp hơn so với điểm định bắn trúng.", "Cao hơn so với điểm định bắn trúng.", "Thấp hơn và lệch sang phải so với điểm định bắn trúng.", "Thấp hơn và lệch sang trái so với điểm định bắn trúng."],
-            ans: 1
-        },
-        {
-            q: "Tốc độ đầu của đầu đạn súng tiểu liên AKM là bao nhiêu mét/giây?",
-            opts: ["710 mét/giây.", "715 mét/giây.", "735 mét/giây.", "815 mét/giây."],
-            ans: 0
-        },
-        {
-            q: "Đường đạn trong không khí là một đường cong không cân đối, góc phóng nhỏ hơn góc rơi, đoạn lên căng và dài hơn đoạn xuống, đỉnh đường đạn gần điểm rơi hơn điểm phóng. Được xác định là:",
-            opts: ["Đặc điểm đường đạn.", "Các nguyên nhân gây ra góc nẩy.", "Khái niệm đường ngắm cơ bản.", "Khái niệm đường ngắm đúng."],
-            ans: 0
-        },
-        {
-            q: "Yếu tố nào sau đây làm ảnh hưởng đến đường đạn trong không khí?",
-            opts: ["Do động tác người bắn.", "Do trọng lực của đầu đạn.", "Do trọng lượng của súng.", "Do cấu tạo của súng và đạn."],
-            ans: 1
-        },
-        {
-            q: "Tầm bắn hiệu quả: Hỏa lực tập trung bắn máy bay, quân nhảy dù của súng tiểu liên AK đến cự ly bao nhiêu mét?",
-            opts: ["500 mét.", "700 mét.", "800 mét.", "1.000 mét."],
-            ans: 0
-        },
-        {
-            q: "Nếu đầu ngắm cao hơn mép trên khe ngắm và lệch trái, so với điểm định bắn trúng, thì điểm chạm của đạn sẽ:",
-            opts: ["Thấp hơn và lệch sang phải.", "Thấp hơn và lệch sang trái.", "Cao hơn và lệch sang trái.", "Cao hơn và lệch sang phải."],
-            ans: 2
-        },
-        {
-            q: "Nếu đầu ngắm cao hơn mép trên khe ngắm và lệch phải, so với điểm định bắn trúng, thì điểm chạm của đạn sẽ:",
-            opts: ["Thấp hơn và lệch sang trái.", "Thấp hơn và lệch sang phải.", "Cao hơn và lệch sang trái.", "Cao hơn và lệch sang phải."],
-            ans: 3
-        },
-        {
-            q: "Bộ phận ngắm của súng tiểu liên AK có tác dụng gì?",
-            opts: ["Để ngắm vào các mục tiêu ở cự ly khác nhau.", "Để ước lượng cự ly bắn được chính xác.", "Để quan sát phát hiện mục tiêu và sửa bắn.", "Để liên kết các bộ phận của súng."],
-            ans: 0
-        },
-        {
-            q: "Yếu tố nào sau đây không làm ảnh hưởng đến đường đạn bay trong không khí?",
-            opts: ["Do trọng lực.", "Do sức cản của không khí.", "Do góc bắn và sơ tốc đầu đạn.", "Do cấu tạo nòng của súng."],
-            ans: 3
-        },
-        {
-            q: "Góc tạo bởi trục nòng súng ở thời điểm đã lấy xong đường ngắm và trục nòng súng ở thời điểm khi đầu đạn vừa thoát ra khỏi miệng nòng. Được xác định là:",
-            opts: ["Khái niệm góc bắn.", "Khái niệm góc nẩy.", "Khái niệm đường ngắm cơ bản.", "Khái niệm đường ngắm đúng."],
-            ans: 1
-        },
-        {
-            q: "Nòng súng tiểu liên AK có chiều dài là bao nhiêu mm?",
-            opts: ["445 mm.", "435 mm.", "425 mm.", "415 mm."],
-            ans: 3
-        },
-        {
-            q: "Mục đích của tháo, lắp thông thường súng tiểu liên AK để làm gì?",
-            opts: ["Để kiểm tra thông số kỹ thuật của súng.", "Để vận chuyển và bảo quản.", "Kiểm tra, lau chùi và bảo quản.", "Giữ gìn và vận chuyển súng."],
-            ans: 2
-        },
-        {
-            q: "Khi đường ngắm cơ bản chính xác, mặt súng thăng bằng. Nếu điểm ngắm sai so với điểm ngắm trúng 12 cm thì:",
-            opts: ["Điểm chạm sai lệch 7,62cm.", "Điểm chạm sai lệch 12cm.", "Điểm chạm sai lệch 25cm.", "Điểm chạm sai lệch 20cm."],
-            ans: 1
-        },
-        {
-            q: "Súng tiểu liên AK dùng chung đạn dược với các loại súng nào sau đây?",
-            opts: ["Súng K44, K54, Đại liên, B42.", "Súng B40, SVD, Đại liên.", "Súng SKS, K63, RPK, RPD.", "Chỉ dùng được đạn của chính nó."],
-            ans: 2
-        },
-        {
-            q: "Tính từ khi bóp cò cho đến khi kết thúc chuyển động về phía trước của kim hỏa. Được xác định là:",
-            opts: ["Giới hạn thời kỳ giật thứ nhất.", "Giới hạn thời kỳ giật thứ hai.", "Giới hạn thời kỳ giật thứ ba.", "Giới hạn thời kỳ giật thứ tư."],
-            ans: 0
-        },
-        {
-            q: "Khi lấy thước ngắm tương ứng với cự ly bắn, nếu mục tiêu xuất hiện ở cự ly 100 mét thì người bắn chọn thước ngắm số mấy?",
-            opts: ["Thước ngắm 4.", "Thước ngắm 2.", "Thước ngắm 3.", "Thước ngắm 1."],
-            ans: 3
-        },
-        {
-            q: "Là điểm đã được xác định trước sao cho khi ngắm vào đó để bắn thì quỹ đạo của đường đạn sẽ đi qua điểm định bắn trên mục tiêu. Được xác định là:",
-            opts: ["Điểm ngắm đúng.", "Đường ngắm cơ bản.", "Đường ngắm đúng.", "Khái niệm về góc bắn."],
-            ans: 0
-        },
-        {
-            q: "Yếu tố nào sau đây không làm ảnh hưởng đến đường bay trong không khí?",
-            opts: ["Do trọng lực.", "Do sức cản của không khí.", "Do góc bắn và sơ tốc đầu đạn.", "Do tính năng và cấu tạo của súng."],
-            ans: 3
-        },
-        {
-            q: "Yếu tố nào sau đây làm ảnh hưởng đến đường đạn trong không khí?",
-            opts: ["Do động tác người bắn.", "Do góc bắn.", "Do trọng lượng của súng.", "Do cấu tạo của súng và đạn."],
-            ans: 1
-        },
-        {
-            q: "Dùng để liên kết các bộ phận của súng; hướng cho bệ khóa nòng và khóa nòng chuyển động. Được xác định là:",
-            opts: ["Tác dụng của hộp khóa nòng.", "Tác dụng của nòng súng.", "Tác dụng của bệ khóa nòng.", "Tác dụng của thoi đẩy."],
-            ans: 0
-        },
-        {
-            q: "Nếu đầu ngắm cao hơn mép trên khe ngắm và lệch trái, thì điểm chạm của đạn trên mục tiêu sẽ:",
-            opts: ["Thấp hơn lệch sang phải.", "Thấp hơn và lệch sang trái.", "Cao hơn và lệch sang trái.", "Cao hơn và lệch sang phải."],
-            ans: 2
-        },
-        {
-            q: "Súng tiểu liên AK có bao nhiêu bộ phận chính?",
-            opts: ["11 bộ phận.", "9 bộ phận.", "10 bộ phận.", "12 bộ phận."],
-            ans: 1
-        },
-        {
-            q: "Một trong những quy tắc tháo và lắp thông thường của súng là:",
-            opts: ["Phải biết các loại súng.", "Phải nắm chắc cấu tạo của đạn.", "Phải nắm chắc chuyển động của súng.", "Phải nắm vững cấu tạo của súng."],
-            ans: 3
-        },
-        {
-            q: "Khối lượng của toàn bộ một viên đạn súng tiểu liên AK là bao nhiêu gram?",
-            opts: ["6,2 gram.", "12,6 gram.", "7,9 gram.", "9,7 gram."],
-            ans: 2
-        },
-        {
-            q: "Đầu đạn súng tiểu liên AK có khối lượng bao nhiêu gram?",
-            opts: ["7,9 gram.", "9,7 gram.", "6,9 gram.", "9,6 gram."],
-            ans: 0
-        },
-        {
-            q: "Tốc độ bắn lý thuyết của súng tiểu liên AK khi sử dụng chế độ liên thanh là bao nhiêu phát/phút?",
-            opts: ["500 phát/1 phút.", "600 phát/1 phút.", "700 phát/1 phút.", "800 phát/1 phút."],
-            ans: 1
-        },
-        {
-            q: "Đầu đạn của súng tiểu liên AK gồm mấy loại?",
-            opts: ["7 loại.", "6 loại.", "4 loại.", "5 loại."],
-            ans: 2
-        },
-        {
-            q: "Đầu đạn vạch đường của súng tiểu liên AK có tác dụng:",
-            opts: ["Tiêu diệt sinh lực địch, ngoài ra còn để sửa bắn và chỉ thị mục tiêu ở cự ly 800 mét trở lại.", "Tiêu diệt xe tăng địch, phá hủy phương tiện chiến tranh.", "Tiêu diệt xe bọc thép của địch.", "Tiêu diệt ụ súng, lô cốt của địch."],
-            ans: 0
-        },
-        {
-            q: "Đầu đạn xuyên cháy của súng tiểu liên AK có tác dụng:",
-            opts: ["Tiêu diệt mục tiêu sau các vật che đỡ, đốt cháy chất dễ cháy.", "Tiêu diệt mục tiêu sau các vật che đỡ có vỏ thép mỏng, đốt cháy chất dễ cháy.", "Tiêu diệt mục tiêu sau các vật che đỡ, đốt cháy chất dễ cháy ẩn nấp trong lô cốt.", "Đốt cháy chất dễ cháy và tiêu diệt sinh lực địch ở sau những vật chắn có bọc thép mỏng ở cự ly 300 mét trở lại."],
-            ans: 3
-        },
-        {
-            q: "Tháo và lắp thông thường của súng tiểu liên AK được tiến hành bao nhiêu bước?",
-            opts: ["6 bước.", "7 bước.", "12 bước.", "14 bước."],
-            ans: 3
-        },
-        {
-            q: "Trường hợp vận dụng động tác bắn súng tiểu liên AK?",
-            opts: ["Khi địa hình có vật che khuất, che đỡ cao ngang tầm ngực, hoặc bắn trong công sự.", "Khi địa hình có vật che khuất, cao ngang tầm người ngồi.", "Khi địa hình trống trải, không có vật che đỡ.", "Khi địa hình trống trải, không có vật che khuất."],
-            ans: 0
-        },
-        {
-            q: "Khi ngắm chụm và trúng người tập phải ngắm vào bia đồng tiền đen di động mấy lần để đủ điều kiện đánh giá kết quả?",
-            opts: ["2 lần.", "3 lần.", "4 lần.", "5 lần."],
-            ans: 1
-        },
-        {
-            q: "Cách bình thành tích ngắm trúng, chụm của ngắm đạt loại giỏi là:",
-            opts: ["Điểm ngắm trung bình, cách điểm kiểm tra 5 mm trở lại.", "Điểm ngắm trung bình, cách điểm kiểm tra 10 mm trở lại.", "Điểm ngắm trung bình, cách điểm kiểm tra 15 mm trở lại.", "Điểm ngắm trung bình, cách điểm kiểm tra 240 mm trở lại."],
-            ans: 0
-        },
-        {
-            q: "Cách bình thành tích ngắm trúng, chụm của ngắm đạt loại khá là:",
-            opts: ["Điểm ngắm trung bình, cách điểm kiểm tra 10 mm trở lại.", "Điểm ngắm trung bình, cách điểm kiểm tra 15 mm trở lại.", "Điểm ngắm trung bình, cách điểm kiểm tra 20 mm trở lại.", "Điểm ngắm trung bình, cách điểm kiểm tra 5 mm trở lại."],
-            ans: 0
-        },
-        {
-            q: "Cách bình thành tích ngắm trúng, chụm của ngắm đạt loại đạt là:",
-            opts: ["Điểm ngắm trung bình, cách điểm kiểm tra 15 mm trở lại.", "Điểm ngắm trung bình, cách điểm kiểm tra 10 mm trở lại.", "Điểm ngắm trung bình, cách điểm kiểm tra 5 mm trở lại.", "Điểm ngắm trung bình, cách điểm kiểm tra 20 mm trở lại."],
-            ans: 0
-        },
-        {
-            q: "Tốc độ bắn chiến đấu của súng tiểu liên AK, khi bắn phát một là bao nhiêu phát/phút?",
-            opts: ["35 phát/phút.", "40 phát/phút.", "45 phát/phút.", "50 phát/phút."],
-            ans: 1
-        },
-        {
-            q: "Tốc độ bắn chiến đấu của súng tiểu liên AK, khi bắn liên thanh là bao nhiêu phát/phút?",
-            opts: ["150 phát/phút.", "100 phát/phút.", "120 phát/phút.", "350 phát/phút."],
-            ans: 1
-        },
-        {
-            q: "Tầm bắn thẳng của súng tiểu liên AK với mục tiêu người chạy cao 1,5 mét là bao nhiêu mét?",
-            opts: ["625 mét.", "525 mét.", "350 mét.", "425 mét."],
-            ans: 1
-        },
-        {
-            q: "Tốc độ đầu của đầu đạn súng tiểu liên AK là bao nhiêu mét/giây?",
-            opts: ["715 mét/giây.", "710 mét/giây.", "735 mét/giây.", "815 mét/giây."],
-            ans: 1
-        },
-        {
-            q: "Hộp tiếp đạn của súng tiểu liên AK chứa tối đa được bao nhiêu viên đạn?",
-            opts: ["40 viên.", "30 viên.", "1000 viên.", "50 viên."],
-            ans: 1
-        },
-        {
-            q: "Cấu tạo chính của một viên đạn súng tiểu liên AK có bao nhiêu bộ phận?",
-            opts: ["2 bộ phận.", "4 bộ phận.", "3 bộ phận.", "5 bộ phận."],
-            ans: 1
-        },
-        {
-            q: "Quốc gia nào nghiên cứu, chế tạo ra súng tiểu liên AK đầu tiên trên thế giới?",
-            opts: ["Mỹ.", "Liên Xô.", "Tiệp Khắc.", "Việt Nam."],
-            ans: 1
-        },
-        {
-            q: "Tầm bắn tối đa được ghi trên thước của súng tiểu liên AK là bao nhiêu?",
-            opts: ["10.", "8.", "7.", "9."],
-            ans: 1
-        },
-        {
-            q: "Vạch chữ P trên thước ngắm của súng tiểu liên AK tương ứng với thước ngắm mấy?",
-            opts: ["4.", "3.", "2.", "1."],
-            ans: 1
-        },
-        {
-            q: "Là khoảng đầu đạn không sát thương được mục tiêu ở sau vật che đỡ. Được xác định là:",
-            opts: ["Khoảng che khuất.", "Khoảng an toàn.", "Khoảng che đỡ.", "Khoảng không an toàn."],
-            ans: 1
-        },
-        {
-            q: "Tại sao đầu đạn lại tự xoay tròn quanh trục của nó khi chuyển động?",
-            opts: ["Do nòng súng có các rãnh xoắn.", "Do cấu tạo của đạn.", "Do thoi đẩy.", "Do góc nẩy."],
-            ans: 0
-        },
+        const questionsData = [
+            // ---- SÚNG AK ----
+            { id: 1, text: 'Súng tiểu liên AK có cỡ nòng là bao nhiêu mm?', options: ['7,62mm', '6,72mm', '76,2mm', '72,6mm'], correct: 0 },
+            { id: 2, text: 'Khi bắn súng tiểu liên AK (góc bắn tốt nhất), bay xa nhất của đầu đạn là bao nhiêu mét?', options: ['3.000 mét', '1.500 mét', '3.600 mét', '800 mét'], correct: 0 },
+            { id: 3, text: 'Tầm bắn hiệu quả: Hỏa lực tập trung bắn mục tiêu mặt đất của súng tiểu liên AK đến cự ly bao nhiêu mét?', options: ['500 mét', '1.500 mét', '3.000 mét', '800 mét'], correct: 3 },
+            { id: 4, text: 'Yếu tố nào sau đây làm ảnh hưởng đến đường đạn bay trong không khí là một đường cong?', options: ['Do động tác người bắn', 'Do trọng lượng của súng', 'Do cấu tạo của súng và đạn', 'Lực cân của không khí'], correct: 2 },
+            { id: 5, text: 'Là đường ngắm cơ bản được đóng vào điểm ngắm đã xác định trên mục tiêu với điều kiện mặt súng thẳng bằng. Được xác định là:', options: ['Đường ngắm sai', 'Điểm ngắm đúng', 'Đường ngắm đúng', 'Đường ngắm cơ bản'], correct: 3 },
+            { id: 6, text: 'Khi bắn, mặt súng bị nghiêng thì:', options: ['Mặt súng nghiêng về bên nào, đạn lệch về bên đó và lên cao', 'Mặt súng nghiêng về bên nào, đạn lệch theo chiều ngược lại và thấp xuống', 'Mặt súng nghiêng về bên nào, đạn lệch về bên đó và thấp xuống', 'Mặt súng nghiêng về bên nào, đạn lệch theo chiều ngược lại và lên cao'], correct: 2 },
+            { id: 7, text: 'Tầm bay xa nhất của đầu đạn súng tiểu liên AK đạt 3.000 mét khi đó góc bắn là bao nhiêu độ?', options: ['70⁰ – 90⁰', '32⁰ – 35⁰', '40⁰ – 45⁰', '10⁰ – 15⁰'], correct: 1 },
+            { id: 8, text: 'Là đường thẳng từ mắt người ngắm qua chính giữa mép trên khe ngắm (tâm lỗ ngắm) đến điểm chính giữa mép trên đầu ngắm. Được xác định là:', options: ['Khái niệm đường ngắm cơ bản', 'Khái niệm đường ngắm đúng', 'Khái niệm điểm ngắm đúng', 'Khái niệm điểm bắn đúng'], correct: 0 },
+            { id: 9, text: 'Trọng lượng của súng tiểu liên AK khi không có đạn và khi đã lắp đủ đạn là bao nhiêu kg?', options: ['3,8kg và 4,3kg', '3,8kg và 4,8kg', '3,5kg và 4,3kg', '4,3kg và 5,8kg'], correct: 0 },
+            { id: 10, text: 'Nếu đầu ngắm thấp hơn mép trên khe ngắm, thì điểm chạm của đạn sẽ:', options: ['Cao hơn so với điểm định bắn trúng', 'Thấp hơn so với điểm định bắn trúng', 'Thấp hơn và lệch sang phải so với điểm định bắn trúng', 'Thấp hơn và lệch sang trái so với điểm định bắn trúng'], correct: 0 },
+            { id: 11, text: 'Tầm bắn thẳng của súng tiểu liên AK, khi mục tiêu người nằm cao 0,5 mét là bao nhiêu mét?', options: ['330 mét', '350 mét', '710 mét', '735 mét'], correct: 0 },
+            { id: 12, text: 'Khi ngắm chụm kết quả đánh giá giỏi là: 3 điểm ngắm được chấm, lọt vào lỗ có đường kính bao nhiêu?', options: ['10 mm', '5 mm', '2 mm', '7 mm'], correct: 0 },
+            { id: 13, text: 'Nếu đầu ngắm cao hơn mép trên khe ngắm, thì điểm chạm của đạn sẽ:', options: ['Thấp hơn so với điểm định bắn trúng', 'Cao hơn so với điểm định bắn trúng', 'Thấp hơn và lệch sang phải so với điểm định bắn trúng', 'Thấp hơn và lệch sang trái so với điểm định bắn trúng'], correct: 0 },
+            { id: 14, text: 'Tốc độ đầu của đầu đạn súng tiểu liên AKM là bao nhiêu mét/giây?', options: ['710 mét/giây', '715 mét/giây', '735 mét/giây', '815 mét/giây'], correct: 1 },
+            { id: 15, text: 'Đường đạn trong không khí là một đường cong không cân đối, góc phóng nhỏ hơn góc rơi, đoạn lên căng và dài hơn đoạn xuống, đỉnh đường đạn gần điểm rơi hơn điểm phóng. Được xác định là:', options: ['Đặc điểm đường đạn', 'Các nguyên nhân gây ra góc nảy', 'Khái niệm đường ngắm cơ bản', 'Khái niệm đường ngắm đúng'], correct: 0 },
+            { id: 16, text: 'Yếu tố nào sau đây làm ảnh hưởng đến đường đạn trong không khí?', options: ['Do động tác người bắn', 'Do trọng lực của đầu đạn', 'Do trọng lượng của súng', 'Do cấu tạo của súng và đạn'], correct: 1 },
+            { id: 17, text: 'Tầm bắn hiệu quả: Hỏa lực tập trung bắn máy bay quân nhảy dù của súng tiểu liên AK đến cự ly bao nhiêu mét?', options: ['500 mét', '700 mét', '800 mét', '1.000 mét'], correct: 2 },
+            { id: 18, text: 'Nếu đầu ngắm cao hơn mép trên khe ngắm và lệch trái, so với điểm định bắn trúng thì điểm chạm sẽ:', options: ['Thấp hơn và lệch sang phải', 'Thấp hơn và lệch sang trái', 'Cao hơn và lệch sang trái', 'Cao hơn và lệch sang phải'], correct: 0 },
+            // ... bỏ qua các câu 19-23 vì không có trong file
+            { id: 24, text: 'Bộ phận ngắm của súng tiểu liên AK có tác dụng gì?', options: ['Để ngắm vào các mục tiêu ở cự ly khác nhau', 'Để ước lượng cự ly bắn được chính xác', 'Để quan sát phát hiện mục tiêu và sửa bắn', 'Để liên kết các bộ phận của súng'], correct: 0 },
+            { id: 25, text: 'Yếu tố nào sau đây không làm ảnh hưởng đến đường đạn bay trong không khí?', options: ['Do trọng lực', 'Do sức cản của không khí', 'Do góc bắn và sơ tốc đầu đạn', 'Do cấu tạo nòng súng'], correct: 3 },
+            { id: 26, text: 'Góc tạo bởi trục nòng súng ở thời điểm đã lấy xong đường ngắm và trục nòng súng ở thời điểm khi đầu đạn vừa thoát ra khỏi miệng nòng. Được xác định là:', options: ['Khái niệm góc bắn', 'Khái niệm góc nảy', 'Khái niệm đường ngắm cơ bản', 'Khái niệm đường ngắm đúng'], correct: 1 },
+            { id: 27, text: 'Nòng súng tiểu liên AK có chiều dài là bao nhiêu mm?', options: ['445 mm', '435 mm', '425 mm', '415 mm'], correct: 3 },
+            { id: 28, text: 'Mục đích của tháo, lắp thông thường súng tiểu liên AK để làm gì?', options: ['Để kiểm tra thông số kỹ thuật của súng', 'Để vận chuyển và bảo quản', 'Kiểm tra, lau chùi và bảo quản', 'Giữ gìn và vận chuyển súng'], correct: 2 },
+            { id: 29, text: 'Khi đường ngắm cơ bản chính xác, mặt súng thăng bằng. Nếu điểm ngắm sai so với điểm ngắm trúng 12 cm thì:', options: ['Điểm chạm trên mục tiêu sai lệch 7,62cm', 'Điểm chạm trên mục tiêu sai lệch 12cm', 'Điểm chạm trên mục tiêu sai lệch 25cm', 'Điểm chạm trên mục tiêu sai lệch 20cm'], correct: 1 },
+            { id: 30, text: 'Súng tiểu liên AK dùng chung đạn dược với các loại súng nào sau đây?', options: ['Súng K44, K54, Đại liên, B42', 'Súng B40, SVD, Đại liên', 'Súng SKS, K63, RPK, RPD', 'Chỉ dùng được đạn của chính nó'], correct: 2 },
+            { id: 31, text: 'Tính từ khi bóp cò cho đến khi kết thúc chuyển động về phía trước của kim hỏa. Được xác định là:', options: ['Giới hạn thời kỳ giật thứ nhất', 'Giới hạn thời kỳ giật thứ hai', 'Giới hạn thời kỳ giật thứ ba', 'Giới hạn thời kỳ giật thứ tư'], correct: 0 },
+            { id: 32, text: 'Khi lấy thước ngắm tương ứng với cự ly bắn, nếu mục tiêu xuất hiện ở cự ly 100 mét thì người bắn chọn thước ngắm số mấy?', options: ['Thước ngắm 4', 'Thước ngắm 2', 'Thước ngắm 3', 'Thước ngắm 1'], correct: 3 },
+            { id: 33, text: 'Là điểm đã được xác định trước sao cho khi ngắm vào đó để bắn thì quỹ đạo của đường đạn sẽ đi qua điểm định bắn trên mục tiêu. Được xác định là:', options: ['Điểm ngắm đúng', 'Đường ngắm cơ bản', 'Đường ngắm đúng', 'Khái niệm về góc bắn'], correct: 0 },
+            { id: 34, text: 'Yếu tố nào sau đây không làm ảnh hưởng đến đường bay trong không khí?', options: ['Do trọng lực', 'Do sức cản của không khí', 'Do góc bắn và sơ tốc đầu đạn', 'Do tính năng và cấu tạo của súng'], correct: 3 },
+            { id: 35, text: 'Yếu tố nào sau đây làm ảnh hưởng đến đường đạn trong không khí?', options: ['Do động tác người bắn', 'Do góc bắn', 'Do trọng lượng của súng', 'Do cấu tạo của súng và đạn'], correct: 1 },
+            { id: 36, text: 'Dùng để liên kết các bộ phận của súng; hướng cho bệ khóa nòng và khóa nòng chuyển động. Được xác định là:', options: ['Tác dụng của hộp khóa nòng', 'Tác dụng của nòng súng', 'Tác dụng của bệ khóa nòng', 'Tác dụng của thoi đẩy'], correct: 0 },
+            { id: 37, text: 'Nếu đầu ngắm cao hơn mép trên khe ngắm và lệch trái, thì điểm chạm của đạn trên mục tiêu sẽ:', options: ['Thấp hơn và lệch sang phải', 'Thấp hơn và lệch sang trái', 'Cao hơn và lệch sang trái', 'Cao hơn và lệch sang phải'], correct: 0 },
+            { id: 38, text: 'Súng tiểu liên AK có bao nhiêu bộ phận chính?', options: ['11 bộ phận', '9 bộ phận', '10 bộ phận', '12 bộ phận'], correct: 0 },
+            { id: 39, text: 'Một trong những quy tắc tháo và lắp thông thường của súng là:', options: ['Phải biết các loại súng', 'Phải nắm chắc cấu tạo của đạn', 'Phải nắm chắc chuyển động của súng', 'Phải nắm vững cấu tạo của súng'], correct: 3 },
+            { id: 40, text: 'Khối lượng của toàn bộ một viên đạn súng tiểu liên AK là bao nhiêu gram?', options: ['6,2 gram', '12,6 gram', '7,9 gram', '9,7 gram'], correct: 1 },
+            { id: 41, text: 'Đầu đạn súng tiểu liên AK có khối lượng bao nhiêu gram?', options: ['7,9 gram', '9,7 gram', '6,9 gram', '9,6 gram'], correct: 0 },
+            { id: 42, text: 'Tốc độ bắn lý thuyết của súng tiểu liên AK khi sử dụng chế độ liên thanh là bao nhiêu phát/phút?', options: ['500 phát/phút', '600 phát/phút', '700 phát/phút', '800 phát/phút'], correct: 1 },
+            { id: 43, text: 'Đầu đạn của súng tiểu liên AK gồm mấy loại?', options: ['7 loại', '6 loại', '4 loại', '5 loại'], correct: 3 },
+            { id: 44, text: 'Đầu đạn vạch đường của súng tiểu liên AK có tác dụng:', options: ['Tiêu diệt sinh lực địch, ngoài ra còn để sửa bắn và chỉ thị mục tiêu ở cự ly 800 mét trở lại', 'Tiêu diệt xe tăng địch, phá hủy phương tiện chiến tranh của địch', 'Tiêu diệt xe bọc thép của địch', 'Tiêu diệt ụ súng, lô cốt của địch'], correct: 0 },
+            { id: 45, text: 'Đầu đạn xuyên cháy của súng tiểu liên AK có tác dụng:', options: ['Tiêu diệt mục tiêu sau các vật che đỡ, đốt cháy chất dễ cháy như công sự, vật cản của địch', 'Tiêu diệt mục tiêu sau các vật che đỡ có vỏ thép mỏng, đốt cháy chất dễ cháy như hỏa lực của địch', 'Tiêu diệt mục tiêu sau các vật che đỡ, đốt cháy chất dễ cháy ấn nắp trong lô cốt, ụ súng của địch', 'Đốt cháy chất dễ cháy và tiêu diệt sinh lực địch ở sau những vật chắn có bọc thép mỏng ở cự ly 300 mét trở lại'], correct: 1 },
+            { id: 46, text: 'Tháo và lắp thông thường của súng tiểu liên AK được tiến hành bao nhiêu bước?', options: ['6 bước', '7 bước', '12 bước', '14 bước'], correct: 1 },
+            { id: 47, text: 'Trường hợp vận dụng động tác bắn súng tiểu liên AK?', options: ['Khi địa hình có vật che khuất, che đỡ cao ngang tầm ngực, hoặc bắn trong công sự', 'Khi địa hình có vật che khuất, cao ngang tầm người ngồi, hoặc bắn trong công sự', 'Khi địa hình trống trải, không có vật che đỡ', 'Khi địa hình trống trải, không có vật che khuất'], correct: 0 },
+            { id: 48, text: 'Khi ngắm chụm và trúng người tập phải ngắm vào bia đồng tiền đen di động mấy lần để đủ điều kiện đánh giá kết quả?', options: ['2 lần', '3 lần', '4 lần', '5 lần'], correct: 1 },
+            { id: 49, text: 'Cách phân loại thành tích ngắm trúng, chụm đạt loại giỏi là:', options: ['Điểm ngắm trung bình cách điểm kiểm tra 5 mm trở lại', 'Điểm ngắm trung bình cách điểm kiểm tra 10 mm trở lại', 'Điểm ngắm trung bình cách điểm kiểm tra 15 mm trở lại', 'Điểm ngắm trung bình cách điểm kiểm tra 240 mm trở lại'], correct: 0 },
+            { id: 50, text: 'Cách phân loại thành tích ngắm trúng, chụm đạt loại khá là:', options: ['Điểm ngắm trung bình cách điểm kiểm tra 10 mm trở lại', 'Điểm ngắm trung bình cách điểm kiểm tra 15 mm trở lại', 'Điểm ngắm trung bình cách điểm kiểm tra 20 mm trở lại', 'Điểm ngắm trung bình cách điểm kiểm tra 5 mm trở lại'], correct: 0 },
+            { id: 51, text: 'Cách phân loại thành tích ngắm trúng, chụm đạt loại đạt là:', options: ['Điểm ngắm trung bình cách điểm kiểm tra 15 mm trở lại', 'Điểm ngắm trung bình cách điểm kiểm tra 10 mm trở lại', 'Điểm ngắm trung bình cách điểm kiểm tra 5 mm trở lại', 'Điểm ngắm trung bình cách điểm kiểm tra 20 mm trở lại'], correct: 0 },
+            { id: 52, text: 'Tốc độ bắn chiến đấu của súng tiểu liên AK, khi bắn phát một là bao nhiêu phát/phút?', options: ['35 phát/phút', '40 phát/phút', '45 phát/phút', '50 phát/phút'], correct: 1 },
+            { id: 53, text: 'Tốc độ bắn chiến đấu của súng tiểu liên AK, khi bắn liên thanh là bao nhiêu phát/phút?', options: ['150 phát/phút', '100 phát/phút', '120 phát/phút', '350 phát/phút'], correct: 1 },
+            { id: 54, text: 'Tầm bắn thẳng của súng tiểu liên AK với mục tiêu người chạy cao 1,5 mét là bao nhiêu mét?', options: ['625 mét', '525 mét', '350 mét', '425 mét'], correct: 1 },
+            { id: 55, text: 'Tốc độ đầu của đầu đạn súng tiểu liên AK là bao nhiêu mét/giây?', options: ['715 mét/giây', '710 mét/giây', '735 mét/giây', '815 mét/giây'], correct: 1 },
+            { id: 56, text: 'Hộp tiếp đạn của súng tiểu liên AK chứa tối đa được bao nhiêu viên đạn?', options: ['40 viên', '30 viên', '1000 viên', '50 viên'], correct: 1 },
+            { id: 57, text: 'Cấu tạo chính của một viên đạn súng tiểu liên AK có bao nhiêu bộ phận?', options: ['2 bộ phận', '4 bộ phận', '3 bộ phận', '5 bộ phận'], correct: 1 },
+            { id: 58, text: 'Quốc gia nào nghiên cứu, chế tạo ra súng tiểu liên AK đầu tiên trên thế giới?', options: ['Mỹ', 'Liên Xô', 'Tiệp Khắc', 'Việt Nam'], correct: 1 },
+            { id: 59, text: 'Tầm bắn tối đa được ghi trên thước ngắm của súng tiểu liên AK là bao nhiêu?', options: ['10', '8', '7', '9'], correct: 1 },
+            { id: 60, text: 'Vạch chữ "P" trên thước ngắm của súng tiểu liên AK tương ứng với thước ngắm mấy?', options: ['4', '3', '2', '1'], correct: 3 },
+            { id: 61, text: 'Là khoảng đầu đạn không sát thương được mục tiêu ở sau vật che đỡ. Được xác định là:', options: ['Khoảng che khuất', 'Khoảng an toàn', 'Khoảng che đỡ', 'Khoảng không an toàn'], correct: 0 },
+            { id: 62, text: 'Tại sao đầu đạn lại tự xoay tròn quanh trục của nó khi chuyển động?', options: ['Do nòng súng có các rãnh xoắn', 'Do cấu tạo của đạn', 'Do thoi đẩy', 'Do góc nảy'], correct: 0 },
 
-        // ===== LỰU ĐẠN =====
-        {
-            q: "Chuyển động nổ của lựu đạn F1 được tính từ:",
-            opts: ["Khi rút chốt an toàn và lựu đạn rời khỏi tay.", "Khi lựu đạn bay đến mục tiêu.", "Khi lấy lựu đạn ra khỏi túi đựng.", "Khi lựu đạn đã rút chốt an toàn."],
-            ans: 0
-        },
-        {
-            q: "Khi ném, để lựu đạn bay được xa nhất thì thời cơ buông lựu đạn tốt nhất là:",
-            opts: ["Cánh tay hợp với mặt phẳng ngang một góc 45°.", "Cánh tay hợp với mặt phẳng ngang một góc 35°.", "Cánh tay hợp với mặt phẳng ngang một góc 25°.", "Cánh tay hợp với mặt phẳng ngang một góc 15°."],
-            ans: 0
-        },
-        {
-            q: "Trong kỹ thuật sử dụng lựu đạn thuật ngữ nào sau đây là đúng:",
-            opts: ["Ném lựu đạn.", "Phóng lựu đạn.", "Tung lựu đạn.", "Vứt lựu đạn."],
-            ans: 0
-        },
-        {
-            q: "Khi rút chốt an toàn, kim hỏa, lò xo kim hỏa bung ra đẩy kim hỏa chọc vào hạt lửa, đốt cháy dây cháy chậm từ 3 – 4 giây thì lửa phụt vào kíp làm kíp nổ, gây nổ lựu đạn. Được xác định là:",
-            opts: ["Thứ tự các bộ phận của lựu đạn.", "Tính năng của lựu đạn.", "Chuyển động nổ của lựu đạn F1.", "Cách sử dụng lựu đạn."],
-            ans: 2
-        },
-        {
-            q: "Theo kỹ thuật, chuyển động nổ của lựu đạn F1 được xác định từ khi:",
-            opts: ["Lựu đạn rời khỏi tay.", "Ném lựu đạn đến mục tiêu.", "Cần bẩy bật lên.", "Rút chốt an toàn."],
-            ans: 0
-        },
-        {
-            q: "Đối với lựu đạn F1 khi đã rút chốt an toàn ra (khi tay chưa buông cần bẩy) thì lựu đạn sẽ:",
-            opts: ["Bắt đầu chuyển động nổ.", "Chưa chuyển động nổ.", "Sau 3 - 4 giây sẽ chuyển động nổ.", "Sau 5 – 6 giây sẽ chuyển động nổ."],
-            ans: 1
-        },
-        {
-            q: "Đối với lựu đạn F1 khi đã rút chốt an toàn ra, nếu mất cơ hội ném thì ta sẽ xử lý lựu đạn như thế nào?",
-            opts: ["Nhanh chóng ném đi, vì lựu đạn đã chuyển động nổ.", "Nhanh chóng gài chốt an toàn vào lựu đạn lại như ban đầu.", "Nhanh chóng chôn xuống đất.", "Nhanh chóng tháo đầu nổ ra khỏi thân lựu đạn."],
-            ans: 1
-        },
-        {
-            q: "Khi lựu đạn F1 đã chuyển động nổ, thì khi nào lựu đạn sẽ nổ?",
-            opts: ["Khi lựu đạn đã hết thời gian cháy chậm.", "Khi lựu đạn vừa chạm mặt đất.", "Khi lựu đạn vừa trúng mục tiêu.", "Khi lựu đạn cách mục tiêu bán kính 20 mét."],
-            ans: 0
-        },
-        {
-            q: "Khi mục tiêu xuất hiện trong các cự ly nào sau đây thì ném lựu đạn hợp lý nhất?",
-            opts: ["Khoảng 60 - 70 mét.", "Khoảng 55 - 65 mét.", "Khoảng 50 - 60 mét.", "Khoảng 25 – 30 mét."],
-            ans: 3
-        },
-        {
-            q: "Trong tính năng, tác dụng của lựu đạn F1, nhà sản xuất cho ta biết thời gian cháy của lựu đạn là 3 – 4 giây để làm gì?",
-            opts: ["Để cho người ném lựu đạn làm công tác chuẩn bị.", "Để an toàn cho người sử dụng và cho lựu đạn có thời gian bay đến mục tiêu.", "Để bảo đảm an toàn trong quá trình bảo quản.", "Để cho lựu đạn dễ được sử dụng hơn."],
-            ans: 1
-        },
-        {
-            q: "Khối lượng toàn bộ và bán kính sát thương của lựu đạn F1 là:",
-            opts: ["500g và 100 mét.", "600g và 20 mét.", "700g và 25 mét.", "800g và 30 mét."],
-            ans: 1
-        },
-        {
-            q: "Trang bị cho từng người trong chiến đấu, dùng để sát thương sinh lực địch và phá hủy một số loại phương tiện chiến tranh của đối phương chủ yếu bằng mảnh gang vụn và áp lực khí thuốc. Được xác định là:",
-            opts: ["Tác dụng của lựu đạn F1.", "Tác dụng của lựu đạn LKT-4.", "Tác dụng của lựu đạn C4.", "Tác dụng của lựu đạn LKM."],
-            ans: 0
-        },
-        {
-            q: "Khối lượng toàn bộ của lựu đạn F1 là bao nhiêu gram?",
-            opts: ["400g.", "500g.", "600g.", "700g."],
-            ans: 2
-        },
-        {
-            q: "Chiều cao toàn bộ của lựu đạn F1 là bao nhiêu mm?",
-            opts: ["117mm.", "127mm.", "197mm.", "188 mm."],
-            ans: 0
-        },
-        {
-            q: "Đường kính thân lựu đạn F1 là bao nhiêu mm?",
-            opts: ["45mm.", "55mm.", "35mm.", "65mm."],
-            ans: 1
-        },
-        {
-            q: "Khối lượng thuốc nổ của lựu đạn F1 là bao nhiêu gram?",
-            opts: ["60g.", "45g.", "50g.", "55g."],
-            ans: 0
-        },
-        {
-            q: "Tác dụng bộ phận gây nổ của lựu đạn F1?",
-            opts: ["Để giữ an toàn và gây nổ lựu đạn.", "Để gây nổ lựu đạn.", "Để an toàn cho lựu đạn.", "Để bảo đảm an toàn trong quá trình chiến đấu."],
-            ans: 1
-        },
-        {
-            q: "Chốt an toàn giữ không cho cần bẩy bật lên, cần bẩy giữ đuôi kim hỏa cho kim hỏa không chọc vào hạt lửa. Được xác định là:",
-            opts: ["Lựu đạn đang ở trạng thái lúc bình thường.", "Lựu đạn ở trạng thái không bình thường.", "Các bộ phận của lựu đạn đang được kích hoạt.", "Lựu đạn đang có vấn đề về kỹ thuật."],
-            ans: 0
-        },
-        {
-            q: "Bán kính sát thương của lựu đạn LĐ-01 là bao nhiêu mét?",
-            opts: ["5 - 6m.", "7 - 8m.", "9 - 10m.", "10 - 12m."],
-            ans: 0
-        },
-        {
-            q: "Khối lượng toàn bộ của lựu đạn LĐ-01 là bao nhiêu gram?",
-            opts: ["350 - 445g.", "365 - 400g.", "450 - 550g.", "365 - 465g."],
-            ans: 1
-        },
-        {
-            q: "Thời gian cháy chậm của lựu đạn LĐ-01 là bao nhiêu giây?",
-            opts: ["3,2 – 4,2 giây.", "4,5 – 5,5 giây.", "5,2 – 6,2 giây.", "6,2 – 7,2 giây."],
-            ans: 0
-        },
+            // ---- LỰU ĐẠN ----
+            { id: 63, text: 'Chuyển động nổ của lựu đạn F1 được tính từ:', options: ['Khi rút chốt an toàn và lựu đạn rời khỏi tay', 'Khi lựu đạn bay đến mục tiêu', 'Khi lấy lựu đạn ra khỏi túi đựng', 'Khi lựu đạn đã rút chốt an toàn'], correct: 0 },
+            { id: 64, text: 'Khi ném, để lựu đạn bay được xa nhất thì thời cơ buông lựu đạn tốt nhất là:', options: ['Cánh tay hợp với mặt phẳng ngang một góc 45°', 'Cánh tay hợp với mặt phẳng ngang một góc 35°', 'Cánh tay hợp với mặt phẳng ngang một góc 25°', 'Cánh tay hợp với mặt phẳng ngang một góc 15°'], correct: 0 },
+            { id: 65, text: 'Trong kỹ thuật sử dụng lựu đạn, thuật ngữ nào sau đây là đúng?', options: ['Ném lựu đạn', 'Ném lựu đạn', 'Ném lựu đạn', 'Ném lựu đạn'], correct: 0 }, // tạm
+            { id: 66, text: 'Khi rút chốt an toàn, kim hỏa, lò xo kim hỏa bung ra, kim hỏa chọc vào hạt lửa, đốt cháy dây cháy chậm từ 3 – 4 giây thì lửa phụt vào kíp làm kíp nổ, gây nổ lựu đạn. Được xác định là:', options: ['Thứ tự các bộ phận của lựu đạn', 'Tính năng của lựu đạn', 'Chuyển động nổ của lựu đạn F1', 'Cách sử dụng lựu đạn'], correct: 2 },
+            { id: 67, text: 'Theo kỹ thuật, chuyển động nổ của lựu đạn F1 được xác định từ khi:', options: ['Lựu đạn tới tay', 'Ném lựu đạn đến mục tiêu', 'Cần bẩy bật lên', 'Rút chốt an toàn'], correct: 2 },
+            { id: 68, text: 'Đối với lựu đạn F1 khi đã rút chốt an toàn (tay chưa buông cần bẩy) thì lựu đạn sẽ:', options: ['Bắt đầu chuyển động nổ', 'Chưa chuyển động nổ', 'Sau 3-4 giây sẽ chuyển động nổ', 'Sau 5-6 giây sẽ chuyển động nổ'], correct: 1 },
+            { id: 69, text: 'Đối với lựu đạn F1 khi đã rút chốt an toàn, nếu mất cơ hội ném thì xử lý như thế nào?', options: ['Nhanh chóng ném đi vì lựu đạn đã chuyển động nổ', 'Nhanh chóng gài chốt an toàn lại như ban đầu', 'Nhanh chóng chôn xuống đất', 'Nhanh chóng tháo đầu nổ ra khỏi thân'], correct: 1 },
+            { id: 70, text: 'Khi lựu đạn F1 đã chuyển động nổ, thì khi nào lựu đạn sẽ nổ?', options: ['Khi lựu đạn đã hết thời gian cháy chậm', 'Khi lựu đạn vừa chạm mặt đất', 'Khi lựu đạn vừa trúng mục tiêu', 'Khi lựu đạn cách mục tiêu bán kính 20 mét'], correct: 0 },
+            { id: 71, text: 'Khi mục tiêu xuất hiện trong cự ly nào thì ném lựu đạn hợp lý nhất?', options: ['Khoảng 60-70 mét', 'Khoảng 55-65 mét', 'Khoảng 50-60 mét', 'Khoảng 25-30 mét'], correct: 3 },
+            { id: 72, text: 'Trong tính năng, tác dụng của lựu đạn F1, nhà sản xuất cho biết thời gian cháy chậm 3-4 giây để làm gì?', options: ['Để người ném làm công tác chuẩn bị', 'Để an toàn cho người sử dụng và lựu đạn có thời gian bay đến mục tiêu', 'Để bảo đảm an toàn trong bảo quản', 'Để lựu đạn dễ sử dụng hơn'], correct: 1 },
+            { id: 73, text: 'Khối lượng toàn bộ và bán kính sát thương của lựu đạn F1 là:', options: ['500g và 100 mét', '600g và 20 mét', '700g và 25 mét', '800g và 30 mét'], correct: 1 },
+            { id: 74, text: 'Trang bị cho từng người trong chiến đấu, dùng để sát thương sinh lực địch và phá huỷ một số loại phương tiện chiến tranh chủ yếu bằng mảnh gang vụn và áp lực khí thuốc. Được xác định là:', options: ['Tác dụng của lựu đạn F1', 'Tác dụng của lựu đạn LKT-4', 'Tác dụng của lựu đạn C4', 'Tác dụng của lựu đạn LKM'], correct: 0 },
+            { id: 75, text: 'Khối lượng toàn bộ của lựu đạn F1 là bao nhiêu gram?', options: ['400g', '500g', '600g', '700g'], correct: 2 },
+            { id: 76, text: 'Chiều cao toàn bộ của lựu đạn F1 là bao nhiêu mm?', options: ['117mm', '127mm', '197mm', '188mm'], correct: 0 },
+            { id: 77, text: 'Đường kính thân lựu đạn F1 là bao nhiêu mm?', options: ['45mm', '55mm', '35mm', '65mm'], correct: 1 },
+            { id: 78, text: 'Khối lượng thuốc nổ của lựu đạn F1 là bao nhiêu gram?', options: ['60g', '45g', '50g', '55g'], correct: 0 },
+            { id: 79, text: 'Tác dụng của bộ phận gây nổ của lựu đạn F1 là:', options: ['Để giữ an toàn và gây nổ lựu đạn', 'Để gây nổ lựu đạn', 'Để an toàn cho lựu đạn', 'Để bảo đảm an toàn trong chiến đấu'], correct: 0 },
+            { id: 80, text: 'Chốt an toàn giữ không cho cần bẩy bật lên, cần bẩy giữ đuôi kim hỏa cho kim hỏa không chọc vào hạt lửa. Được xác định là:', options: ['Lựu đạn đang ở trạng thái bình thường', 'Lựu đạn ở trạng thái không bình thường', 'Các bộ phận của lựu đạn được kích hoạt', 'Lựu đạn đang có vấn đề kỹ thuật'], correct: 0 },
+            { id: 81, text: 'Bán kính sát thương của lựu đạn LĐ-01 là bao nhiêu mét?', options: ['5-6m', '7-8m', '9-10m', '10-12m'], correct: 0 },
+            { id: 82, text: 'Khối lượng toàn bộ của lựu đạn LĐ-01 là bao nhiêu gram?', options: ['350-445g', '365-400g', '450-550g', '365-465g'], correct: 3 },
+            { id: 83, text: 'Thời gian cháy chậm của lựu đạn LĐ-01 là bao nhiêu giây?', options: ['3,2 – 4,2 giây', '4,5 – 5,5 giây', '5,2 – 6,2 giây', '6,2 – 7,2 giây'], correct: 0 },
 
-        // ===== TIẾN CÔNG =====
-        {
-            q: "Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như ụ súng, lô cốt. Được xác định là một trong những:",
-            opts: ["Cách đánh.", "Nhiệm vụ.", "Yêu cầu chiến thuật.", "Hành động của chiến sĩ."],
-            ans: 1
-        },
-        {
-            q: "Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như xe tăng, xe bọc thép địch. Được xác định là một trong những:",
-            opts: ["Cách đánh.", "Nhiệm vụ.", "Yêu cầu chiến thuật.", "Hành động của chiến sĩ."],
-            ans: 1
-        },
-        {
-            q: "Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như tên địch, tốp địch ngoài công sự. Được xác định là một trong những:",
-            opts: ["Cách đánh.", "Nhiệm vụ.", "Yêu cầu chiến thuật.", "Hành động của chiến sĩ."],
-            ans: 1
-        },
-        {
-            q: "Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như chiến hào, giao thông hào, căn nhà. Được xác định là một trong những:",
-            opts: ["Cách đánh.", "Nhiệm vụ.", "Yêu cầu chiến thuật.", "Hành động của chiến sĩ."],
-            ans: 1
-        },
-        {
-            q: "Khi chiến sĩ đang phát triển chiến đấu đánh chiếm mục tiêu xe tăng của địch nằm trong công sự bằng bộc phá khối. Chiến sĩ sẽ chọn vị trí nào trên xe tăng để đặt bộc phá đạt hiệu quả cao nhất?",
-            opts: ["Đỉnh của nòng pháo.", "Nắp đậy ra vào xe của lái xe.", "Trước mũi xe tăng.", "Khoảng tiếp giáp giữa thân xe và tháp pháo."],
-            ans: 3
-        },
-        {
-            q: "Khi chiến sĩ đang cơ động phát triển chiến đấu đánh chiếm mục tiêu, hỏa lực của địch bắn mạnh về bên trái vào sát bên sườn của chiến sĩ. Hành động của chiến sĩ sẽ xử trí như thế nào là hợp lý nhất?",
-            opts: ["Nhanh chóng cơ động về phía sau báo cáo cấp trên.", "Nhanh chóng bắn trả, thực hiện bắn găm bắn gần.", "Nhanh chóng lăn sang bên trái, chờ hỏa lực địch ngừng bắn.", "Nhanh chóng lăn về bên phải, lợi dụng địa hình, tránh hỏa lực địch sát thương."],
-            ans: 3
-        },
-        {
-            q: "Ụ súng của địch thường có đặc điểm gì?",
-            opts: ["Có cấu trúc là hình vuông.", "Có cấu trúc là hình đa giác.", "Có cấu trúc là hình chữ nhật.", "Có cấu trúc là hình lăng trụ."],
-            ans: 3
-        },
-        {
-            q: "Lô cốt của địch thường có đặc điểm gì?",
-            opts: ["Có cấu trúc là hình vuông.", "Có cấu trúc là hình lăng trụ.", "Có cấu trúc là hình chữ nhật.", "Có cấu trúc hình đa giác."],
-            ans: 1
-        },
-        {
-            q: "Ụ súng, lô cốt của địch thường có đặc điểm gì?",
-            opts: ["Có lỗ bắn quay về một hướng.", "Xây dựng trên bề mặt địa hình.", "Xây dựng nửa chìm nửa nổi, xung quanh có các lỗ bắn.", "Xây dựng ngầm trong lòng đất, xung quanh có các lỗ bắn."],
-            ans: 2
-        },
-        {
-            q: "Thủ đoạn đối phó của địch trong ụ súng, lô cốt khi bị ta tiến công?",
-            opts: ["Địch giữ bí mật về hành động, sẵn sàng hỏa lực ngăn chặn ta.", "Địch rút chạy nhanh về phía sau.", "Địch dựa vào ụ súng, lô cốt dùng hỏa lực bắn ngăn chặn ta từ xa đến gần.", "Địch hoang mang và chờ lực lượng phía sau lên ứng cứu."],
-            ans: 2
-        },
-        {
-            q: "Khi chiến sĩ ném lựu đạn vào trong ụ súng không có nắp và lựu đạn đã nổ, hành động xử trí tiếp theo của chiến sĩ như thế nào là hợp lý nhất?",
-            opts: ["Giữ bí mật về hành động.", "Tại chỗ sử dụng hỏa lực tiêu diệt địch.", "Xông lên bắn găm, bắn gần, đâm lê, đánh báng tiêu diệt những tên còn sống sót.", "Nhanh chóng cơ động về sau sẵn sàng nhận nhiệm vụ tiếp theo."],
-            ans: 2
-        },
-        {
-            q: "Phải kết hợp nhìn và nghe nhận đầy đủ, chính xác. Nếu nội dung nào chưa rõ phải hỏi lại để người chỉ huy bổ sung cho đầy đủ. Được xác định là:",
-            opts: ["Phương pháp khi nhận nhiệm vụ.", "Phương pháp khi giao nhiệm vụ.", "Phương pháp sau khi hoàn thành nhiệm vụ.", "Phương pháp làm công tác chuẩn bị."],
-            ans: 0
-        },
-        {
-            q: "Khi chiến sĩ đang vận động tiếp cận ụ súng, bất ngờ bị hỏa lực địch bắn làm chiến sĩ bị thương nhẹ vào cánh tay trái, hành động của chiến sĩ xử trí như thế nào là hợp lý nhất?",
-            opts: ["Vận động về sau và báo cáo cấp trên.", "Hô xung phong thực hiện bắn găm, đánh gần.", "Quan sát tình hình địch, tại vị trí nổ súng tiêu diệt địch trong ụ súng.", "Lợi dụng địa hình, giữ bí mật, tự băng bó, tiếp tục thực hiện nhiệm vụ."],
-            ans: 3
-        },
-        {
-            q: "Khi chiến sĩ vận động đến điểm dừng, cách ụ súng không có nắp khoảng 25 – 30 mét và thực hiện ném quả lựu đạn đầu tiên vào bên trong ụ súng, nhưng lựu đạn không nổ, hành động tiếp theo của chiến sĩ xử trí như thế nào là hợp lý nhất?",
-            opts: ["Xung phong thực hiện bắn găm, đánh gần.", "Tiếp tục ném quả lựu đạn tiếp theo.", "Vận động về sau và báo cáo cấp trên.", "Quan sát tình hình địch, tại vị trí nổ súng tiêu diệt địch trong ụ súng."],
-            ans: 1
-        },
-        {
-            q: "Khi chiến sĩ xung phong đánh chiếm vào ụ súng không có nắp và phát hiện có một tên địch còn sống và giơ tay đầu hàng, hành động của chiến sĩ xử trí như thế nào là hợp lý nhất?",
-            opts: ["Nổ súng tiêu diệt tất cả những tên địch còn sống sót.", "Vận động về sau và báo cáo cấp trên.", "Thu vũ khí, bắt tù hàng binh, lùng sục bắt sống hoặc tiêu diệt những tên địch còn sống sót khác.", "Bắt sống tên địch và đưa về phía sau."],
-            ans: 2
-        },
-        {
-            q: "Trong các yêu cầu chiến thuật từng người trong chiến đấu tiến công, yêu cầu nào sau đây được xác định là yêu cầu quan trọng và mang tính chỉ đạo toàn bộ hành động của người chiến sĩ từ khi nhận nhiệm vụ cho đến khi hoàn thành nhiệm vụ được giao?",
-            opts: ["Đánh nhanh sục sạo kỹ, vừa đánh vừa địch vận.", "Phát hiện và tận dụng những nơi sơ hở, hiểm yếu của địch tiếp cận đánh địch.", "Bí mật, bất ngờ, tinh khôn, mưu mẹo.", "Dũng cảm, linh hoạt, kịp thời."],
-            ans: 2
-        },
-        {
-            q: "Một trong những yêu cầu chiến thuật của từng người trong chiến đấu tiến công là:",
-            opts: ["Bí mật, bất ngờ, tinh khôn, mưu mẹo.", "Có quyết tâm chiến đấu cao, chuẩn bị mọi mặt chu đáo.", "Hiệp đồng chặt chẽ với đồng đội tạo thành thế liên hoàn.", "Xây dựng công sự chiến đấu vững chắc, ngụy trang bí mật."],
-            ans: 0
-        },
-        {
-            q: "Một trong những yêu cầu chiến thuật của từng người trong chiến đấu tiến công là:",
-            opts: ["Dũng cảm, linh hoạt, kịp thời.", "Có quyết tâm chiến đấu cao, chuẩn bị mọi mặt chu đáo.", "Hiệp đồng chặt chẽ với đồng đội tạo thành thế liên hoàn.", "Xây dựng công sự chiến đấu vững chắc, ngụy trang bí mật."],
-            ans: 0
-        },
-        {
-            q: "Một trong những yêu cầu chiến thuật của từng người trong chiến đấu tiến công là:",
-            opts: ["Phát hiện và tận dụng những nơi sơ hở, hiểm yếu của địch tiếp cận tiêu diệt.", "Có quyết tâm chiến đấu cao, chuẩn bị mọi mặt chu đáo.", "Hiệp đồng chặt chẽ với đồng đội tạo thành thế liên hoàn.", "Xây dựng công sự chiến đấu vững chắc, ngụy trang bí mật."],
-            ans: 0
-        },
-        {
-            q: "Một trong những yêu cầu chiến thuật của từng người trong chiến đấu tiến công là:",
-            opts: ["Độc lập chiến đấu, chủ động hiệp đồng, liên tục chiến đấu.", "Có quyết tâm chiến đấu cao, chuẩn bị mọi mặt chu đáo.", "Hiệp đồng chặt chẽ với đồng đội tạo thành thế liên hoàn.", "Xây dựng công sự chiến đấu vững chắc, ngụy trang bí mật."],
-            ans: 0
-        },
-        {
-            q: "Một trong những yêu cầu chiến thuật của từng người trong chiến đấu tiến công là:",
-            opts: ["Phát huy cao độ hiệu quả của vũ khí trang bị tiêu diệt địch tiết kiệm đạn dược.", "Có quyết tâm chiến đấu cao, chuẩn bị mọi mặt chu đáo.", "Hiệp đồng chặt chẽ với đồng đội tạo thành thế liên hoàn.", "Xây dựng công sự chiến đấu vững chắc, ngụy trang bí mật."],
-            ans: 0
-        },
-        {
-            q: "Một trong những yêu cầu chiến thuật của từng người trong chiến đấu tiến công là:",
-            opts: ["Đánh nhanh sục sạo kỹ, vừa đánh vừa địch vận.", "Có quyết tâm chiến đấu cao, chuẩn bị mọi mặt chu đáo.", "Hiệp đồng chặt chẽ với đồng đội tạo thành thế liên hoàn.", "Xây dựng công sự chiến đấu vững chắc, ngụy trang bí mật."],
-            ans: 0
-        },
-        {
-            q: "Từng người trong chiến đấu tiến công, cần quán triệt và thực hiện tốt mấy nhiệm vụ?",
-            opts: ["4 nhiệm vụ.", "6 nhiệm vụ.", "5 nhiệm vụ.", "3 nhiệm vụ."],
-            ans: 3
-        },
-        {
-            q: "Nội dung hiểu rõ nhiệm vụ của từng người trong chiến đấu tiến công gồm có:",
-            opts: ["3 nội dung.", "4 nội dung.", "5 nội dung.", "6 nội dung."],
-            ans: 1
-        },
-        {
-            q: "Nhanh chóng chuẩn bị súng đạn, lựu đạn, pháo tay... quan sát nắm tình hình địch, hành động của đồng đội và sẵn sàng tiêu diệt mục tiêu. Nắm vững thời cơ để xung phong tiêu diệt địch, chiếm mục tiêu. Được xác định là trong nội dung:",
-            opts: ["Trước khi vận động.", "Trong khi vận động.", "Khi chuẩn bị vận động.", "Khi vận động đến vị trí tạm dừng."],
-            ans: 1
-        },
-        {
-            q: "Trong chiến đấu chiến sĩ thường nhận nhiệm vụ từ ai và ở đâu?",
-            opts: ["Tiểu đoàn trưởng - Trên sa bàn.", "Đại đội trưởng - Phòng giao ban.", "Trung đội trưởng - Ở doanh trại.", "Tổ trưởng hoặc tiểu đội trưởng - Ngoài thực địa."],
-            ans: 3
-        },
-        {
-            q: "Hiệp đồng trong chiến đấu để nhằm mục đích gì? Phương án nào dưới đây là hợp lý nhất?",
-            opts: ["Để phát huy sở trường của từng chiến sĩ.", "Tạo nên sức mạnh tổng hợp, chi viện, hỗ trợ cho nhau.", "Để kiện toàn các phương án chiến đấu.", "Tạo nên sự chủ động trong chiến đấu."],
-            ans: 1
-        },
-        {
-            q: "Bí mật tiếp cận vào bên sườn, phía sau đến cự ly thích hợp. Dùng thủ pháo, lựu đạn ném vào bên trong ụ súng. Lợi dụng uy lực của vũ khí và khói đạn nhanh chóng xông lên bắn găm, bắn gần đâm lê, đánh báng tiêu diệt những tên địch còn sống sót. Được xác định là:",
-            opts: ["Cách đánh lô cốt.", "Cách đánh tên địch, tốp địch ngoài công sự.", "Cách đánh địch trong hầm ngầm.", "Cách đánh ụ súng không có nắp."],
-            ans: 3
-        },
-        {
-            q: "Quan sát tình hình địch, ta, địa hình, thời tiết cụ thể trong phạm vi chiến đấu để chọn đường tiến (đường vận động). Vận động theo đường nào, đến đâu, thời cơ và động tác vận động trong từng đoạn, vị trí tạm dừng và cách nghi binh lừa địch. Được xác định là:",
-            opts: ["Hành động của chiến sĩ trước khi vận động.", "Hành động chiến sĩ khi vận động đến gần địch.", "Hành động chiến sĩ khi thực hành xung phong.", "Hành động chiến sĩ sau khi hoàn thành nhiệm vụ."],
-            ans: 0
-        },
-        {
-            q: "Khi chiến sĩ đang phát triển chiến đấu đánh chiếm mục tiêu là lô cốt của địch bằng bộc phá khối. Chiến sĩ sẽ chọn vị trí nào của lô cốt để đặt bộc phá là hợp lý nhất?",
-            opts: ["Đặt trên nóc của lô cốt.", "Đặt cách lô cốt 1 mét.", "Đặt ở gần tứ giác của lô cốt.", "Đặt bên cạnh lỗ bắn của lô cốt."],
-            ans: 2
-        },
+            // ---- TIÊN CÔNG ----
+            { id: 84, text: 'Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như ụ súng, lô cốt. Được xác định là một trong những:', options: ['Cách đánh', 'Nhiệm vụ', 'Yêu cầu chiến thuật', 'Hành động của chiến sĩ'], correct: 1 },
+            { id: 85, text: 'Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như xe tăng, xe bọc thép địch. Được xác định là một trong những:', options: ['Cách đánh', 'Nhiệm vụ', 'Yêu cầu chiến thuật', 'Hành động của chiến sĩ'], correct: 1 },
+            { id: 86, text: 'Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như tên địch, tốp địch ngoài công sự. Được xác định là một trong những:', options: ['Cách đánh', 'Nhiệm vụ', 'Yêu cầu chiến thuật', 'Hành động của chiến sĩ'], correct: 1 },
+            { id: 87, text: 'Trong chiến đấu tiến công, từng người hoặc cùng tổ bộ binh thường đảm nhiệm đánh chiếm các mục tiêu như chiến hào, giao thông hào, căn nhà. Được xác định là một trong những:', options: ['Cách đánh', 'Nhiệm vụ', 'Yêu cầu chiến thuật', 'Hành động của chiến sĩ'], correct: 1 },
+            { id: 88, text: 'Khi chiến sĩ đang phát triển chiến đấu đánh chiếm mục tiêu xe tăng địch nằm trong công sự bằng bộc phá khối, chiến sĩ sẽ chọn vị trí nào trên xe tăng để đặt bộc phá đạt hiệu quả cao nhất?', options: ['Đỉnh nòng pháo', 'Nắp đậy ra vào của lái xe', 'Trước mũi xe tăng', 'Khoảng tiếp giáp giữa thân xe và tháp pháo'], correct: 3 },
+            { id: 89, text: 'Khi chiến sĩ cơ động phát triển chiến đấu đánh chiếm mục tiêu, hỏa lực của địch bắn mạnh về bên trái, hành động xử trí hợp lý nhất là:', options: ['Nhanh chóng cơ động về phía sau báo cáo', 'Nhanh chóng tiết, thực hiện bắn gần', 'Nhanh chóng lăn sang bên trái chờ hỏa lực ngừng', 'Nhanh chóng lăn về bên phải, lợi dụng địa hình tránh hỏa lực'], correct: 3 },
+            { id: 90, text: 'Ụ súng của địch thường có đặc điểm gì?', options: ['Cấu trúc hình vuông', 'Cấu trúc hình đa giác', 'Cấu trúc hình chữ nhật', 'Cấu trúc hình lăng trụ'], correct: 2 },
+            { id: 91, text: 'Lô cốt của địch thường có đặc điểm gì?', options: ['Cấu trúc hình vuông', 'Cấu trúc hình lăng trụ', 'Cấu trúc hình chữ nhật', 'Cấu trúc hình đa giác'], correct: 3 },
+            { id: 92, text: 'Ụ súng, lô cốt của địch thường có đặc điểm gì?', options: ['Có lỗ bắn quay về một hướng', 'Xây dựng trên bề mặt địa hình', 'Xây dựng nửa chìm nửa nổi, xung quanh có các lỗ bắn', 'Xây dựng ngầm trong lòng đất, xung quanh có lỗ bắn'], correct: 2 },
+            { id: 93, text: 'Thủ đoạn đối phó của địch trong ụ súng, lô cốt khi bị ta tiến công?', options: ['Giữ bí mật, sẵn sàng hỏa lực ngăn chặn', 'Rút chạy nhanh về phía sau', 'Dựa vào ụ súng, lô cốt dùng hỏa lực bắn ngăn chặn từ xa đến gần', 'Hoang mang chờ lực lượng ứng cứu'], correct: 2 },
+            { id: 94, text: 'Khi chiến sĩ ném lựu đạn vào trong ụ súng không có nắp và lựu đạn nổ, hành động xử trí tiếp theo hợp lý nhất là:', options: ['Giữ bí mật', 'Tại chỗ sử dụng hỏa lực tiêu diệt địch', 'Xông lên bắn găm, bắn gần, đâm lê, đánh bằng tiêu diệt những tên còn sống', 'Nhanh chóng cơ động về sau'], correct: 2 },
+            { id: 95, text: 'Phải kết hợp nhìn và nghe nhận đầy đủ, chính xác. Nếu nội dung nào chưa rõ phải hỏi lại để người chỉ huy bổ sung. Được xác định là:', options: ['Phương pháp khi nhận nhiệm vụ', 'Phương pháp khi giao nhiệm vụ', 'Phương pháp sau khi hoàn thành nhiệm vụ', 'Phương pháp làm công tác chuẩn bị'], correct: 0 },
+            { id: 96, text: 'Khi chiến sĩ vận động tiếp cận, bất ngờ bị hỏa lực địch bắn làm chiến sĩ bị thương nhẹ vào cánh tay trái, hành động hợp lý nhất là:', options: ['Vận động về sau và báo cáo', 'Hô xung phong, bắn găm, đánh gần', 'Quan sát tình hình, tại vị trí nổ súng tiêu diệt địch', 'Lợi dụng địa hình, giữ bí mật, tự băng bó, tiếp tục nhiệm vụ'], correct: 3 },
+            { id: 97, text: 'Khi chiến sĩ vận động đến điểm dừng, cách ụ súng không nắp 25-30 mét và ném lựu đạn đầu tiên nhưng không nổ, hành động tiếp theo hợp lý nhất là:', options: ['Xung phong bắn găm, đánh gần', 'Tiếp tục ném quả lựu đạn tiếp theo', 'Vận động về sau báo cáo', 'Quan sát, tại vị trí nổ súng tiêu diệt địch'], correct: 1 },
+            { id: 98, text: 'Khi chiến sĩ xung phong đánh chiếm ụ súng không nắp và phát hiện một tên địch còn sống giơ tay đầu hàng, hành động hợp lý nhất là:', options: ['Nổ súng tiêu diệt tất cả', 'Vận động về sau báo cáo', 'Thu vũ khí, bắt tù binh, lùng sục bắt sống hoặc tiêu diệt những tên còn sống khác', 'Bắt sống tên địch và đưa về phía sau'], correct: 2 },
+            { id: 99, text: 'Trong các yêu cầu chiến thuật của từng người trong chiến đấu tiến công, yêu cầu nào mang tính chỉ đạo toàn bộ hành động từ khi nhận nhiệm vụ đến khi hoàn thành?', options: ['Đánh nhanh sục sâu kỹ, vừa đánh vừa địch vận', 'Phát hiện và tận dụng sơ hở hiểm yếu của địch', 'Bí mật, bất ngờ, tinh khôn, mưu mẹo', 'Dũng cảm, linh hoạt, kịp thời'], correct: 2 },
+            // Các câu 17-22 yêu cầu chiến thuật (tạm gán đáp án a cho mỗi câu)
+            { id: 100, text: 'Một trong những yêu cầu chiến thuật của từng người trong chiến đấu tiến công là:', options: ['Bí mật, bất ngờ, tinh khôn, mưu mẹo', 'Có quyết tâm chiến đấu cao, chuẩn bị chu đáo', 'Hiệp đồng chặt chẽ với đồng đội', 'Xây dựng công sự vững chắc'], correct: 0 },
+            { id: 101, text: 'Một trong những yêu cầu chiến thuật của từng người trong chiến đấu tiến công là:', options: ['Dũng cảm, linh hoạt, kịp thời', 'Có quyết tâm chiến đấu cao', 'Hiệp đồng chặt chẽ', 'Xây dựng công sự vững chắc'], correct: 0 },
+            { id: 102, text: 'Một trong những yêu cầu chiến thuật của từng người trong chiến đấu tiến công là:', options: ['Phát hiện và tận dụng sơ hở hiểm yếu của địch', 'Có quyết tâm chiến đấu cao', 'Hiệp đồng chặt chẽ', 'Xây dựng công sự vững chắc'], correct: 0 },
+            { id: 103, text: 'Một trong những yêu cầu chiến thuật của từng người trong chiến đấu tiến công là:', options: ['Độc lập chiến đấu, chủ động hiệp đồng, liên tục chiến đấu', 'Có quyết tâm chiến đấu cao', 'Hiệp đồng chặt chẽ', 'Xây dựng công sự vững chắc'], correct: 0 },
+            { id: 104, text: 'Một trong những yêu cầu chiến thuật của từng người trong chiến đấu tiến công là:', options: ['Phát huy hiệu quả vũ khí trang bị, tiêu diệt địch tiết kiệm đạn', 'Có quyết tâm chiến đấu cao', 'Hiệp đồng chặt chẽ', 'Xây dựng công sự vững chắc'], correct: 0 },
+            { id: 105, text: 'Một trong những yêu cầu chiến thuật của từng người trong chiến đấu tiến công là:', options: ['Đánh nhanh sục sâu kỹ, vừa đánh vừa địch vận', 'Có quyết tâm chiến đấu cao', 'Hiệp đồng chặt chẽ', 'Xây dựng công sự vững chắc'], correct: 0 },
+            { id: 106, text: 'Từng người trong chiến đấu tiến công cần quán triệt và thực hiện tốt mấy nhiệm vụ?', options: ['4 nhiệm vụ', '6 nhiệm vụ', '5 nhiệm vụ', '3 nhiệm vụ'], correct: 2 },
+            { id: 107, text: 'Nội dung hiểu rõ nhiệm vụ của từng người trong chiến đấu tiến công gồm có mấy nội dung?', options: ['3 nội dung', '4 nội dung', '5 nội dung', '6 nội dung'], correct: 1 },
+            { id: 108, text: 'Nhanh chóng chuẩn bị súng đạn, lựu đạn, quan sát nắm tình hình địch, hành động của đồng đội và sẵn sàng tiêu diệt mục tiêu. Được xác định là trong nội dung:', options: ['Trước khi vận động', 'Trong khi vận động', 'Khi chuẩn bị vận động', 'Khi vận động đến vị trí tạm dừng'], correct: 0 },
+            { id: 109, text: 'Trong chiến đấu, chiến sĩ thường nhận nhiệm vụ từ ai và ở đâu?', options: ['Tiểu đoàn trưởng - Trên sa bàn', 'Đại đội trưởng - Phòng giao ban', 'Trung đội trưởng - Ở doanh trại', 'Tổ trưởng hoặc tiểu đội trưởng - Ngoài thực địa'], correct: 3 },
+            { id: 110, text: 'Hiệp đồng trong chiến đấu nhằm mục đích gì?', options: ['Phát huy sở trường từng chiến sĩ', 'Tạo nên sức mạnh tổng hợp, chi viện hỗ trợ nhau', 'Kiện toàn các phương án chiến đấu', 'Tạo sự chủ động'], correct: 1 },
+            { id: 111, text: 'Bí mật tiếp cận bên sườn, phía sau đến cự ly thích hợp, dùng lựu đạn ném vào bên trong ụ súng, lợi dụng uy lực và khói đạn xông lên bắn găm, bắn gần đâm lê, tiêu diệt địch. Được xác định là:', options: ['Cách đánh lô cốt', 'Cách đánh tên địch ngoài công sự', 'Cách đánh địch trong hầm ngầm', 'Cách đánh ụ súng không có nắp'], correct: 3 },
+            { id: 112, text: 'Quan sát tình hình địch, ta, địa hình, thời tiết để chọn đường tiến, vận động theo đường nào, đến đâu, thời cơ và động tác vận động, vị trí tạm dừng và cách nghi binh lừa địch. Được xác định là:', options: ['Hành động trước khi vận động', 'Hành động khi vận động đến gần địch', 'Hành động khi xung phong đánh chiếm', 'Hành động sau khi hoàn thành nhiệm vụ'], correct: 0 },
+            { id: 113, text: 'Khi chiến sĩ phát triển chiến đấu đánh chiếm mục tiêu là lô cốt của địch bằng bộc phá khối, vị trí đặt bộc phá hợp lý nhất là:', options: ['Đặt trên nóc lô cốt', 'Đặt cách lô cốt 1 mét', 'Đặt gần tứ giác của lô cốt', 'Đặt bên cạnh lỗ bắn'], correct: 0 },
 
-        // ===== PHÒNG NGỰ =====
-        {
-            q: "Trong chiến đấu phòng ngự, trong trường hợp nào thì chiến sĩ bắn truy kích tiêu diệt địch?",
-            opts: ["Khi địch đột nhập.", "Khi hỏa lực địch bắn phá chuẩn bị.", "Khi địch tiến công.", "Khi địch rút chạy."],
-            ans: 3
-        },
-        {
-            q: "Trong chiến đấu phòng ngự, khi địch thực hành xung phong vào trước trận địa của chiến sĩ, cùng lúc có nhiều mục tiêu xuất hiện trong tầm bắn hiệu quả của súng tiểu liên AK, trong tình huống này chiến sĩ sẽ chọn mục tiêu nào để nổ súng tiêu diệt trước là hợp lý nhất?",
-            opts: ["Tổ mang vô tuyến điện (xuất hiện ở cự ly 400).", "Xe tăng, xe bọc thép (xuất hiện ở cự ly 400m).", "Tốp bộ binh 3 - 5 tên (xuất hiện ở cự ly 400m).", "Cụm súng cối (xuất hiện ở cự ly 800m)."],
-            ans: 0
-        },
-        {
-            q: "Trong chiến đấu phòng ngự, khi địch thực hành xung phong vào trước trận địa của chiến sĩ, cùng lúc có nhiều mục tiêu xuất hiện trong tầm bắn hiệu quả của súng B41, trong tình huống này chiến sĩ sẽ chọn mục tiêu nào để nổ súng tiêu diệt trước là hợp lý nhất?",
-            opts: ["Xe tăng, xe bọc thép (xuất hiện ở cự ly 330m).", "Tốp bộ binh 10 - 15 (xuất hiện ở cự ly 350m).", "Tổ mang vô tuyến điện (xuất hiện ở cự ly 350m).", "Cụm súng cối (xuất hiện ở cự ly 800m)."],
-            ans: 0
-        },
-        {
-            q: "Trong chiến đấu phòng ngự, dựa vào căn cứ dấu hiệu nào sau đây để chiến sĩ xác định địch bắt đầu thực hành xung phong tiến công vào trận địa?",
-            opts: ["Khi hỏa lực của địch bắn chuyển làn.", "Khi hỏa lực của địch dừng bắn; máy bay xuất hiện.", "Khi hỏa lực địch bắn vào trận địa với mật độ dày đặc.", "Khi biệt kích thám báo của địch đã thu thập được đầy đủ thông tin, mọi công tác chuẩn bị của địch đã sẵn sàng."],
-            ans: 3
-        },
-        {
-            q: "Trong chiến đấu phòng ngự: Tại sao chiến sĩ phải nắm chắc được các vật chuẩn? Vật chuẩn có ý nghĩa như thế nào đối với chiến sĩ?",
-            opts: ["Giới hạn phạm vi quan sát, phạm vi tiêu diệt địch.", "Làm cơ sở xác định tiền duyên phòng ngự.", "Không cho địch phát triển và thế đánh địch trên các hướng.", "Để xây dựng trận địa được kiên cố và vững chắc."],
-            ans: 0
-        },
-        {
-            q: "Trong chiến đấu phòng ngự: Khi có một đến hai tên địch đã đột nhập vào một phần trận địa, chiến sĩ sẽ xử trí như thế nào là hợp lý nhất?",
-            opts: ["Rút khỏi trận địa.", "Chờ đồng đội đến.", "Giật củ ấu, cự mã.", "Cơ động vào hầm ẩn nấp."],
-            ans: 2
-        },
-        {
-            q: "Trong chiến đấu phòng ngự, khi hỏa lực của địch bắn phá vào trận địa? Hành động xử trí như thế nào là hợp lý nhất?",
-            opts: ["Nhanh chóng vào hầm ẩn nấp.", "Nhanh chóng ra vị trí chiến đấu.", "Nhanh chóng rời khỏi trận địa.", "Nhanh chóng điểm hỏa mìn ĐH-10."],
-            ans: 0
-        },
-        {
-            q: "Khi hỏa lực của địch bắn phá chuyển làn về phía sau, hành động của chiến sĩ xử trí như thế nào là hợp lý nhất?",
-            opts: ["Nhanh chóng ra vị trí sửa sang lại công sự trận địa và sẵn sàng chiến đấu.", "Nhanh chóng cơ động ra sửa chữa và bố trí lại hệ thống vật cản.", "Nhanh chóng kiểm tra lại súng, đạn và sẵn sàng chiến đấu.", "Nhanh chóng nổ súng tiêu diệt địch."],
-            ans: 3
-        },
-        {
-            q: "Công tác chuẩn bị chiến đấu của người chiến sĩ trong chiến đấu phòng ngự gồm:",
-            opts: ["Xác định vị trí phòng ngự và cách đánh, bố trí vũ khí làm công sự và vật cản, chuẩn bị vật chất bảo đảm cho chiến đấu.", "Củng cố công sự trận địa, xây dựng hầm ẩn nấp, bố trí vật cản, đào hào chống tăng.", "Xây dựng sở chỉ huy, bố trí vật cản, làm đường cơ động.", "Hiệp đồng cùng đồng đội, xây dựng công sự trận địa, luôn sẵn sàng chiến đấu."],
-            ans: 0
-        },
-        {
-            q: "Dựa vào công sự kiên quyết bám trụ, giữ vững những công sự, phạm vi còn lại, dùng vũ khí đánh gần tiêu diệt địch, ngăn chặn không cho địch phát triển, báo cáo với cấp trên, sau đó phối hợp với đồng đội khôi phục lại trận địa. Được xác định là:",
-            opts: ["Hành động của chiến sĩ khi địch bắn phá chuẩn bị.", "Hành động của chiến sĩ khi pháo địch chuyển làn.", "Hành động của chiến sĩ khi địch tiến công vào trận địa.", "Hành động của chiến sĩ khi địch chiếm được một phần trận địa."],
-            ans: 3
-        },
-        {
-            q: "Trong chiến đấu phòng ngự, khi bộ binh và xe tăng của địch tiến công vào trước trận, hành động xử trí của chiến sĩ như thế nào là hợp lý nhất?",
-            opts: ["Nổ súng tiêu diệt địch khi địch cách 900m ÷ 1000m.", "Nắm vững thời cơ, có lệnh của cấp trên, địch vào trong tầm bắn hiệu quả, bất ngờ dùng vũ khí tiêu diệt địch.", "Kiên quyết giữ vững trận địa, khi địch cách ta 70m ÷ 100m dùng lựu đạn tiêu diệt.", "Căn cứ vào cách đánh đã chọn, bí mật chờ địch vào gần, chuyển vị trí chiến đấu."],
-            ans: 1
-        },
-        {
-            q: "Một trong những nội dung hiểu rõ nhiệm vụ của từng người trong chiến đấu phòng ngự:",
-            opts: ["Thiết bị bắn để phát huy hỏa lực chính xác trên các hướng.", "Phương hướng vật chuẩn, đặc điểm địa hình nơi phòng ngự.", "Nghiên cứu vị trí bố trí và xác định cách bố trí.", "Mục tiêu phải đánh gồm mấy mục tiêu, cách đánh."],
-            ans: 1
-        },
-        {
-            q: "Một trong những yêu cầu chiến thuật của từng người trong chiến đấu phòng ngự là:",
-            opts: ["Có quyết tâm chiến đấu cao, chuẩn bị mọi mặt chu đáo, bảo đảm đánh địch dài ngày.", "Độc lập chiến đấu chủ động hiệp đồng liên tục chiến đấu.", "Phát hiện và tận dụng những nơi sơ hở, hiểm yếu của địch tiếp cận tiêu diệt.", "Đánh nhanh sục sạo kỹ, vừa đánh vừa địch vận."],
-            ans: 0
-        },
-        {
-            q: "Một trong những yêu cầu chiến thuật của từng người trong chiến đấu phòng ngự là:",
-            opts: ["Xây dựng công sự chiến đấu vững chắc, ngày càng kiên cố, ngụy trang bí mật.", "Độc lập chiến đấu chủ động hiệp đồng liên tục chiến đấu.", "Phát hiện và tận dụng những nơi sơ hở, hiểm yếu của địch tiếp cận tiêu diệt.", "Đánh nhanh sục sạo kỹ, vừa đánh vừa địch vận."],
-            ans: 0
-        },
-        {
-            q: "Một trong những yêu cầu chiến thuật của từng người trong chiến đấu phòng ngự là:",
-            opts: ["Hiệp đồng chặt chẽ với đồng đội tạo thành thế liên hoàn đánh địch.", "Độc lập chiến đấu chủ động hiệp đồng liên tục chiến đấu.", "Phát hiện và tận dụng những nơi sơ hở, hiểm yếu của địch tiếp cận tiêu diệt.", "Đánh nhanh sục sạo kỹ, vừa đánh vừa địch vận."],
-            ans: 0
-        },
-        {
-            q: "Một trong những yêu cầu chiến thuật của từng người trong chiến đấu phòng ngự là:",
-            opts: ["Kiên cường, mưu trí, dũng cảm, chủ động, kiên quyết giữ vững trận địa đến cùng.", "Độc lập chiến đấu chủ động hiệp đồng liên tục chiến đấu.", "Phát hiện và tận dụng những nơi sơ hở, hiểm yếu của địch tiếp cận tiêu diệt.", "Đánh nhanh sục sạo kỹ, vừa đánh vừa địch vận."],
-            ans: 0
-        },
-        {
-            q: "Khi địch tiến công đánh chiếm vào trận địa phòng ngự của ta, địch thường sử dụng lực lượng nào sau đây?",
-            opts: ["Đặc nhiệm, biệt kích, thám báo.", "Bộ binh kết hợp xe tăng, xe bọc thép tiến công.", "Bộ binh đánh bộ, thủy quân lục chiến.", "Không quân, hải quân."],
-            ans: 1
-        },
-        {
-            q: "Trong chiến đấu phòng ngự, tình huống nào sau đây được xác định là tình huống nguy hiểm nhất?",
-            opts: ["Địch đột nhập vào một phần trận địa.", "Địch đã phá xong vật cản.", "Xe tăng, thiết giáp của địch đang xuất phát tiến công.", "Địch đã triển khai đội hình tiến công."],
-            ans: 0
-        },
-        {
-            q: "Gây cản trở và làm chậm bước tiến của địch. Được xác định là:",
-            opts: ["Yêu cầu chiến thuật trong chiến đấu tiến công.", "Mục đích của bố trí vật cản.", "Yêu cầu chiến thuật trong chiến đấu phòng ngự.", "Cách đánh ụ súng không có nắp."],
-            ans: 1
-        },
-        {
-            q: "Che giấu người, vũ khí trang bị, phương tiện kỹ thuật, công sự, bảo đảm an toàn trong quá trình chiến đấu, không bị địch trinh sát phát hiện. Được xác định là:",
-            opts: ["Tác dụng của hố bắn.", "Tác dụng của ngụy trang.", "Tác dụng của hào.", "Tác dụng của hầm ngầm."],
-            ans: 1
-        },
-        {
-            q: "Trong chiến đấu phòng ngự, trường hợp nào sau đây chiến sĩ mới được rời khỏi trận địa chiến đấu?",
-            opts: ["Khi có lệnh của người chỉ huy.", "Khi địch đã rút lui hoàn toàn.", "Khi hết đạn dược.", "Khi bị thương nặng."],
-            ans: 0
-        },
-        {
-            q: "Chính diện và chiều sâu trận địa phòng ngự của từng người trong chiến đấu là bao nhiêu mét?",
-            opts: ["Từ 50 - 55 mét.", "Từ 45 - 50 mét.", "Từ 35 - 40 mét.", "Từ 25 – 30 mét."],
-            ans: 3
-        },
-        {
-            q: "Tham gia làm nhiệm vụ đánh địch vòng ngoài. Được xác định là một trong những:",
-            opts: ["Đánh bại địch tiến công phía trước, hai bên sườn và trên không.", "Nhiệm vụ của từng người trong chiến đấu phòng ngự.", "Yêu cầu chiến thuật.", "Cách đánh."],
-            ans: 1
-        }
-    ];
+            // ---- PHÒNG NGỰ ----
+            { id: 114, text: 'Trong chiến đấu phòng ngự, trong trường hợp nào thì chiến sĩ bắn truy kích tiêu diệt địch?', options: ['Khi địch đột nhập', 'Khi hỏa lực địch bắn phá chuẩn bị', 'Khi địch tiến công', 'Khi địch rút chạy'], correct: 3 },
+            { id: 115, text: 'Trong chiến đấu phòng ngự, khi địch xung phong, cùng lúc nhiều mục tiêu xuất hiện trong tầm bắn hiệu quả của súng AK, chiến sĩ sẽ chọn mục tiêu nào để nổ súng trước?', options: ['Tổ mang vô tuyến (400m)', 'Xe tăng, xe bọc thép (400m)', 'Tốp bộ binh 3-5 tên (400m)', 'Cụm súng cối (800m)'], correct: 2 },
+            { id: 116, text: 'Trong chiến đấu phòng ngự, khi địch xung phong, cùng lúc nhiều mục tiêu xuất hiện trong tầm bắn hiệu quả của súng B41, chiến sĩ sẽ chọn mục tiêu nào để nổ súng trước?', options: ['Xe tăng, xe bọc thép (330m)', 'Tốp bộ binh 10-15 (350m)', 'Tổ vô tuyến (350m)', 'Cụm súng cối (800m)'], correct: 0 },
+            { id: 117, text: 'Dựa vào dấu hiệu nào để chiến sĩ xác định địch bắt đầu xung phong tiến công?', options: ['Khi hỏa lực địch bắn chuyển làn', 'Khi hỏa lực địch dừng bắn, máy bay xuất hiện', 'Khi hỏa lực địch bắn dày đặc', 'Khi biệt kích của địch thu thập thông tin'], correct: 1 },
+            { id: 118, text: 'Tại sao chiến sĩ phải nắm chắc các vật chuẩn?', options: ['Giới hạn phạm vi quan sát, phạm vi tiêu diệt địch', 'Làm cơ sở xác định tiền duyên phòng ngự', 'Không cho địch phát triển', 'Để xây dựng trận địa kiên cố'], correct: 0 },
+            { id: 119, text: 'Khi có 1-2 tên địch đột nhập vào một phần trận địa, chiến sĩ xử trí như thế nào?', options: ['Rút khỏi trận địa', 'Chờ đồng đội', 'Giật cự mã, vật cản', 'Cơ động vào hầm ẩn nấp'], correct: 2 },
+            { id: 120, text: 'Khi hỏa lực của địch bắn phá vào trận địa, hành động xử trí hợp lý nhất là:', options: ['Nhanh chóng vào hầm ẩn nấp', 'Nhanh chóng ra vị trí chiến đấu', 'Nhanh chóng rời khỏi trận địa', 'Nhanh chóng điểm hỏa mìn'], correct: 0 },
+            { id: 121, text: 'Khi hỏa lực địch bắn phá chuyển làn về phía sau, hành động hợp lý nhất là:', options: ['Ra vị trí sửa sang công sự và sẵn sàng chiến đấu', 'Cơ động sửa chữa vật cản', 'Kiểm tra súng đạn', 'Nổ súng tiêu diệt địch'], correct: 0 },
+            { id: 122, text: 'Công tác chuẩn bị chiến đấu của người chiến sĩ trong phòng ngự gồm:', options: ['Xác định vị trí và cách đánh, bố trí vũ khí, công sự, vật cản, chuẩn bị vật chất', 'Củng cố công sự, xây hầm ẩn nấp, bố trí vật cản, đào hào chống tăng', 'Xây dựng sở chỉ huy, bố trí vật cản, làm đường cơ động', 'Hiệp đồng cùng đồng đội, xây dựng công sự'], correct: 0 },
+            { id: 123, text: 'Dựa vào công sự, kiên quyết bám trụ, giữ vững công sự còn lại, dùng vũ khí đánh gần tiêu diệt địch, ngăn chặn không cho địch phát triển, báo cáo cấp trên, sau đó phối hợp khôi phục trận địa. Được xác định là:', options: ['Hành động khi địch bắn phá chuẩn bị', 'Hành động khi pháo địch chuyển làn', 'Hành động khi địch tiến công', 'Hành động khi địch chiếm được một phần trận địa'], correct: 3 },
+            { id: 124, text: 'Trong chiến đấu phòng ngự, khi bộ binh và xe tăng địch tiến công, hành động xử trí hợp lý nhất là:', options: ['Nổ súng khi địch cách 900-1000m', 'Nắm thời cơ, có lệnh, địch vào tầm bắn hiệu quả, bất ngờ tiêu diệt', 'Kiên quyết giữ trận địa, khi địch cách 70-100m dùng lựu đạn', 'Bí mật chờ địch vào gần, chuyển vị trí vòng ra sườn, sau bất ngờ nổ súng'], correct: 1 },
+            { id: 125, text: 'Một trong những nội dung hiểu rõ nhiệm vụ của từng người trong phòng ngự:', options: ['Thiết bị bắn để phát huy hỏa lực', 'Phương hướng vật chuẩn, đặc điểm địa hình phòng ngự', 'Nghiên cứu vị trí bố trí và cách đánh', 'Mục tiêu phải đánh, cách đánh, cách vận dụng'], correct: 1 },
+            { id: 126, text: 'Một trong những yêu cầu chiến thuật của từng người trong chiến đấu phòng ngự là:', options: ['Có quyết tâm cao, chuẩn bị chu đáo, bảo đảm đánh địch dài ngày', 'Độc lập chiến đấu, chủ động hiệp đồng', 'Phát hiện sơ hở của địch', 'Đánh nhanh sục sâu'], correct: 0 },
+            { id: 127, text: 'Một trong những yêu cầu chiến thuật của từng người trong chiến đấu phòng ngự là:', options: ['Độc lập chiến đấu, chủ động hiệp đồng, liên tục chiến đấu', 'Có quyết tâm cao', 'Phát hiện sơ hở', 'Đánh nhanh sục sâu'], correct: 0 },
+            { id: 128, text: 'Một trong những yêu cầu chiến thuật của từng người trong chiến đấu phòng ngự là:', options: ['Kiên cường, mưu trí, dũng cảm, chủ động, kiên quyết giữ vững trận địa', 'Độc lập chiến đấu', 'Phát hiện sơ hở', 'Đánh nhanh sục sâu'], correct: 0 },
+            { id: 129, text: 'Khi địch tiến công đánh chiếm trận địa phòng ngự, địch thường sử dụng lực lượng nào?', options: ['Đặc nhiệm, biệt kích', 'Bộ binh kết hợp xe tăng, xe bọc thép', 'Bộ binh đánh bộ, thủy quân lục chiến', 'Không quân'], correct: 1 },
+            { id: 130, text: 'Chính diện và chiều sâu trận địa phòng ngự của từng người là bao nhiêu mét?', options: ['50-55 mét', '45-50 mét', '35-40 mét', '25-30 mét'], correct: 2 },
+            { id: 131, text: 'Tham gia làm nhiệm vụ đánh địch vòng ngoài. Được xác định là một trong những:', options: ['Đánh bại địch tiến công phía trước, hai bên sườn và trên không', 'Nhiệm vụ của từng người trong phòng ngự', 'Yêu cầu chiến thuật', 'Cách đánh'], correct: 1 },
+            { id: 132, text: 'Trong chiến đấu phòng ngự, tình huống nguy hiểm nhất là:', options: ['Địch đột nhập vào một phần trận địa', 'Địch đã phá xong vật cản', 'Xe tăng, thiết giáp đang xuất phát tiến công', 'Địch đã triển khai đội hình tiến công'], correct: 0 },
+            { id: 133, text: 'Gây cản trở và làm chậm bước tiến của địch. Được xác định là:', options: ['Yêu cầu chiến thuật trong tiến công', 'Mục đích của bố trí vật cản', 'Yêu cầu chiến thuật trong phòng ngự', 'Cách đánh ụ súng'], correct: 1 },
+            { id: 134, text: 'Che giấu người, vũ khí, trang bị, công sự, bảo đảm an toàn trong chiến đấu, không bị địch phát hiện. Được xác định là:', options: ['Tác dụng của hố bắn', 'Tác dụng của ngụy trang', 'Tác dụng của hào', 'Tác dụng của hầm ngầm'], correct: 1 },
+            { id: 135, text: 'Trong chiến đấu phòng ngự, trường hợp nào chiến sĩ mới được rời khỏi trận địa?', options: ['Khi địch đã rút', 'Khi có lệnh của người chỉ huy', 'Khi hết đạn', 'Khi bị thương nặng'], correct: 1 }
+        ];
 
-    // ============================================================
-    // ỨNG DỤNG CHÍNH
-    // ============================================================
-    let userAnswers = new Array(questionData.length).fill(null);
-    let submitted = false;
+        // ===================== LOGIC HIỂN THỊ =====================
+        const container = document.getElementById('questions-container');
+        const progressEl = document.getElementById('progress');
 
-    const container = document.getElementById('questionsContainer');
-    const progressFill = document.getElementById('progressFill');
-    const answeredCountSpan = document.getElementById('answeredCount');
-    const totalQuestionsSpan = document.getElementById('totalQuestions');
-    const answeredStats = document.getElementById('answeredStats');
-    const totalStats = document.getElementById('totalStats');
-    const resultBox = document.getElementById('resultBox');
-    const scoreDisplay = document.getElementById('scoreDisplay');
-    const correctCountSpan = document.getElementById('correctCount');
-    const wrongCountSpan = document.getElementById('wrongCount');
-    const resultDetail = document.getElementById('resultDetail');
-    const submitBtn = document.getElementById('submitBtn');
+        // Lưu trạng thái: mỗi câu lưu selectedIndex (-1 nếu chưa chọn)
+        let selected = new Array(questionsData.length).fill(-1);
+        let showAllCorrect = false; // chế độ hiển thị tất cả đáp án
 
-    function render() {
-        container.innerHTML = '';
-        let answered = 0;
-        questionData.forEach((q, idx) => {
-            const isAnswered = userAnswers[idx] !== null;
-            if (isAnswered) answered++;
+        function render() {
+            let html = '';
+            let answeredCount = 0;
+            questionsData.forEach((q, idx) => {
+                const sel = selected[idx];
+                const isAnswered = sel !== -1;
+                if (isAnswered) answeredCount++;
 
-            const card = document.createElement('div');
-            card.className = 'question-card';
+                html += `<div class="question-block" data-idx="${idx}">`;
+                html += `<div class="q-header"><span class="q-number">${idx+1}</span><span class="q-text">${q.text}</span></div>`;
+                html += `<div class="options">`;
+                q.options.forEach((opt, optIdx) => {
+                    let classes = 'option';
+                    const isSelected = (sel === optIdx);
+                    const isCorrect = (optIdx === q.correct);
 
-            const header = document.createElement('div');
-            header.className = 'question-header';
-            const numSpan = document.createElement('span');
-            numSpan.className = 'question-number';
-            numSpan.textContent = `Câu ${idx+1}`;
-            header.appendChild(numSpan);
-            const statusSpan = document.createElement('span');
-            statusSpan.className = 'question-status';
-            if (isAnswered) {
-                const ans = userAnswers[idx];
-                if (ans === q.ans) {
-                    statusSpan.textContent = '✅ Đúng';
-                } else {
-                    statusSpan.textContent = '❌ Sai';
-                }
-            } else {
-                statusSpan.textContent = '⏳ Chưa trả lời';
-            }
-            header.appendChild(statusSpan);
-            card.appendChild(header);
-
-            const textDiv = document.createElement('div');
-            textDiv.className = 'question-text';
-            textDiv.textContent = q.q;
-            card.appendChild(textDiv);
-
-            const optionsDiv = document.createElement('div');
-            optionsDiv.className = 'options';
-            const letters = ['A', 'B', 'C', 'D'];
-            q.opts.forEach((opt, oi) => {
-                const optDiv = document.createElement('div');
-                optDiv.className = 'option';
-                if (submitted) {
-                    optDiv.classList.add('disabled');
-                    if (oi === q.ans) {
-                        optDiv.classList.add('correct-reveal');
-                    }
-                    if (userAnswers[idx] === oi && oi !== q.ans) {
-                        optDiv.classList.add('wrong-reveal');
-                    }
-                } else {
-                    if (userAnswers[idx] === oi) {
-                        if (oi === q.ans) {
-                            optDiv.classList.add('selected-correct');
-                        } else {
-                            optDiv.classList.add('selected-wrong');
+                    // Xác định màu sắc dựa trên trạng thái
+                    if (showAllCorrect) {
+                        // Chế độ xem đáp án: tô xanh cho đáp án đúng
+                        if (isCorrect) classes += ' correct';
+                        // Nếu đã chọn sai thì vẫn hiện đỏ?
+                        if (isSelected && !isCorrect) classes += ' wrong';
+                        else if (isSelected && isCorrect) classes += ' correct';
+                    } else {
+                        if (isSelected) {
+                            if (isCorrect) {
+                                classes += ' correct';
+                            } else {
+                                classes += ' wrong';
+                                // Đồng thời hiển thị đáp án đúng (xanh)
+                                // Ta sẽ thêm class 'show-correct' cho đáp án đúng
+                                // Nhưng để tránh lẫn, ta sẽ thêm sau vòng lặp
+                            }
                         }
                     }
-                }
-                const radio = document.createElement('input');
-                radio.type = 'radio';
-                radio.name = `q${idx}`;
-                radio.value = oi;
-                radio.checked = (userAnswers[idx] === oi);
-                if (submitted) radio.disabled = true;
-                const letterSpan = document.createElement('span');
-                letterSpan.className = 'letter';
-                letterSpan.textContent = letters[oi] + '.';
-                optDiv.appendChild(radio);
-                optDiv.appendChild(letterSpan);
-                const textSpan = document.createElement('span');
-                textSpan.textContent = opt;
-                optDiv.appendChild(textSpan);
 
-                optDiv.addEventListener('click', function(e) {
-                    if (submitted) return;
-                    if (userAnswers[idx] !== oi) {
-                        userAnswers[idx] = oi;
-                        render();
-                    }
+                    // Thêm class disabled nếu đã chọn (không cho thay đổi)
+                    if (isAnswered && !showAllCorrect) classes += ' disabled';
+
+                    let label = String.fromCharCode(97 + optIdx); // a, b, c, d
+                    html += `<div class="${classes}" data-optidx="${optIdx}" onclick="handleSelect(${idx}, ${optIdx})">`;
+                    html += `<span class="label">${label}.</span>`;
+                    html += `<span class="text">${opt}</span>`;
+                    html += `</div>`;
                 });
+                html += `</div>`;
 
-                optionsDiv.appendChild(optDiv);
+                // Hiển thị badge kết quả nếu đã chọn (và không ở chế độ xem đáp án)
+                if (isAnswered && !showAllCorrect) {
+                    const isCorrect = (sel === q.correct);
+                    const badgeClass = isCorrect ? 'correct' : 'wrong';
+                    const badgeText = isCorrect ? '✅ Đúng' : '❌ Sai';
+                    html += `<div class="result-badge ${badgeClass}">${badgeText}</div>`;
+                }
+
+                // Nếu chọn sai và chưa show all, hiển thị đáp án đúng bên dưới (xanh)
+                if (isAnswered && !showAllCorrect && sel !== q.correct) {
+                    html += `<div style="margin-top:6px; font-size:14px; color:#28a745; font-weight:500;">✔️ Đáp án đúng: ${String.fromCharCode(97 + q.correct)}. ${q.options[q.correct]}</div>`;
+                }
+
+                html += `</div>`;
             });
-            card.appendChild(optionsDiv);
-            container.appendChild(card);
-        });
 
-        const total = questionData.length;
-        const pct = total > 0 ? (answered / total) * 100 : 0;
-        progressFill.style.width = pct + '%';
-        answeredCountSpan.textContent = `${answered}/${total}`;
-        totalQuestionsSpan.textContent = total;
-        answeredStats.textContent = answered;
-        totalStats.textContent = total;
+            container.innerHTML = html;
 
-        if (submitted) {
-            submitBtn.disabled = true;
-            submitBtn.textContent = '✅ Đã nộp';
-            showResult();
-        } else {
-            submitBtn.disabled = false;
-            submitBtn.textContent = '📝 Nộp bài';
+            // Cập nhật tiến độ
+            progressEl.textContent = `Đã trả lời: ${answeredCount} / ${questionsData.length} câu`;
+
+            // Nếu showAllCorrect, không cho thao tác click (đã disabled)
         }
-    }
 
-    function showResult() {
-        let correct = 0;
-        let wrong = 0;
-        let skipped = 0;
-        questionData.forEach((q, idx) => {
-            const ans = userAnswers[idx];
-            if (ans === null) {
-                skipped++;
-            } else if (ans === q.ans) {
-                correct++;
+        // Xử lý chọn đáp án
+        window.handleSelect = function(qIdx, optIdx) {
+            // Nếu đã chọn hoặc đang xem đáp án, không làm gì
+            if (selected[qIdx] !== -1 || showAllCorrect) return;
+
+            selected[qIdx] = optIdx;
+            render();
+        };
+
+        // Hiển thị tất cả đáp án đúng
+        document.getElementById('showAllBtn').addEventListener('click', function() {
+            showAllCorrect = !showAllCorrect; // bật/tắt chế độ xem đáp án
+            // Nếu bật, ta có thể đánh dấu tất cả đáp án đúng và không cho chọn
+            if (showAllCorrect) {
+                // Không cần thay đổi selected, chỉ render lại với showAllCorrect = true
+                render();
+                // Khóa tất cả các lựa chọn (thêm class disabled)
+                document.querySelectorAll('.option').forEach(el => el.style.pointerEvents = 'none');
+                this.textContent = '📌 Ẩn đáp án';
             } else {
-                wrong++;
+                render();
+                document.querySelectorAll('.option').forEach(el => el.style.pointerEvents = 'auto');
+                this.textContent = '📌 Hiển thị tất cả đáp án đúng';
             }
         });
-        const total = questionData.length;
-        const score = total > 0 ? Math.round((correct / total) * 100) : 0;
 
-        scoreDisplay.textContent = score + '%';
-        correctCountSpan.textContent = correct;
-        wrongCountSpan.textContent = wrong;
-        resultDetail.textContent = `Đúng ${correct}, Sai ${wrong}, Bỏ qua ${skipped}`;
-        resultBox.classList.add('show');
-    }
+        // Làm lại
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            selected.fill(-1);
+            showAllCorrect = false;
+            document.getElementById('showAllBtn').textContent = '📌 Hiển thị tất cả đáp án đúng';
+            render();
+            document.querySelectorAll('.option').forEach(el => el.style.pointerEvents = 'auto');
+        });
 
-    function submitExam() {
-        const unanswered = userAnswers.some(a => a === null);
-        if (unanswered) {
-            if (!confirm('Bạn còn ' + userAnswers.filter(a => a === null).length + ' câu chưa trả lời. Bạn có chắc muốn nộp bài?')) {
-                return;
-            }
-        }
-        submitted = true;
+        // Khởi tạo lần đầu
         render();
-        document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    function resetExam() {
-        if (submitted) {
-            if (!confirm('Bạn có muốn làm lại từ đầu? Kết quả hiện tại sẽ bị mất.')) return;
-        }
-        userAnswers.fill(null);
-        submitted = false;
-        resultBox.classList.remove('show');
-        render();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Khởi tạo
-    render();
-</script>
+    </script>
 </body>
 </html>
